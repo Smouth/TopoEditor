@@ -1,0 +1,79 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<head>
+	
+	<title>Point Plotter</title>
+	<script src="/javascripts/jquery-1.3.2.min.js?1263880791" type="text/javascript"></script>
+<script src="/javascripts/jquery.browser.min.js?1263880792" type="text/javascript"></script>
+<script src="/javascripts/jquery.draw.js?1263880888" type="text/javascript"></script>
+<script src="/javascripts/image_mapper.js?1263880789" type="text/javascript"></script>
+<script src="/javascripts/application.js?1266991124" type="text/javascript"></script>
+	<link href="/stylesheets/style.css?1266991128" media="screen" rel="stylesheet" type="text/css" />
+	
+    
+</head>
+<body>
+	<div id="page_wrap">
+		
+		
+		<h1>Point Plotter</h1>
+		<p class="subtitle">Because creating <span class="blue">html image maps</span> should be easy.</p>
+		<hr />
+
+		<div id="main" class="clearfix">
+
+
+
+<h2 id="step_one">1. Upload your image.</h2>
+
+<form action="/images" class="new_image" enctype="multipart/form-data" id="new_image" method="post"><div style="margin:0;padding:0;display:inline"><input name="authenticity_token" type="hidden" value="7Nlz+PIERRa4qHlFBFqSYa4uWFv4bWSGxD12Er29HWs=" /></div>
+	<p><input id="image_photo" name="image[photo]" size="30" type="file" /></p>
+	<p class="upload_btn"><input class="button" src="/images/upload_btn.png?1263880783" type="image" /></p>
+</form>
+
+
+<h2 id="step_two">2. Map your image.</h2>
+<div id="toolbar" style="width: 960px;">
+	<p id="new_hotspot">
+		<a href="#" class="button">
+			<img alt="Hotspot_btn" src="/hotspot_btn.png" />
+		</a>
+	</p>
+	<p id="edit_links">
+		<a href="#" id="undo">Undo</a> |
+		<a href="#" id="redo">Redo</a>
+	</p>
+</div><!-- toolbar -->
+
+<div class="clear"></div>
+
+<div id="user_image">
+	
+		<img alt="Missing" src="/photos/original/missing.png?1263880893" />
+	
+	<div id="myCanvas"></div>
+</div>
+
+<div class="clear"></div>
+
+<div id="output_code">
+	<textarea cols="40" id="code" name="code" rows="20"></textarea>
+</div></div>
+		
+	</div><!-- page_wrap -->
+	
+	
+	<script type="text/javascript">
+    var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+    document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+    </script>
+    <script type="text/javascript">
+    try {
+    var pageTracker = _gat._getTracker("UA-12559156-2");
+    pageTracker._trackPageview();
+    } catch(err) {}</script>
+    
+</body>
+</html>

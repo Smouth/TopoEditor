@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Climbing Route Editor</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="">
+        <meta name="author" content="">
+
+        <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+        <!--[if lt IE 9]>
+          <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+
+        <!-- Le styles -->
+        <link href="../my-bootstrap/docs/assets/css/bootstrap.css" rel="stylesheet">
+        <style>
+            body {
+                padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+            }
+        </style>
+        <link href="../my-bootstrap/docs/assets/css/bootstrap-responsive.css" rel="stylesheet">
+
+        <!-- Le fav and touch icons -->
+        <link rel="shortcut icon" href="images/favicon.ico">
+        <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+        <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+        <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+    </head>
+
+    <body>
+
+        <div class="navbar navbar-fixed-top">
+            <div class="navbar-inner">
+                <div class="container">
+                    <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </a>
+                    <a class="brand">TOPO Editor</a>
+                    <div class="nav-collapse">
+                        <ul class="nav">
+                            <li><a href="Search.html">Search</a></li>
+                            <li class="active"><a href="Create.html">Create</a></li>
+                            <li><a href="Profile.html">Profile</a></li>
+                        </ul>
+                    </div><!--/.nav-collapse -->
+                </div>
+            </div>
+        </div>
+
+        <select id="CountryList" onchange="CountryList_OnChange(this)">
+            <option>Country</option>
+            <OPTION VALUE="o1">England
+            <OPTION VALUE="o2">Ireland
+            <OPTION VALUE="o3">Scotland
+            <OPTION VALUE="o4">Wales
+        </select>
+        <select id="CountyList">
+			<option>County</option>
+		</select>
+        <select id="AreaList">
+			<option>Area</option>
+		</select>
+        <select id="RangeList">
+			<option>Range</option>
+		</select>
+        <select id="CragList">
+			<option>Crag</option>
+		</select>
+
+		
+</body>
+		
+
+        <div class="container">
+
+            <h1>Create</h1>
+            <p>Use this document as a way to quick start any new project.<br> All you get is this message and a barebones HTML document.</p>
+
+        </div> <!-- /container -->
+
+		<!-------------- Script for First select box (COUNTRY)------------------>
+		 <script type="text/javascript">
+            // Data for CountyList, this is a of the (parent)CountryList value to one or more options
+            var countyListData = {
+                "o1": ["All Countries","county - E1", "county - E2", "county - E3"],
+                "o2": ["I1"],
+                "o2": ["S1", "S2"],
+                "o4": ["Flintshire", "Gwynedd"]
+            };
+            // onchange is called when the parent value is changed
+            function CountryList_OnChange(objCountryList) {
+                var subList1 = document.getElementById("CountyList");
+                // Remove all options from both child lists
+                removeOptions(subList1);
+                // Lookup and get the array of values for child list 1, using the parents selected value
+                var subList1Data = countyListData[objCountryList.options[objCountryList.selectedIndex].value];
+                // Add the options to child list 1
+                if (subList1Data) {
+                    for (var i = 0; i < subList1Data.length; i++) {
+                        subList1.options[i] = new Option(subList1Data[i], subList1Data[i]);
+                    }
+                }
+            }
+            function removeOptions(objSelect) {
+                while (objSelect.options.length > 0)
+                    objSelect.options[0] = null;
+            }
+        </script>
+		
+		<!-------------- Script for Second select box (COUNTY)------------------>
+		 <script type="text/javascript">
+            // Data for CountyList, this is a of the (parent)CountryList value to one or more options
+            var areaListData = {
+                "o1": ["All Countries","english counties", "county - E2", "county - E3"],
+                "o2": ["irealnd counties liested here"],
+                "o2": ["scotish counties"],
+                "o4": ["Flintshire", "Gwynedd"]
+            };
+            // onchange is called when the parent value is changed
+            function CountryList_OnChange(objCountryList) {
+                var subList1 = document.getElementById("CountyList");
+                // Remove all options from both child lists
+                removeOptions(subList1);
+                // Lookup and get the array of values for child list 1, using the parents selected value
+                var subList1Data = countyListData[objCountryList.options[objCountryList.selectedIndex].value];
+                // Add the options to child list 1
+                if (subList1Data) {
+                    for (var i = 0; i < subList1Data.length; i++) {
+                        subList1.options[i] = new Option(subList1Data[i], subList1Data[i]);
+                    }
+                }
+            }
+            function removeOptions(objSelect) {
+                while (objSelect.options.length > 0)
+                    objSelect.options[0] = null;
+            }
+        </script>
+			
+		
+        <!-- Le javascript
+        ================================================== -->
+        <!-- Placed at the end of the document so the pages load faster -->
+        <script src="../my-bootstrap/docs/assets/js/jquery.js"></script>
+        <script src="../my-bootstrap/docs/assets/js/bootstrap-transition.js"></script>
+        <script src="../my-bootstrap/docs/assets/js/bootstrap-alert.js"></script>
+        <script src="../my-bootstrap/docs/assets/js/bootstrap-modal.js"></script>
+        <script src="../my-bootstrap/docs/assets/js/bootstrap-dropdown.js"></script>
+        <script src="../my-bootstrap/docs/assets/js/bootstrap-scrollspy.js"></script>
+        <script src="../my-bootstrap/docs/assets/js/bootstrap-tab.js"></script>
+        <script src="../my-bootstrap/docs/assets/js/bootstrap-tooltip.js"></script>
+        <script src="../my-bootstrap/docs/assets/js/bootstrap-popover.js"></script>
+        <script src="../my-bootstrap/docs/assets/js/bootstrap-button.js"></script>
+        <script src="../my-bootstrap/docs/assets/js/bootstrap-collapse.js"></script>
+        <script src="../my-bootstrap/docs/assets/js/bootstrap-carousel.js"></script>
+        <script src="../my-bootstrap/docs/assets/js/bootstrap-typeahead.js"></script>
+
+
+        <!-- Selection Boxes code
+        ================================================== -->
+
+       
+		
+		
+    </body>
+</html>

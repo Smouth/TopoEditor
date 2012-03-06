@@ -1,0 +1,100 @@
+<html><head>
+<script language="Javascript" src="javascript/jquery-1.2.6.min.js"></script>
+<script type="text/JavaScript">
+	var cars = [
+		{ name: 'Honda', models: [
+			{ name: 'Accord', features: ['2dr', '4dr'] },
+			{ name: 'CRV', features: ['2dr', 'Hatchback'] },
+			{ name: 'Pilot', features: ['base', 'superDuper'] }
+		]},
+		{ name: 'Toyota', models: [
+			{ name: 'Prius', features: ['green', 'superGreen'] },
+			{ name: 'Camry', features: ['sporty', 'square'] },
+			{ name: 'Corolla', features: ['cheap', 'superFly'] }
+		]}
+	];
+	
+	$(function() {
+		var options = '' ;
+		for (var i = 0; i < cars.length; i++) {
+			var opt = cars[i].name ;
+			if (i == 0){  options += '<option selected value="' + opt + '">' + opt + '</option>'; }
+			else {options += '<option value="' + opt + '">' + opt + '</option>'; } 
+	}
+	$("#maker").html(options);   // populate select box with array
+
+	var options = '' ;
+	for (var i=0; i < cars[0].models.length; i++) { 
+		var opt = cars[0].models[0].name ;
+		if (i==0){options += '<option selected value="' + opt + '">' + opt + '</option>';}
+		else {options += '<option value="' + opt + '">' + opt + '</option>';} 
+	}
+	$("#model").html(options);   // populate select box with array
+
+var options = '' ;
+for (var i=0; i < cars[0].models[0].features.length; i++) { 
+    var opt = cars[0].models[0].features[i] ;
+    if (i==0){options += '<option selected value="' + opt + '">' + opt + '</option>';}
+    else {options += '<option value="' + opt + '">' + opt + '</option>';}
+}
+$("#feature").html(options);   // populate select box with array
+
+$("#maker").bind("click",
+    function() {
+        $("#model").children().remove() ;       // clear select box
+        for(var i=0; i<cars.length; i++) {
+            if (cars[i].name == this.value) {
+                var options = '' ;
+                for (var j=0; j < cars[i].models.length; j++) { 
+                    var opt= cars[i].models[j].name ;
+                    if (j==0) {options += '<option selected value="' + opt + '">' + opt + '</option>';}
+                    else {options += '<option value="' + opt + '">' + opt + '</option>';} 
+                }
+                break;
+            }
+        }
+        $("#model").html(options);   // populate select box with array
+
+        $("#feature").children().remove() ;     // clear select box
+        for(var i=0; i<cars.length; i++) {
+            for(var j=0; j<cars[i].models.length; j++) {
+                if(cars[i].models[j].name == $("#model").val()) {
+                    var options = '' ;
+                    for (var k=0; k < cars[i].models[j].features.length; k++) { 
+                        var opt = cars[i].models[j].features[k] ;
+                        if (k==0){options += '<option selected value="' + opt + '">' + opt + '</option>';}
+                        else {options += '<option value="' + opt + '">' + opt + '</option>';}
+                    }
+                    break;
+                }
+            }
+        }
+        $("#feature").html(options);   // populate select box with array
+    });
+
+    $("#model").bind("click",
+        function() {
+            $("#feature").children().remove() ;     // clear select box
+            for(var i=0; i<cars.length; i++) {
+                for(var j=0; j<cars[i].models.length; j++) {
+                    if(cars[i].models[j].name == this.value) {
+                        var options = '' ;
+                        for (var k=0; k < cars[i].models[j].features.length; k++) { 
+                            var opt = cars[i].models[j].features[k] ;
+                            if (k==0){options += '<option selected value="' + opt  + '">' + opt  + '</option>';}
+                            else {options += '<option value="' + opt  + '">' + opt  + '</option>';}
+                        }
+                        break ;
+                    }
+                }
+            }
+            $("#feature").html(options);   // populate select box with array
+    });
+});
+</script>
+</head> <body>
+<div id="selection">
+<select id="maker"size="10" style="{width=75px}"></select>
+<select id="model" size="10" style="{width=75px}"></select>
+<select id="feature" size="10"style="{width=75px}"></select>
+</div></body></html>

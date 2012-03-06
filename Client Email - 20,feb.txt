@@ -1,0 +1,27 @@
+Dear Ryan
+
+After todays meeting with Steve we have come 
+up with a few points that we wanted to discuss.
+
+- Are you wanting to start the database from scratch or have you already got 
+	an image library from which users can then build up on?
+- We have came up with a basic layout for the webpage and we wanted to have 
+	your feedback on this as we recall you saying how important the usability
+	of it was. (document attached) 
+- We have also looked into the possible libraries we might use and we have come up 
+	with a list:
+		- jQuery 
+		- OpenLayer (image layering)
+		- Gallerie (image display)
+	Do these seem suitable or did you have any other libraries you would like us to implement.
+
+At this point we are hoping to have a basic working prototype for next week's session.
+We are also starting to write up the use-case documentation and identify the possible 
+testing strategies. If we could meet up at some point next week after we have had our
+feedback on Monday that would be great, as we would like to have feedback from you too. 
+
+Thanks
+
+Emmanuel
+
+small change made

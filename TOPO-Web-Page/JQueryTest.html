@@ -1,0 +1,82 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Demo</title>
+        <style> a.test { font-weight: bold; }</style> <!-- style class of "a"-->
+    </head>
+    <body>
+        <a href="http://jquery.com/">jQuery</a>
+        <script src="jquery.js"></script>
+
+        <!-- $(..) signifies a JQuery function, must be run 
+                        inside ready function in order to garantee 
+                        it runs once document has fully loaded-->
+        <script>
+            $(document).ready(function(){  //checks document has finished loading
+	  		
+                //----ADD AND REMOVE CLASS-----
+                $("a").addClass("test"); //add style class to "a"
+                $("a").removeClass("test"); //demonstration of how to remove a class
+		
+                //----CLICK FUNCTION-----
+                $("a").click(function(event){ //click handler adds statements before defualt event (show msg before opening link)
+                    alert("As you can see, the link no longer took you to jquery.com");
+                    event.preventDefault(); //prevents the default behaviour of event (open link)
+                    $(this).hide("slow"); //nested function to run upon click, makes link dissapear
+                });//end of click function
+		
+                //----CALL BACK-----
+                /*SIMPLE CALL BACK
+                 *call back passes a function as an argument to another function
+                 *second parameter is function name. Function can be executed 
+                 *before callback executes so must be properly called
+                 */
+                $.get('create.html', myCallBack); 
+                
+                /*CALL BACK WITH PARAMETERS EXPLAINED
+                 *call back function with parameters must be properly syntaxed
+                 *as if done like this: $.get('myhtmlpage.html', myCallBack(param1, param2));
+                 *the return value of such function will act as the second parameter (function)
+                 *of the $get function which makes no sense
+                 */
+                $.get('create.html', function(){
+                    myCallBack(param1, param2);
+                });
+		
+            }); //end of ready function
+	
+	
+	
+	
+	
+	
+            var data = [
+                {
+                    thumb: 'Search Page.jpg',
+                    image: 'Search Page.jpg',
+                    big: 'Search Page.jpg',
+                    title: 'My title',
+                    description: 'My description',
+                    link: 'http://my.destination.com',
+                    layer: '<div><h2>This image is gr8</h2><p>And this text will be on top of the image</p>'
+                },
+                {
+                    thumb: 'Search Page.jpg',
+                    image: 'Search Page.jpg',
+                    big: 'Search Page.jpg',
+                    title: 'My second title',
+                    description: 'My second description',
+                    link: '/product.html',
+                    layer: '<div><h2>This image is also gr8</h2><p>Good luck with Galleria!</p>'
+                }
+            ];
+            $('#galleria').galleria({
+                dataSource: data
+            });
+	
+	
+	
+        </script>
+    </body>
+</html>

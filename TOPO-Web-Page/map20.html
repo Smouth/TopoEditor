@@ -1,0 +1,267 @@
+
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<META HTTP-EQUIV="PRAGMA" CONTENT="NO-CACHE" />
+	<META HTTP-EQUIV="EXPIRES" CONTENT="-1" />
+	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+	<title>Map20.org - World Map - 4.1</title>
+	<link href="images/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+	<link rel="stylesheet" href="theme/default/style.css" type="text/css" />
+	<script src="../OpenLayers-2.11/lib/OpenLayers.js" type="text/javascript"></script>
+	<script src="script/map20shrunk.js" type="text/javascript"></script>
+	<link rel="stylesheet" type="text/css" href="css/map20.css"/>
+	<link rel="stylesheet" type="text/css" href="css/tools.css"/>
+	<!--[if lte IE 7]>
+		<link rel="stylesheet" type="text/css" href="css/map20_ie7.css" media="screen" title="MSIE hacks" />
+		<style type="text/css">
+		.ddoverlap{
+		height: 1%;  /*Apply Holly 3px jog hack to get IE to position bottom border correctly beneath the menu*/
+		}
+		</style>
+	<! [endif]-->
+	<script type="text/javascript">
+		function moveEnd(e){}
+	</script>
+</head>
+<body onload="init_map();">
+        <div id="container">
+            <div id="header" class="map20_header">
+			<a id="homeLink" href="./index.php" title="Home" target="_parent" onclick="Javascript:showSplash()">&nbsp;</a>
+			<div id="world_image" class="map20_world"></div>
+            <div id="map20_login">You are not logged in<br /><a href="javascript:show_login();">log in</a>&nbsp;|&nbsp;<a href="javascript:show_signup();">sign up</a></div>			</div>
+            <div id="map20" class="map20_map"></div>
+            <!-- Searchbox -->
+            <div id="searchbox">
+	        <form action="javascript:click_tab(document.getElementById('tab_search'))" name="searchform" class="searchbox">
+	            <input type="text" name="searchvalue" title="Location Finder" value="e.g. Streetname, City or POI" onfocus="clearDefault(this);" />
+	        </form>
+	    </div>
+			<!-- tabs -->
+			<div id="menu" class="ddoverlap">
+				<ul id="menu_ul">
+					<li id="tab_search"><a href="javascript:click_tab(document.getElementById('tab_search'));" title="Enter location first">Search</a></li>
+					<li id="tab_edit" class="disabled"><a href="javascript:click_tab(document.getElementById('tab_edit'));">Edit</a></li>
+					<li id="tab_news"><a href="javascript:click_tab(document.getElementById('tab_news'));">News</a></li>
+					<li id="tab_help" class="disabled"><a href="javascript:click_tab(document.getElementById('tab_help'));">Help</a></li>
+					<li id="tab_map"class="selected"><a href="javascript:click_tab(document.getElementById('tab_map'));">Map</a></li>
+				</ul>
+				<br style="clear: left" />
+			</div>
+			<div id="location" style="position:absolute;right:250px;bottom:4px;z-index:999"></div>
+		        <div id="scale" style="position:absolute;left:8px;bottom:4px;z-index:999"></div>
+		        <div id="scaleline">&nbsp;</div>
+			<!-- Copyright message -->
+			<div id="copyright" style="position:absolute;right:8px;bottom:4px;z-index:999">
+				<span>
+				&copy; 2011 AND - v4.1 - 
+				<a href="javascript:show_terms();">terms of service</a>
+				</span>
+			</div>
+			<!-- help -->
+            <div id="panel_help">
+                <iframe id="iframe002" src="http://www.map20.org/cms/?q=node/6" scrolling="no" marginwidth="5" marginheight="5" frameborder="0" vspace="0" hspace="0" height="1000" width="320">
+                </iframe>
+            </div>
+            <!-- news -->
+            <div id="panel_news">
+                <iframe id="iframe001" src="http://www.map20.org/cms/index.php" scrolling="no" marginwidth="0" marginheight="0" frameborder="0" vspace="0" hspace="0" height="1000">
+                </iframe>
+            </div>
+			<!-- Legend -->
+			<div id="legend">				
+				<span><a href="#" onclick="show_hide_menu();" id="arrow">?</a></span>
+				<ul>
+					<li><span id="li_airport" class="map_def">&nbsp;</span>airport</li>
+					<li><span id="li_builtup" class="map_def">&nbsp;</span>builtup</li>
+					<li><span id="li_cemetery" class="map_def">&nbsp;</span>cemetery</li>
+
+				</ul>
+				<ul>
+					<li><span id="li_forest" class="map_def">&nbsp;</span>forest</li>
+					<li><span id="li_golf" class="map_def">&nbsp;</span>golf</li>
+					<li><span id="li_heath" class="map_def">&nbsp;</span>heath</li>
+				</ul>
+				<ul>
+
+					<li><span id="li_highway" class="map_def">&nbsp;</span>highway</li>
+					<li><span id="li_industrial" class="map_def">&nbsp;</span>industrial</li>
+					<li><span id="li_land" class="map_def">&nbsp;</span>land</li>
+				</ul>
+				<ul>
+					<li><span id="li_motorway" class="map_def">&nbsp;</span>motorway</li>
+					<li><span id="li_park" class="map_def">&nbsp;</span>park</li>
+
+					<li><span id="li_rail" class="map_def">&nbsp;</span>rail</li>
+				</ul>
+				<ul>
+					<li><span id="li_sand" class="map_def">&nbsp;</span>sand</li>
+					<li><span id="li_water" class="map_def">&nbsp;</span>water</li>
+					<li><span id="li_road" class="map_def">&nbsp;</span>road</li>
+				</ul>
+
+			</div>
+            <!-- search -->
+            <div id="panel_search">
+            </div>
+            <!-- edit -->			
+            <div id="panel_edit">
+	   		</div>
+		
+		
+		
+	  <div id="lower_screen_disable" style="position:absolute; left:0px; top:73px; bottom:0px; z-index:999;visibility:hidden; opacity: 0.1; -moz-opacity: 0.1; filter: alpha(opacity=10); background-color: #000000">
+	  <table width="100%" height="100%" cellspacing=0 border=0>
+	  <tr><td>&nbsp;</td></tr>
+	  </table>
+		
+				<!--[if ht IE 5]> 
+		
+		<table width="100%" height="10000px" cellspacing=0 border=0>
+	  		<tr><td>&nbsp;</td></tr>
+	  	</table>
+
+		 <![endif]-->
+		
+	  </div>
+
+	  <!-- all screen disable -->
+
+	  
+	  <div id="all_screen_disable" style="position:absolute; left:0px; top:0px; bottom:0px; z-index:999;visibility:hidden; opacity: 0.25; -moz-opacity: 0.25; filter: alpha(opacity=25); background-color: #000000">
+	  <table width="100%" height="100%" cellspacing=0 border=0>
+	  <tr><td>&nbsp;</td></tr>
+	  </table>
+		
+		<!--[if ht IE 5]> 
+		
+		<table width="100%" height="10000px" cellspacing=0 border=0>
+	  		<tr><td>&nbsp;</td></tr>
+	  	</table>
+
+		 <![endif]-->
+		
+	  </div>
+			
+	  <!--div id="edit_button_disable" style="position:absolute; left:0px; top:0px; z-index:1; opacity: 0; -moz-opacity: 0; filter: alpha(opacity=0); background-color: #FF0000">
+	  	<a href="javascript:;" onClick="click_edit()">
+	  	<table width="71px" height="30px" cellspacing=0 border=0 >
+	  		<tr><td>&nbsp;</td></tr>
+	  	</table></a>
+	  </div-->
+
+	  <!--div id="xmltext" style="position:absolute; right:3px; top:3px; z-index:1111; background-color: #FFFFFF">
+	  </div-->
+	  	<!-- login screen -->
+	
+		<div id="loginbox">
+        	<form action="javascript:login();" name="loginform">
+				<p id="login_text"></p>
+				<p>&nbsp;
+				<table border="0" cellpadding="4" style="border:1px solid #ccc;">
+				<tr style="border:0px;"><td style="border:0px;font-size:12px;">email address:</td><td style="border:0px;"><input id="user_email" size="20" maxlength="255" name="email" type="text"/></td></tr>
+				<tr><td style="border:0px;font-size:12px;">password:</td><td><input id="user_password" maxlength="32" name="password" size="20" type="password"/></td></tr>
+				<tr><td colspan="2" align="right" valign="top"><button type="submit" name="login"><img src="images/login.png" alt="Log in" /></button><button type="button" name="login_cancel" onClick="javascript:hide_login();"><img src="images/cancel.png" alt="Cancel" /></button></td></tr>
+				</table>
+				</p>
+				<p>If you don't have an account yet, 
+				<a href="javascript:show_signup();">sign up</a> 
+				now.<br />
+				Did you forget your password? Click 
+				<a href="javascript:show_forgotpw();">here.</a>
+				</p>
+          </form>
+	  </div>
+
+	  <!-- signup screen -->
+	  <div id="signupbox">
+	  	<form action="javascript:signup()" name="signupform">
+			<p id="signup_text"></p>
+			<p>
+			<table border="0" cellpadding="4" style="border:1px solid #ccc;">
+		    <tr style="border:0px;"><td style="border:0px;font-size:12px;">email address:</td><td style="border:0px;"><input id="user_email" maxlength="255" name="email" size="20" type="text"/></td></tr>
+			<tr style="border:0px;"><td style="border:0px;font-size:12px;">user name:</td><td style="border:0px;"><input id="user_name" maxlength="20" name="name" size="20" type="text"/></td></tr>
+			<tr><td style="border:0px;font-size:12px;">password:</td>
+			<td><input id="user_password" maxlength="32" name="password" size="20" type="password"/></td></tr>
+			<tr><td colspan="3" align="right">
+				<table>
+		     	<tr>
+		        <td>
+		        </td>
+		        <td>
+		     	<table>
+		     <tr valign="bottom">
+		                  <td align="right" valign="bottom" id="signup_button_blue" style="display:none" >
+		       	            <button class="custombutton" type="submit" name="signup"><img src="images/signup.png" alt="Sign up" /></button>
+		           	      </td>
+		          	      <td align="right" valign="bottom" id="signup_button_grey">
+		           	        <button class="custombutton" type="submit" name="signup" disabled ><img src="images/signup_grey.png" alt="Sign up" /></button>
+		           	      </td>
+		           	      <td align="right" valign="bottom" >
+		     	              <button class="custombutton" type="button" name="signup_cancel" onClick="hide_signup();"><img src="images/cancel.png" alt="Cancel" /></button>
+		     	            </td>
+		            		</tr>
+		            	</table>
+		            </td>
+		          </tr>
+		        </table>
+		      </td>
+		    </tr>
+		  </table>
+		  </p>
+		  <p><input type="checkbox" name="iagree" value="valeur" onClick="javascript:click_iAgree();" />
+		  I agree with general <a href="javascript:show_terms();">terms and conditions.</a>
+		  </p>
+		  <p>
+		  If you already have an account, 
+		  <a href="javascript:show_login();">
+		  log in</a> now.</p>
+	      </form>
+		</div>
+
+	  <!-- forgot password screen -->
+
+	  <div id="forgot_pw_box">
+	        	<form action="javascript:resetpassword()" name="resetpasswordform" >
+	                  <p id="forgotpw_text"></p>
+					  <p>
+	                  <table border="0" cellpadding="4" style="border:1px solid #ccc;">
+	                    <tr style="border:0px;"><td style="border:0px;font-size:12px;">email address:</td><td style="border:0px;"><input id="user_email" maxlength="255" name="email" size="20" type="text"/></td></tr>
+	                    <tr><td colspan="2" align="right" valign="top"><button class="custombutton" type="submit" name="forgot"><img src="images/forgot.png" alt="I forgot my password" /></button><button class="custombutton" type="button" name="forgot_cancel" onClick="javascript:hide_forgotpw();"><img src="images/cancel.png" alt="Cancel" /></button></td></tr>
+	                  </table>
+					  </p>
+					  <p>
+	                  Do you know your password? 
+					  <a href="javascript:show_login();">
+					  Log in</a> now.
+			          </p>
+	          </form>
+	  </div>
+	  <!-- Terms of service -->
+	  <div id="termsofuse">
+	  	<table>
+	  		<tr><td>&nbsp;</td></tr>
+	     	<tr>
+	     		<td width="20"></td>
+	        <td>
+	     
+		 <iframe id="iframe004" src="http://www.map20.org/cms/?q=node/9" marginwidth="5" marginheight="5" frameborder="1" vspace="0" hspace="0" width="450" height="320" ALLOWTRANSPARENCY></iframe>
+		 
+	        </td>
+	      </tr>
+	      <tr colspan="2">
+	        <td colspan="2" align="center">
+	        	<br />
+	        	 <button class="custombutton" type="button" name="terms_ok" onClick="javascript:hide_terms();"><img src="images/ok.png" alt="Ok" /></button>
+	        </td>
+	      </tr>
+	    </table>
+	  </div>
+	<script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+  _uacct="UA-2491259-1";
+  urchinTracker();
+</script>
+</body>
+</html>

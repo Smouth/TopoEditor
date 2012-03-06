@@ -1,0 +1,37 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+    <head>
+    </head>
+    <body>
+    
+	<script type="text/javascript">
+            <!--
+            document.write("hey now brown cow" + </br>); //output msg, xhtml tags are added like vars
+            //-->
+			var name = "seb" //string var
+			var age = 20 //integer var
+			var alive = "true"
+			
+			function introduce(){ //create function
+			// alerts are pop ups
+				alert("Hey, I'm "+name+" and I'm "+age+" years old");
+				alert("nice to meet you ");
+			}
+			
+			function add(a,b){
+				var c = a + b;
+				return c;
+			}
+			document.write(add(5,4));
+			
+     </script>
+    <form>	
+		<input type="button" value="hi" onclick="introduce()"> <!--create a button to run function //-->
+	</form>
+	
+	
+    </body>
+</html>
