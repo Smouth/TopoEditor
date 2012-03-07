@@ -31,7 +31,7 @@
 		
         function init(){
 			//map options and border
-			var options = { numZoomLevels: 2 }; //allow only 2 zoom levels; current, 1+
+			var options = { numZoomLevels: 5 }; //allow only 2 zoom levels; current, 1+
             var olbound = new OpenLayers.Bounds(-180,-90,180,90); //bounds(left,buttom,right,top)
 
 			//create vector layer
@@ -53,7 +53,7 @@
 			map_controls = [
 				new OpenLayers.Control.Navigation(), //mouse and keyboard actions
 				new OpenLayers.Control.PanZoom(), //arrows, +, -, world
-				//new OpenLayers.Control.EditingToolbar(imgLayer),
+				new OpenLayers.Control.EditingToolbar(vecLayer),
 				new OpenLayers.Control.MousePosition(), //display position of mouse- bottom right
 				new OpenLayers.Control.LayerSwitcher() //allow to swap from 1 layer to another
 			]
@@ -63,6 +63,7 @@
             
             //add layer
             map.addLayer(imgLayer);
+			map.addLayer(vecLayer);
             map.zoomToMaxExtent(false);
         }
 
