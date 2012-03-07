@@ -32,7 +32,8 @@
         function init(){
 			//set map controls
 			map_controls = [
-				new OpenLayers.Control.MousePosition() //display position of mouse- bottom right
+				new OpenLayers.Control.MousePosition(), //display position of mouse- bottom right
+				new OpenLayers.Control.LayerSwitcher() //allow to swap from 1 layer to another
 			]
 		 
 		 
