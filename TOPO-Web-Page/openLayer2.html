@@ -30,25 +30,39 @@
 		var img = 'climb.jpg'; //store url of image
 		
         function init(){
-			//set map controls
-			map_controls = [
-				new OpenLayers.Control.MousePosition(), //display position of mouse- bottom right
-				new OpenLayers.Control.LayerSwitcher() //allow to swap from 1 layer to another
-			]
-		 
-		 
-            map = new OpenLayers.Map('map', {controls: map_controls});
-            var options = { numZoomLevels: 2 };
-            var olbound = new OpenLayers.Bounds(15.865164, 58.172783,16.651403, 58.620233);           //bounds(left,buttom,right,top)
+			//map options and border
+			var options = { numZoomLevels: 2 }; //allow only 2 zoom levels; current, 1+
+            var olbound = new OpenLayers.Bounds(-180,-90,180,90); //bounds(left,buttom,right,top)
 
-            var topography = new OpenLayers.Layer.Image(
-                'Image Layer', 	//name of layer
+			//create vector layer
+			var vecLayer = new OpenLayers.Layer.Vector(
+				"Route Layer"  //layer name
+				//,{strategies: [new OpenLayer.Strategy.Fixed()]}
+			);
+				
+			//create image layer
+			var imgLayer = new OpenLayers.Layer.Image(
+				'Image Layer', 	//name of layer
                 img, 	//url of image
                 olbound, //input boundaries
                 new OpenLayers.Size(700, 500), //size in pixel of the map
                 options //input zoom options
             );
-            map.addLayer(topography);
+		
+			//set map controls
+			map_controls = [
+				new OpenLayers.Control.Navigation(), //mouse and keyboard actions
+				new OpenLayers.Control.PanZoom(), //arrows, +, -, world
+				//new OpenLayers.Control.EditingToolbar(imgLayer),
+				new OpenLayers.Control.MousePosition(), //display position of mouse- bottom right
+				new OpenLayers.Control.LayerSwitcher() //allow to swap from 1 layer to another
+			]
+		 
+			//create map 
+            map = new OpenLayers.Map('map', {controls: map_controls}); //create map with controls
+            
+            //add layer
+            map.addLayer(imgLayer);
             map.zoomToMaxExtent(false);
         }
 
