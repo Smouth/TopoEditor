@@ -27,17 +27,25 @@
         var zoom = 0;
         var map, layer;
 
-         function init(){
-            map = new OpenLayers.Map('map');
+		var img = 'climb.jpg'; //store url of image
+		
+        function init(){
+			//set map controls
+			map_controls = [
+				new OpenLayers.Control.MousePosition() //display position of mouse- bottom right
+			]
+		 
+		 
+            map = new OpenLayers.Map('map', {controls: map_controls});
             var options = { numZoomLevels: 2 };
             var olbound = new OpenLayers.Bounds(15.865164, 58.172783,16.651403, 58.620233);           //bounds(left,buttom,right,top)
 
             var topography = new OpenLayers.Layer.Image(
-                'Wrap signals',
-                'climb.jpg',
-                olbound,
+                'Image Layer', 	//name of layer
+                img, 	//url of image
+                olbound, //input boundaries
                 new OpenLayers.Size(700, 500), //size in pixel of the map
-                options
+                options //input zoom options
             );
             map.addLayer(topography);
             map.zoomToMaxExtent(false);
@@ -49,7 +57,7 @@ map.setCenter(new OpenLayers.LonLat(16.23069, 58.406794), 3);
 
 <body onload="init()">
 
-	 <div class="navbar navbar-fixed-top">
+	<div class="navbar navbar-fixed-top">
             <div class="navbar-inner">
                 <div class="container">
                     <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
@@ -66,84 +74,86 @@ map.setCenter(new OpenLayers.LonLat(16.23069, 58.406794), 3);
                         </ul>
                     </div><!--/.nav-collapse -->
                 </div>
-
-            </div>
-            <div class="row">
-                <div class="span2">
-                    <SELECT MULTIPLE SIZE=4>
-                        <OPTION VALUE="o1">England
-                        <OPTION VALUE="o2">Ireland
-                        <OPTION VALUE="o3">Scotland
-                        <OPTION VALUE="o4">Wales
-                    </SELECT>
-                </div>
-                <div class="span2">
-                    <SELECT MULTIPLE SIZE=4>
-                        <OPTION VALUE="o1">Blaenau Gwent
-                        <OPTION VALUE="o2">Bridgend
-                        <OPTION VALUE="o3">Caerphilly
-                        <OPTION VALUE="o4">Cardiff
-                        <OPTION VALUE="o5">Carmarthenshire
-                        <OPTION VALUE="o6">Ceredigion
-                        <OPTION VALUE="o7">Conwy
-                        <OPTION VALUE="o8">Denbighshire
-                        <OPTION VALUE="o9">Flintshire
-                        <OPTION VALUE="o10">Gwynedd
-                        <OPTION VALUE="o11">Isle of Anglesey
-                        <OPTION VALUE="o12">Merthyr Tydfil
-                        <OPTION VALUE="o13">Monmouthshire
-                        <OPTION VALUE="o14">Neath Port Talbot
-                        <OPTION VALUE="o15">Newport
-                        <OPTION VALUE="o16">Pembrokeshire
-                        <OPTION VALUE="o17">Powys
-                        <OPTION VALUE="o18">Rhondda Cynon Taff
-                        <OPTION VALUE="o19">Swansea
-                        <OPTION VALUE="o20">Torfaen
-                        <OPTION VALUE="o21">Vale of Glamorgan
-                        <OPTION VALUE="o22">Wrexham
-                    </SELECT>
-                </div>
-                <div class="span2">
-                    <SELECT MULTIPLE SIZE=4>
-                        <OPTION VALUE="o1">Option 1
-                        <OPTION VALUE="o2">Option 2
-                        <OPTION VALUE="o3">Option 3
-                        <OPTION VALUE="o4">Option 4
-                        <OPTION VALUE="o5">Option 5
-                        <OPTION VALUE="o6">Option 6
-                    </SELECT>
-                </div>
-                <div class="span2">
-                    <SELECT MULTIPLE SIZE=4>
-                        <OPTION VALUE="o1">Option 1
-                        <OPTION VALUE="o2">Option 2
-                        <OPTION VALUE="o3">Option 3
-                        <OPTION VALUE="o4">Option 4
-                        <OPTION VALUE="o5">Option 5
-                        <OPTION VALUE="o6">Option 6
-                    </SELECT></div>
-                <div class="span2">
-                    <SELECT MULTIPLE SIZE=4>
-                        <OPTION VALUE="o1">Option 1
-                        <OPTION VALUE="o2">Option 2
-                        <OPTION VALUE="o3">Option 3
-                        <OPTION VALUE="o4">Option 4
-                        <OPTION VALUE="o5">Option 5
-                        <OPTION VALUE="o6">Option 6
-                    </SELECT>
-                </div>
-                <div class="span2">
-                    <SELECT MULTIPLE SIZE=4>
-                        <OPTION VALUE="o1">Option 1
-                        <OPTION VALUE="o2">Option 2
-                        <OPTION VALUE="o3">Option 3
-                        <OPTION VALUE="o4">Option 4
-                        <OPTION VALUE="o5">Option 5
-                        <OPTION VALUE="o6">Option 6
-                    </SELECT>
-                </div>
-            </div>
-        </div>
+			</div>
+	</div> <!-- end of nav bar div -->
+	
+	<div class="container">
+		<div class="row">
+			<div class="span2">
+				<SELECT MULTIPLE SIZE=4>
+					<OPTION VALUE="o1">England
+					<OPTION VALUE="o2">Ireland
+					<OPTION VALUE="o3">Scotland
+					<OPTION VALUE="o4">Wales
+				</SELECT>
+			</div>
+			<div class="span2">
+				<SELECT MULTIPLE SIZE=4>
+					<OPTION VALUE="o1">Blaenau Gwent
+					<OPTION VALUE="o2">Bridgend
+					<OPTION VALUE="o3">Caerphilly
+					<OPTION VALUE="o4">Cardiff
+					<OPTION VALUE="o5">Carmarthenshire
+					<OPTION VALUE="o6">Ceredigion
+					<OPTION VALUE="o7">Conwy
+					<OPTION VALUE="o8">Denbighshire
+					<OPTION VALUE="o9">Flintshire
+					<OPTION VALUE="o10">Gwynedd
+					<OPTION VALUE="o11">Isle of Anglesey
+					<OPTION VALUE="o12">Merthyr Tydfil
+					<OPTION VALUE="o13">Monmouthshire
+					<OPTION VALUE="o14">Neath Port Talbot
+					<OPTION VALUE="o15">Newport
+					<OPTION VALUE="o16">Pembrokeshire
+					<OPTION VALUE="o17">Powys
+					<OPTION VALUE="o18">Rhondda Cynon Taff
+					<OPTION VALUE="o19">Swansea
+					<OPTION VALUE="o20">Torfaen
+					<OPTION VALUE="o21">Vale of Glamorgan
+					<OPTION VALUE="o22">Wrexham
+				</SELECT>
+			</div>
+			<div class="span2">
+				<SELECT MULTIPLE SIZE=4>
+					<OPTION VALUE="o1">Option 1
+					<OPTION VALUE="o2">Option 2
+					<OPTION VALUE="o3">Option 3
+					<OPTION VALUE="o4">Option 4
+					<OPTION VALUE="o5">Option 5
+					<OPTION VALUE="o6">Option 6
+				</SELECT>
+			</div>
+			<div class="span2">
+				<SELECT MULTIPLE SIZE=4>
+					<OPTION VALUE="o1">Option 1
+					<OPTION VALUE="o2">Option 2
+					<OPTION VALUE="o3">Option 3
+					<OPTION VALUE="o4">Option 4
+					<OPTION VALUE="o5">Option 5
+					<OPTION VALUE="o6">Option 6
+				</SELECT></div>
+			<div class="span2">
+				<SELECT MULTIPLE SIZE=4>
+					<OPTION VALUE="o1">Option 1
+					<OPTION VALUE="o2">Option 2
+					<OPTION VALUE="o3">Option 3
+					<OPTION VALUE="o4">Option 4
+					<OPTION VALUE="o5">Option 5
+					<OPTION VALUE="o6">Option 6
+				</SELECT>
+			</div>
+			<div class="span2">
+				<SELECT MULTIPLE SIZE=4>
+					<OPTION VALUE="o1">Option 1
+					<OPTION VALUE="o2">Option 2
+					<OPTION VALUE="o3">Option 3
+					<OPTION VALUE="o4">Option 4
+					<OPTION VALUE="o5">Option 5
+					<OPTION VALUE="o6">Option 6
+				</SELECT>
+			</div>
+		</div>
+	</div>
 
 	<div></br></br></br></div> <!-- implement proper column and row indexing -->
 	<div id="map" style="width: 600px; height: 500px; background: #e8e8e8;" ></div>
