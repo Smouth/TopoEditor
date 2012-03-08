@@ -25,54 +25,45 @@
 	<script type="text/javascript">
         var lon = 5;
         var lat = 40;
-        var zoom = 0;
+        var zoom = 2;
         var map, layer;
 
 		var img = 'climb.jpg'; //store url of image
 		
         function init(){
-			//map options and border
-			var options = { numZoomLevels: 2 }; //allow only 2 zoom levels; current, 1+
-            var olbound = new OpenLayers.Bounds(-180,-90,180,90); //bounds(left,buttom,right,top)
-
-			//create vector layer
-			var vecLayer = new OpenLayers.Layer.Vector(
-				"Route Layer"  //layer name
+			map = new OpenLayers.Map( 'map', { controls: [] } );
+            layer = new OpenLayers.Layer.WMS( 
+				"OpenLayers WMS", 
+				img,
+				{layers: 'basic'} 
 			);
-				
-			//create image layer
-			var imgLayer = new OpenLayers.Layer.Image(
-				'Image Layer', 	//name of layer
-                img, 	//url of image
-                olbound, //input boundaries
-                new OpenLayers.Size(700, 500), //size in pixel of the map
-                options //input zoom options
-            );
-		
-			//set map controls
-			map_controls = [
-				new OpenLayers.Control.Navigation(), //mouse and keyboard actions
-				new OpenLayers.Control.PanZoom(), //arrows, +, -, world
-				new OpenLayers.Control.EditingToolbar(vecLayer),
-				new OpenLayers.Control.MousePosition(), //display position of mouse- bottom right
-				new OpenLayers.Control.LayerSwitcher(), //allow to swap from 1 layer to another
-				new OpenLayers.Control.Attribution() //copyrights tag 
-			]
-		 
 			
-		 
-		 
-		 
-		 
-			//create map 
-            map = new OpenLayers.Map('map', {controls: map_controls}); //create map with controls
+            map.addLayer(layer);
+
+            vlayer = new OpenLayers.Layer.Vector( "Editable" );
+            map.addLayer(vlayer);
             
-            //add layer
-            map.addLayer(imgLayer);
-			map.addLayer(vecLayer);
-            map.zoomToMaxExtent(false);
-			//map.setCenter(new OpenLayers.LonLat(16.23069, 58.406794), 3);	// set specific center point 
-        }
+            
+            zb = new OpenLayers.Control.ZoomBox(
+                {title:"Zoom box: Selecting it you can zoom on an area by clicking and dragging."});
+            var panel = new OpenLayers.Control.Panel({defaultControl: zb});
+            panel.addControls([
+                new OpenLayers.Control.MouseDefaults(
+                    {title:'You can use the default mouse configuration'}), 
+                zb,
+                new OpenLayers.Control.DrawFeature(vlayer, OpenLayers.Handler.Path,
+                    {title:'Draw a feature'}),
+                new OpenLayers.Control.ZoomToMaxExtent({title:"Zoom to the max extent"}) 
+            ]);
+            
+            nav = new OpenLayers.Control.NavigationHistory();
+            // parent control must be added to the map
+            map.addControl(nav);
+            panel.addControls([nav.next, nav.previous]);
+            
+            map.addControl(panel);
+
+            map.setCenter(new OpenLayers.LonLat(lon, lat), zoom);}
 
 		
     </script>
