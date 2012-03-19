@@ -5,13 +5,13 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <title>Vector Formats</title>
     <link rel="stylesheet" href="../theme/default/style.css" type="text/css">
     <!--[if lte IE 6]>
         <link rel="stylesheet" href="../theme/default/ie6-style.css" type="text/css" />
     <![endif]-->
     <link rel="stylesheet" href="style.css" type="text/css">
-    <style type="text/css">
+    <style type="text/css"> <!-- THIS WILL CHANGE WHEN USED WITH BOOTSTRAP -->
+	
         input, select, textarea {
             font: 0.9em Verdana, Arial, sans-serif;
         }
@@ -52,11 +52,12 @@
             padding: 0.75em 0 0.75em 0;
         }
     </style>
-    <script src="../OpenLayers-2.11/lib/OpenLayers.js"></script>
-		<script src="../OpenLayers-2.11/lib/Firebug/debug.js"></script>
-		<script type="text/javascript">
+    <!-- REFERENCES TO LIBRARY SHOULD BE TO ONLINE VERSIONS ASWELL -->
+	<script src="../OpenLayers-2.11/lib/OpenLayers.js"></script>
+	<script src="../OpenLayers-2.11/lib/Firebug/debug.js"></script>
+	<script type="text/javascript">
         var map, vectors, formats;
-        function updateFormats() {
+        function updateFormats() { //TRY AND REMOVE THIS DUE TO ONLY USING ONE FORMAT 
             var in_options = {
                 'internalProjection': map.baseLayer.projection,
                 'externalProjection': new OpenLayers.Projection("EPSG:4326")
@@ -76,20 +77,42 @@
         }
         function init(){
             map = new OpenLayers.Map('map');
-            var wms = new OpenLayers.Layer.WMS( 
-				"OpenLayers WMS",
-                'climb.jpg'
+  
+			var wms = new OpenLayers.Layer.WMS( 
+				"OpenLayers WMS"
+                ,'climb.jpg'
+				,{singleTile: true}
+			);
+			
+/*	CREATE IMAGE LAYER	
+			var imgLayer = new OpenLayers.Layer.Image(
+				'Image Layer',
+				'climb.jpg',
+				new OpenLayers.Size(700,500),
+			);
+*/
+/*	STYLE MAP FOR VECTOR LAYER
+			var sty = OpenLayers.Util.applyDefaults(defStyle, OpenLayers.Feature.Vector.style["default"]);
+            var sm = new OpenLayers.StyleMap({
+				'default': sty,
+				'select': {strokeColor: "blue", fillColor: "red"}
+			});
+*/
+			vectors = new OpenLayers.Layer.Vector(
+				"Vector Layer"
+				//,{styleMap: sm}
 			);
 
-            vectors = new OpenLayers.Layer.Vector("Vector Layer");
-
             map.addLayers([wms, vectors]);
+			//map.addLayers([imgLayer, vectors]);
             map.addControl(new OpenLayers.Control.MousePosition());
             map.addControl(new OpenLayers.Control.EditingToolbar(vectors));
-
+			map.addControl(new OpenLayers.Control.LayerSwitcher());
+			
             var options = {
-                hover: true,
-                onSelect: serialize
+				hover: true,
+                //toggle: true,
+				onSelect: serialize
             };
             var select = new OpenLayers.Control.SelectFeature(vectors, options);
             map.addControl(select);
@@ -140,9 +163,8 @@
   </head>
   <body onload="init()">
     <div id="leftcol">
-        <h1 id="title">Vector Formats Example</h1>
-
-        
+        <h2 id="title">jSON data IO</h2>
+       
         <div id="map" class="smallmap"></div>
         <div id="input">
 			<label for="formatType">Format</label>
@@ -152,22 +174,19 @@
             &nbsp;
             <label for="prettyPrint">Pretty print</label>
             <input id="prettyPrint" type="checkbox"
-                   name="prettyPrint" value="1" />
-            <br>
+                   checked="checked" name="prettyPrint" value="1" />
+            
+<!--SELECTION BOXES FOR PROJECTION TYPE
             Input Projection: <select id="inproj" onchange='updateFormats()'>
               <option value="EPSG:4326" selected="selected">EPSG:4326</option>
             </select> <br> 
             Output Projection: <select id="outproj" onchange='updateFormats()'>
               <option value="EPSG:4326" selected="selected">EPSG:4326</option>
-              <option value="EPSG:900913">Spherical Mercator</option>
-            </select> 
-            <br> 
-            <textarea id="text">paste text here...</textarea>
-            <br>
+            </select>
+-->
+            
             <input type="button" value="add feature" onclick="deserialize();" />
-        </div>
-
-        <div id="docs">
+			<textarea id="text">paste text here...</textarea>
         </div>
 
     </div>
