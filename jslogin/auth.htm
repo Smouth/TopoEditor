@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+	"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" >
+	<head>
+		<title>Authorization in progress...</title>
+<script type="text/javascript">
+<!--
+/*
+Javascript Secure Login
+Author: Carles J. Grau
+Website: http://www.dimaster.com
+Email: webmaster@dimaster.com
+*/
+var authstring = "<script type=\"text/javascript\" src=\"" + location.search.substring(1) + ".js\"><\/script>";
+if (location.search) document.write(authstring);
+// -->
+</script>
+	</head>
+	<body>
+<script type="text/javascript">
+<!--
+window.auth ? location.replace(redirect) : location.replace("login.htm?auth=failed");
+// -->
+</script>
+	</body>
+</html>

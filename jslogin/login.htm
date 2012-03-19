@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+	"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" >
+<head>
+	<title>Login</title>
+<script type="text/javascript">
+<!--
+function authPass(u,p) {
+	if (u && p) self.location = "auth.htm?" + u + p;
+	return false;
+}
+// -->
+</script>
+</head>
+<body>
+	<div>
+<script type="text/javascript">
+<!--
+if (location.search.indexOf("auth=failed") != -1) {
+	document.write("<span style=\"color:#ff0000\">Authorization Failed!</span>");
+}
+// -->
+</script>
+		<form id="form1" action="javascript://" onsubmit="return authPass(this.user.value,this.pass.value)">
+			<table>
+				<tr>
+					<td>Username: </td><td><input type="text" name="user" /></td>
+				</tr>
+				<tr>
+					<td>Password: </td><td><input type="text" name="pass" /></td>
+				</tr>
+				<tr>
+					<td colspan="2" align="center"><input type="submit" value="Login" /></td>
+				</tr>
+			</table>
+		</form>
+	</div>
+</body>
+</html>
