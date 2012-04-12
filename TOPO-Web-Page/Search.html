@@ -48,21 +48,27 @@
 		var lon = 5;
 		var lat = 40;
 		var zoom = 0;
-		var map, layer;
+		var map, layer, controls;
 				
         function init(){
 				
 			//map options and border
 			var options = { numZoomLevels: 2 }; //allow only 2 zoom levels; current, 1+
             var olbound = new OpenLayers.Bounds(-180,-90,180,90); //bounds(left,buttom,right,top)
-						
+			
+			// allow testing of specific renderers via "?renderer=Canvas", etc
+            var renderer = OpenLayers.Util.getParameters(window.location.href).renderer;
+            renderer = (renderer) ? [renderer] : OpenLayers.Layer.Vector.prototype.renderers;
+
+			
 			//create vector layer
 			var vecLayer = new OpenLayers.Layer.Vector(
 				"Route Layer",  //layer name
 				{styleMap: new OpenLayers.StyleMap({
 					pointRadius: "6", //based on feature.attributes.type
 					fillColor: "#666666" //"red" "green" "blue"
-				})}
+				}),
+				renderers:renderer}
 			);
 						
 			//create image layer
@@ -92,15 +98,92 @@
 			map.addLayer(vecLayer);
             map.zoomToMaxExtent(false);
 			
-			//external panel
+/*
+			//external editing tool bar
 			var container = document.getElementById("panel");
             var panel = new OpenLayers.Control.EditingToolbar(
                 vecLayer, {div: container}
             );
             map.addControl(panel);
+*/
+			
+			//External Panel 
+			if (console && console.log) {
+                function report(event) {
+                    console.log(event.type, event.feature ? event.feature.id : event.components);
+                }
+                vecLayer.events.on({
+                    "beforefeaturemodified": report,
+                    "featuremodified": report,
+                    "afterfeaturemodified": report,
+                    "vertexmodified": report,
+                    "sketchmodified": report,
+                    "sketchstarted": report,
+                    "sketchcomplete": report
+                });
+            }
+            controls = {
+                point: new OpenLayers.Control.DrawFeature(vecLayer,
+                            OpenLayers.Handler.Point),
+                line: new OpenLayers.Control.DrawFeature(vecLayer,
+                            OpenLayers.Handler.Path),
+                polygon: new OpenLayers.Control.DrawFeature(vecLayer,
+                            OpenLayers.Handler.Polygon),
+                regular: new OpenLayers.Control.DrawFeature(vecLayer,
+                            OpenLayers.Handler.RegularPolygon,
+                            {handlerOptions: {sides: 5}}),
+                modify: new OpenLayers.Control.ModifyFeature(vecLayer)
+            };
+            
+            for(var key in controls) {
+                map.addControl(controls[key]);
+            }
+            document.getElementById('noneToggle').checked = true;
+			
 		}
 		
+				
+		function update() {
+            // reset modification mode
+            controls.modify.mode = OpenLayers.Control.ModifyFeature.RESHAPE;
+            var rotate = document.getElementById("rotate").checked;
+            if(rotate) {
+                controls.modify.mode |= OpenLayers.Control.ModifyFeature.ROTATE;
+            }
+            var resize = document.getElementById("resize").checked;
+            if(resize) {
+                controls.modify.mode |= OpenLayers.Control.ModifyFeature.RESIZE;
+                var keepAspectRatio = document.getElementById("keepAspectRatio").checked;
+                if (keepAspectRatio) {
+                    controls.modify.mode &= ~OpenLayers.Control.ModifyFeature.RESHAPE;
+                }
+            }
+            var drag = document.getElementById("drag").checked;
+            if(drag) {
+                controls.modify.mode |= OpenLayers.Control.ModifyFeature.DRAG;
+            }
+            if (rotate || drag) {
+                controls.modify.mode &= ~OpenLayers.Control.ModifyFeature.RESHAPE;
+            }
+            var sides = parseInt(document.getElementById("sides").value);
+            sides = Math.max(3, isNaN(sides) ? 0 : sides);
+            controls.regular.handler.sides = sides;
+            var irregular =  document.getElementById("irregular").checked;
+            controls.regular.handler.irregular = irregular;
+        }
+		
 		function toggleControl(element) {
+            for(key in controls) {
+                var control = controls[key];
+                if(element.value == key && element.checked) {
+                    control.activate();
+                } else {
+                    control.deactivate();
+                }
+            }
+        }
+		
+		function toggleModify(element) {
             for(key in controls) {
                 var control = controls[key];
                 if(element.value == key && element.checked) {
@@ -167,7 +250,7 @@
 					<div class="well">
 					
 						<div id="controls">
-							<ul id="controlToggle">
+							<ul id="controlToggle"> <!-- radio and check box controls -->
 								<li>
 									<input type="radio" name="navigate" value="none" id="noneToggle" onclick="toggleControl(this);" />
 									Navigate
@@ -186,15 +269,14 @@
 								</li>
 								<li>
 									<input type="radio" name="type" value="regular" id="regularToggle" onclick="toggleControl(this);" />
-									Draw Regular Polygon
-									<label for="sides"> - sides</label>
+									Draw Regular Polygon - sides
 									<input id="sides" type="text" size="2" maxlength="2"
 										   name="sides" value="5" onchange="update()" />
 									<ul>
 										<li>
 											<input id="irregular" type="checkbox"
 												   name="irregular" onchange="update()" />
-											<label for="irregular">irregular</label>
+											Irregular
 										</li>
 									</ul>
 								</li>
@@ -214,7 +296,7 @@
 											Allow Resizing
 											(<input id="keepAspectRatio" type="checkbox"
 												   name="keepAspectRatio" onchange="update()" checked="checked" />
-											<label for="keepAspectRatio">keep aspect ratio</label>)
+											keep aspect ratio)
 										</li>
 										<li>
 											<input id="drag" type="checkbox"
@@ -225,20 +307,19 @@
 								</li>
 							</ul>
 						</div>
-				</div> <!-- well -->
-				
+						<div class="btn-group"> <!-- Save and Cancel buttons -->
+							<a class="btn btn-primary btn-large" onclick="" >View</a>
+							<a class="btn btn-primary btn-large" onclick="" >Edit</a>
+							<a class="btn btn-success btn-large" onclick="" >Save</a>
+							<a class="btn btn-danger btn-large" onclick="clearVectors()">Cancel</a>
+						</div>
+					</div> <!-- well -->
 				</div> <!-- span2 controls -->
-				
 			</div> <!-- fluid rows -->
 			<div id="panel" class="olControlEditingToolbar"></div>
 		</div>	
 		<div class="container">
-			<div class="btn-group"> <!-- Save and Cancel buttons -->
-				<a class="btn btn-primary btn-large" onclick="" >View</a>
-				<a class="btn btn-primary btn-large" onclick="" >Edit</a>
-				<a class="btn btn-success btn-large" onclick="" >Save</a>
-				<a class="btn btn-danger btn-large" onclick="clearVectors()">Cancel</a>
-			</div>
+			
 		</div>
 		  <!-- /container -->
 		 
