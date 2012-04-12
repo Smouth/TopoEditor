@@ -48,8 +48,8 @@
 		var lon = 5;
 		var lat = 40;
 		var zoom = 0;
-		var map, vecLayer, imgLayer, controls;
-				
+		var map, vecLayer, imgLayer, controls ;
+		var img	= 'climb.jpg';
         function init(){
 				
 			//map options and border
@@ -74,10 +74,27 @@
 			//create image layer
 			imgLayer = new OpenLayers.Layer.Image(
 				'Image Layer', 	//name of layer
-                'climb.jpg', 	//url of image
+                img,
+				//'climb.jpg', 	//url of image
                 olbound, //input boundaries
                 new OpenLayers.Size(700, 500), //size in pixel of the map
                 options //input zoom options
+				
+/*				
+				{strategies: [
+					new OpenLayers.Strategy.Fixed(),
+					new OpenLayers.Strategy.Refresh({interval:	refreshTime}),
+					new OpenLayers.Strategy.Cluster({distance: 15, threshold: 1})
+				],
+				protocol: new OpenLayers.Protocol.HTTP({
+					url:  "climb.jpg"//,
+					//format: new OpenLayers.Format.GeoRSS()
+				})
+				}
+				
+*/
+				
+				
             );
 		
 			//set map controls
@@ -107,7 +124,7 @@
             map.addControl(panel);
 */
 			
-			//External Panel 
+			//report?
 			if (console && console.log) {
                 function report(event) {
                     console.log(event.type, event.feature ? event.feature.id : event.components);
@@ -122,6 +139,8 @@
                     "sketchcomplete": report
                 });
             }
+			
+			//Vector controls
             controls = {
                 point: new OpenLayers.Control.DrawFeature(vecLayer,
                             OpenLayers.Handler.Point),
@@ -135,40 +154,56 @@
                 modify: new OpenLayers.Control.ModifyFeature(vecLayer)
             };
             
+			//Add controls to map
             for(var key in controls) {
                 map.addControl(controls[key]);
             }
             document.getElementById('noneToggle').checked = true;
 			
-			
-			
-		}
+		}//end of init
 		
-		function cancel(element){
+		//Cancel Drawing
+		function cancel(element){ 
 			for(key in controls) {
                 controls[key].cancel();
             }
 		}
 		
+		//Redo Step
 		function redo(element){
 			for(key in controls) {
                 controls[key].redo();
             }
 		}
 		
+		//Undo Step
 		function undo(element){
 			for(key in controls) {
                 controls[key].undo();
             }
 		}
 		
+		//Delete all features
 		function deleteFeatures(){
 			vecLayer.destroyFeatures();
 		}
 		
+		//Load new img
 		function changeImg(){
-		var newUrl = 'climb1.jpg';
-			imgLayer.refresh({url: newUrl});
+			
+			var curURL = imgLayer.tile.imgDiv.src;
+			var newURL;
+			var useURL;
+			
+			//img='climb1.jpg';
+			newURL = img;
+						
+			useURL = (newURL) ? newURL : img;
+			//change to new url
+			imgLayer.tile.imgDiv.src = useURL;
+			//(OpenLayers.Util.getElement('slideshow')).src = useURL;
+			//(OpenLayers.Util.getElement('currentImageURL')).innerHTML = useURL;
+			
 		}
 		
 		function colorChange(){
@@ -241,6 +276,7 @@
 
     <body onload="init()">
 
+		<!-- Navigation bar -->
         <div class="navbar navbar-fixed-top">
             <div class="navbar-inner">
                 <div class="container">
@@ -264,7 +300,7 @@
             </div>    
         </div>
 
-
+		<!--  -->
         <div class="container">
             <h1>Search</h1>
             <div class="row">
