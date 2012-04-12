@@ -50,6 +50,7 @@
 		var zoom = 0;
 		var map, vecLayer, imgLayer, controls ;
 		var img	= 'climb.jpg';
+		
         function init(){
 				
 			//map options and border
@@ -79,23 +80,7 @@
                 olbound, //input boundaries
                 new OpenLayers.Size(700, 500), //size in pixel of the map
                 options //input zoom options
-				
-/*				
-				{strategies: [
-					new OpenLayers.Strategy.Fixed(),
-					new OpenLayers.Strategy.Refresh({interval:	refreshTime}),
-					new OpenLayers.Strategy.Cluster({distance: 15, threshold: 1})
-				],
-				protocol: new OpenLayers.Protocol.HTTP({
-					url:  "climb.jpg"//,
-					//format: new OpenLayers.Format.GeoRSS()
-				})
-				}
-				
-*/
-				
-				
-            );
+			);
 		
 			//set map controls
 			map_controls = [
@@ -189,14 +174,11 @@
 		}
 		
 		//Load new img
-		function changeImg(){
+		function changeImg(newImg){
 			
 			var curURL = imgLayer.tile.imgDiv.src;
-			var newURL;
+			var newURL = newImg.value;
 			var useURL;
-			
-			//img='climb1.jpg';
-			newURL = img;
 						
 			useURL = (newURL) ? newURL : img;
 			//change to new url
@@ -313,8 +295,10 @@
 				<select id="RangeList">
 					<option>Range</option>
 				</select>
-				<select id="CragList">
+				<select name="crag" id="CragList" onchange="changeImg(this)">
 					<option>Crag</option>
+					<option value='climb1.jpg'>climb1</option>
+					<option value='climb.jpg'>climb</option>
 				</select>
 			</div>
 		</div>
@@ -387,7 +371,7 @@
 						<div class="btn-group"> <!-- Save and Cancel buttons -->
 							<a class="btn btn-primary btn-large" onclick="" >View</a>
 							<a class="btn btn-primary btn-large" onclick="colorChange()">Edit (color change)</a>
-							<a class="btn btn-success btn-large" onclick="changeImg()" >Save(change img)</a>
+							<a class="btn btn-success btn-large" onclick="" >Save(change img)</a>
 							<a class="btn btn-danger btn-large" onclick="deleteFeatures()">Clear All</a>
 						</div>
 						<div class="btn-group"> <!-- Save and Cancel buttons -->
