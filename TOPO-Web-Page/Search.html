@@ -145,30 +145,43 @@
 		}
 		
 		function cancel(element){
-			//var handled = false;
 			for(key in controls) {
                 controls[key].cancel();
             }
 		}
 		
 		function redo(element){
-			//var handled = false;
 			for(key in controls) {
                 controls[key].redo();
             }
 		}
 		
 		function undo(element){
-			/*var handled = false;
-			for(key in controls) {
-				if(element.value == key && element.checked) {
-						controls[key].undo();
-					}
-				}
-			*/
 			for(key in controls) {
                 controls[key].undo();
             }
+		}
+		
+		function deleteFeatures(){
+			vecLayer.destroyFeatures();
+		}
+		
+		function changeImg(){
+		var newUrl = 'climb1.jpg';
+			imgLayer.refresh({url: newUrl});
+		}
+		
+		function colorChange(){
+			//alert("color " + styleMap.value);
+			alert(vecLayer.getURL());
+			//OpenLayers.Util.getElement('fillColor').value);
+			/*
+			var newColor = (parseFloat(OpenLayers.Util.getElement('fillColor').value) + increase).toFixed(1);
+            newOpacity = Math.min(maxOpacity,
+                                  Math.max(minOpacity, newOpacity));
+            OpenLayers.Util.getElement('fillColor').value = newColor;
+            vecLayer.setfillColor(newColor);
+			*/
 		}
 		
 		function update() {
@@ -337,9 +350,9 @@
 						</div>
 						<div class="btn-group"> <!-- Save and Cancel buttons -->
 							<a class="btn btn-primary btn-large" onclick="" >View</a>
-							<a class="btn btn-primary btn-large" onclick="" >Edit</a>
-							<a class="btn btn-success btn-large" onclick="" >Save</a>
-							<a class="btn btn-danger btn-large" onclick="">Clear All</a>
+							<a class="btn btn-primary btn-large" onclick="colorChange()">Edit (color change)</a>
+							<a class="btn btn-success btn-large" onclick="changeImg()" >Save(change img)</a>
+							<a class="btn btn-danger btn-large" onclick="deleteFeatures()">Clear All</a>
 						</div>
 						<div class="btn-group"> <!-- Save and Cancel buttons -->
 							<a class="btn btn-success btn-large" onclick="undo()">Undo</a>
