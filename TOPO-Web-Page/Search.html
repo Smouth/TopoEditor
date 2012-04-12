@@ -48,7 +48,7 @@
 		var lon = 5;
 		var lat = 40;
 		var zoom = 0;
-		var map, layer, controls;
+		var map, vecLayer, imgLayer, controls;
 				
         function init(){
 				
@@ -62,7 +62,7 @@
 
 			
 			//create vector layer
-			var vecLayer = new OpenLayers.Layer.Vector(
+			vecLayer = new OpenLayers.Layer.Vector(
 				"Route Layer",  //layer name
 				{styleMap: new OpenLayers.StyleMap({
 					pointRadius: "6", //based on feature.attributes.type
@@ -72,7 +72,7 @@
 			);
 						
 			//create image layer
-			var imgLayer = new OpenLayers.Layer.Image(
+			imgLayer = new OpenLayers.Layer.Image(
 				'Image Layer', 	//name of layer
                 'climb.jpg', 	//url of image
                 olbound, //input boundaries
@@ -140,9 +140,37 @@
             }
             document.getElementById('noneToggle').checked = true;
 			
+			
+			
 		}
 		
-				
+		function cancel(element){
+			//var handled = false;
+			for(key in controls) {
+                controls[key].cancel();
+            }
+		}
+		
+		function redo(element){
+			//var handled = false;
+			for(key in controls) {
+                controls[key].redo();
+            }
+		}
+		
+		function undo(element){
+			/*var handled = false;
+			for(key in controls) {
+				if(element.value == key && element.checked) {
+						controls[key].undo();
+					}
+				}
+			*/
+			for(key in controls) {
+                controls[key].undo();
+            }
+		}
+		
 		function update() {
             // reset modification mode
             controls.modify.mode = OpenLayers.Control.ModifyFeature.RESHAPE;
@@ -311,8 +339,18 @@
 							<a class="btn btn-primary btn-large" onclick="" >View</a>
 							<a class="btn btn-primary btn-large" onclick="" >Edit</a>
 							<a class="btn btn-success btn-large" onclick="" >Save</a>
-							<a class="btn btn-danger btn-large" onclick="clearVectors()">Cancel</a>
+							<a class="btn btn-danger btn-large" onclick="">Clear All</a>
 						</div>
+						<div class="btn-group"> <!-- Save and Cancel buttons -->
+							<a class="btn btn-success btn-large" onclick="undo()">Undo</a>
+							<a class="btn btn-danger btn-large" onclick="redo()">Redo</a>
+							<a class="btn btn-danger btn-large" onclick="cancel()">Cancel Draw</a>
+						</div>
+						<p>
+							Use <code>Ctrl-Z</code> or <code>⌘-Z</code> to undo while drawing.  
+							Use <code>Ctrl-Y</code> or <code>⌘-Y</code> to redo what you have 
+							undone.  Use <code>Esc</code> to cancel the current sketch.
+						<p>
 					</div> <!-- well -->
 				</div> <!-- span2 controls -->
 			</div> <!-- fluid rows -->
@@ -344,5 +382,6 @@
 		<!-- OpenLayers -->
 		<script src="../OpenLayers-2.11/lib/OpenLayers.js"></script>
 		<script src="../OpenLayers-2.11/lib/Firebug/debug.js"></script>
+		<!--<script src="../OpenLayers-2.11/lib/draw-undo-redo.js"></script>-->
     </body>
 </html>
