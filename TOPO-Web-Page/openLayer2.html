@@ -52,15 +52,19 @@
 
 		var img = OpenLayers.Util.getElement("routeSelect").value;
 		var img1 = 'climb.jpg'; //store url of image
-		alert(img1);
+		//alert(img1);
+		
 		
 		function refresh(){
-		map.destroy();
+		//map.destroy();
+		map.removeLayer(vecLayer,false);
 		alert(OpenLayers.Util.getElement("routeSelect").value);
 		
 		}
 		
         function init(){
+		
+		alert(img1); 
 		/*
 			//set up style for the marker
   		    var style_marker = OpenLayers.Util.extend({}, layer_style);
@@ -87,7 +91,7 @@
 			//create image layer
 			var imgLayer = new OpenLayers.Layer.Image(
 				'Image Layer', 	//name of layer
-                img, 	//url of image
+                'climb.jpg', 	//url of image
                 olbound, //input boundaries
                 new OpenLayers.Size(700, 500), //size in pixel of the map
                 options //input zoom options
@@ -154,9 +158,9 @@
 	<input type="button" value="change route" onclick="refresh();"/>
 	 <label for="route">Route Selector</label>
             <select name="route" id="routeSelect">
-                <option value="'climb.jpg'"selected="selected">indoors</option>
-                <option value="2">outdoors</option>
-                <option value="3">ice</option>
+                <option value='climb.jpg'selected="selected">indoors</option>
+                <option value='2'>outdoors</option>
+                <option value='3'>ice</option>
             </select>
 	<div></br></br></br></div> <!-- implement proper column and row indexing -->
 	<div id="map" style="width: 600px; height: 500px; background: #e8e8e8;" ></div>

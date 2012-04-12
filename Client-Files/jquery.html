@@ -1,0 +1,52 @@
+
+<html>
+<head>
+	 <script src="http://code.jquery.com/jquery-latest.js"></script> 
+    <script type="text/javascript" src="jquery-1.7.min.js"></script>
+	<script type="text/javascript"> 
+	
+	var objects = ['country','county','crag','route'];
+
+	function refreshAll(){
+		refreshCountry();
+		refreshCounty();
+	}
+	
+	
+	function refreshCountry(){
+		alert( data["countries"[0]["name"]); 
+		$.getJSON('sample.json', function(data) {
+			//var items = [];
+			$.each(data["countries"], function(key) {
+				$('<option value='+key+'>' + data["countries"][key]["name"] +  '</option>').appendTo('#country'); 
+			});
+		});
+	}
+	
+	/*
+	function refreshCounty(){
+		alert('hi'); 
+		$.getJSON('sample.json', function(data) {
+			//var items = [];
+			$.each(data["countries"], function(key) {
+				$('<option value='+key+'>' + data["countries"][document.getElementById(\"combo1\").value"]["county"][key] +  '</option>').appendTo('#'+objects[0]); 
+			});
+		});
+	}
+	*/
+	
+	function test(){
+		alert('hi'); 
+		//document.getElementById(\"combo1\").value"
+	}
+	
+	$(document).ready(refreshCountry()); 
+	//$(document).ready(test()); 
+	</script>
+</head>
+
+<body>
+	<select size="4" id="country"  style="width:100px;color:black;"></select> <!-- onChange="refreshAll" -->
+	<select size="4" id="county"  style="width:100px;color:red;"></select>
+</body>
+</html>

@@ -1,0 +1,29 @@
+<html>                                                                  
+<head>                                                                  
+	<script type="text/javascript" src="jquery-1.7.min.js"></script>
+
+	<script type="text/javascript">
+	$(document).ready(function() {
+		$.getJSON('sample.json', function(data) {
+			alert( data["countries"][0]["name"]); 
+		
+		var items = [];
+			
+		  $.each(data["countries"], function(key) {
+			items.push('<option value='+key+'>' + data["countries"][key]["population"] +  '</option>');
+		  });
+
+		  $('<select/>', {
+			'class': 'my-new-list',
+			html: items.join('')
+		  }).appendTo('body');
+		});
+	 });
+</script>
+
+</head>
+
+<body>
+		<p>Hello</p>
+</body>
+</html>
