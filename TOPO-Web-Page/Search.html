@@ -169,25 +169,24 @@
 						<div id="controls">
 							<ul id="controlToggle">
 								<li>
-									<input type="radio" name="type" value="none" id="noneToggle"
-										   onclick="toggleControl(this);" checked="checked" />
-									<label for="noneToggle">navigate</label>
+									<input type="radio" name="navigate" value="none" id="noneToggle" onclick="toggleControl(this);" />
+									Navigate
 								</li>
 								<li>
 									<input type="radio" name="type" value="point" id="pointToggle" onclick="toggleControl(this);" />
-									<label for="pointToggle">draw point</label>
+									Draw Point
 								</li>
 								<li>
 									<input type="radio" name="type" value="line" id="lineToggle" onclick="toggleControl(this);" />
-									<label for="lineToggle">draw line</label>
+									Draw Line
 								</li>
 								<li>
 									<input type="radio" name="type" value="polygon" id="polygonToggle" onclick="toggleControl(this);" />
-									<label for="polygonToggle">draw polygon</label>
+									Draw Polygon
 								</li>
 								<li>
 									<input type="radio" name="type" value="regular" id="regularToggle" onclick="toggleControl(this);" />
-									<label for="regularToggle">draw regular polygon</label>
+									Draw Regular Polygon
 									<label for="sides"> - sides</label>
 									<input id="sides" type="text" size="2" maxlength="2"
 										   name="sides" value="5" onchange="update()" />
@@ -202,17 +201,17 @@
 								<li>
 									<input type="radio" name="type" value="modify" id="modifyToggle"
 										   onclick="toggleControl(this);" />
-									<label for="modifyToggle">modify feature</label>
+									Modify Feature
 									<ul>
 										<li>
 											<input id="rotate" type="checkbox"
 												   name="rotate" onchange="update()" />
-											<label for="rotate">allow rotation</label>
+											Allow Rotation
 										</li>
 										<li>
 											<input id="resize" type="checkbox"
 												   name="resize" onchange="update()" />
-											<label for="resize">allow resizing</label>
+											Allow Resizing
 											(<input id="keepAspectRatio" type="checkbox"
 												   name="keepAspectRatio" onchange="update()" checked="checked" />
 											<label for="keepAspectRatio">keep aspect ratio</label>)
@@ -220,7 +219,7 @@
 										<li>
 											<input id="drag" type="checkbox"
 												   name="drag" onchange="update()" />
-											<label for="drag">allow dragging</label>
+											Allow Dragging
 										</li>
 									</ul>
 								</li>
