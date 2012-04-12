@@ -99,6 +99,17 @@
             );
             map.addControl(panel);
 		}
+		
+		function toggleControl(element) {
+            for(key in controls) {
+                var control = controls[key];
+                if(element.value == key && element.checked) {
+                    control.activate();
+                } else {
+                    control.deactivate();
+                }
+            }
+        }
 	
     </script>
 	
@@ -147,8 +158,79 @@
 				</select>
 			</div>
 		</div>
-		<div class="container">
-			<div id="map" class="container" style="width:700px; height:500px; background:#e8e8e8;"></div>
+		<div class="container-fluid">
+			<div class="row-fluid"> <!-- Map & controls-->
+				<div class="span7">
+					<div id="map" class="container" style="width:700px; height:500px; background:#e8e8e8;"></div>
+				</div> <!-- map -->
+				<div class="span4">
+					<div class="well">
+					
+						<div id="controls">
+							<ul id="controlToggle">
+								<li>
+									<input type="radio" name="type" value="none" id="noneToggle"
+										   onclick="toggleControl(this);" checked="checked" />
+									<label for="noneToggle">navigate</label>
+								</li>
+								<li>
+									<input type="radio" name="type" value="point" id="pointToggle" onclick="toggleControl(this);" />
+									<label for="pointToggle">draw point</label>
+								</li>
+								<li>
+									<input type="radio" name="type" value="line" id="lineToggle" onclick="toggleControl(this);" />
+									<label for="lineToggle">draw line</label>
+								</li>
+								<li>
+									<input type="radio" name="type" value="polygon" id="polygonToggle" onclick="toggleControl(this);" />
+									<label for="polygonToggle">draw polygon</label>
+								</li>
+								<li>
+									<input type="radio" name="type" value="regular" id="regularToggle" onclick="toggleControl(this);" />
+									<label for="regularToggle">draw regular polygon</label>
+									<label for="sides"> - sides</label>
+									<input id="sides" type="text" size="2" maxlength="2"
+										   name="sides" value="5" onchange="update()" />
+									<ul>
+										<li>
+											<input id="irregular" type="checkbox"
+												   name="irregular" onchange="update()" />
+											<label for="irregular">irregular</label>
+										</li>
+									</ul>
+								</li>
+								<li>
+									<input type="radio" name="type" value="modify" id="modifyToggle"
+										   onclick="toggleControl(this);" />
+									<label for="modifyToggle">modify feature</label>
+									<ul>
+										<li>
+											<input id="rotate" type="checkbox"
+												   name="rotate" onchange="update()" />
+											<label for="rotate">allow rotation</label>
+										</li>
+										<li>
+											<input id="resize" type="checkbox"
+												   name="resize" onchange="update()" />
+											<label for="resize">allow resizing</label>
+											(<input id="keepAspectRatio" type="checkbox"
+												   name="keepAspectRatio" onchange="update()" checked="checked" />
+											<label for="keepAspectRatio">keep aspect ratio</label>)
+										</li>
+										<li>
+											<input id="drag" type="checkbox"
+												   name="drag" onchange="update()" />
+											<label for="drag">allow dragging</label>
+										</li>
+									</ul>
+								</li>
+							</ul>
+						</div>
+				</div> <!-- well -->
+				
+				</div> <!-- span2 controls -->
+				
+			</div> <!-- fluid rows -->
 			<div id="panel" class="olControlEditingToolbar"></div>
 		</div>	
 		<div class="container">
@@ -157,7 +239,6 @@
 				<a class="btn btn-primary btn-large" onclick="" >Edit</a>
 				<a class="btn btn-success btn-large" onclick="" >Save</a>
 				<a class="btn btn-danger btn-large" onclick="clearVectors()">Cancel</a>
-				
 			</div>
 		</div>
 		  <!-- /container -->
