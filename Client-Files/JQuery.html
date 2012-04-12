@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<script src="http://code.jquery.com/jquery-latest.js"></script>
+    <script type="text/javascript" src="jquery-1.7.min.js"></script>
+	<script type="text/javascript">
+	//alert( data["countries"][0]["name"]); 
+	var objects = ['country','name','county','crag','route'];
+	function refreshAll(){
+		$.getJSON('sample.json', function(data) {
+			var items = [];
+			$.each(data["countries"], function(key) {
+				items.push('<option value='+key+'>' + data["countries"][key][objects[1]] +  '</option>'); 
+			
+			});
+			$('<select/>', {
+				'class': 'my-new-list',
+				html: items.join('')
+			}).appendTo('#country');
+		});
+	}
+	
+	$(document).ready(refreshAll()); 
+	</script>
+</head>
+
+<body>
+	<select size="4" id="country1" style="width:65px;color:#f98ad3;">
+	<div class="span2" id="country"></div>
+	<div class="span2" id="county"></div>
+	
+</body>
+</html>

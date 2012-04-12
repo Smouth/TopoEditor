@@ -9,6 +9,7 @@
 	},
 	{
 		"name" : "Wales",
+<<<<<<< HEAD
 		"county" : [
 			{"name" : "A"}
 		]
@@ -24,6 +25,17 @@
 		"county" : [
 			{"name" : "A"}
 		]
+=======
+		
+	},
+	{
+		"name" : "Ireland",
+		
+	},
+	{
+		"name" : "Scotland",
+		
+>>>>>>> bb28775ea1e732dea1534227ff00b22e6e311d30
 	}
 ]
 }
