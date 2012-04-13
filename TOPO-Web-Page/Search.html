@@ -417,4 +417,34 @@
 		<script src="../OpenLayers-2.11/lib/Firebug/debug.js"></script>
 		<!--<script src="../OpenLayers-2.11/lib/draw-undo-redo.js"></script>-->
     </body>
+	
+	<!-- Extra bits -->
+	
+	<!-- Listener for undo-redo-cancel 
+	//Handler for undo/redo
+			OpenLayers.Event.observe(document, "keydown", function(evt) {
+				var handled = false;
+				switch (evt.keyCode) {
+					case 90: // z
+						if (evt.metaKey || evt.ctrlKey) {
+							control[point].undo();
+							handled = true;
+						}
+						break;
+					case 89: // y
+						if (evt.metaKey || evt.ctrlKey) {
+							point.redo();
+							handled = true;
+						}
+						break;
+					case 27: // esc
+						point.cancel();
+						handled = true;
+						break;
+				}
+				if (handled) {
+					OpenLayers.Event.stop(evt);
+				}
+			}
+	-->
 </html>
