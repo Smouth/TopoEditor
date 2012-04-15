@@ -23,58 +23,106 @@ var data = [
            ];
 
 // JSON data end
-
-$(function() {
+	 
+	
+	
+	
+$(document).ready(function() {
     $('#page-changer')[0].reset(); // resets form onload
- 
-    var $Pais = $('#Pais');
-    var $county = $('#county');  
+	
+	var $Pais = $('#pais');
+    var $county = $('#county'); 
+		 
+	//var jsonFile = 'selectBoxData.json';
+	var jsonFile = 'sample.json';
+	
     function updateCounty(){
-        var selected = $Pais.val();
-        if (selected) {
-            options = [];
-            var selected_data = data[$county.val()-1];
-            for (var i=0; i<selected_data.length; i++) {
-                options.push('<option value="'+selected_data[i].optionValue+'">'+selected_data[i].community+'</option>');
-            }
-            $county.html(options.join(''));
+	
+        var selected = $Pais.val(); 
+		//check if any value has been selected, Title value = null
+        if (selected) { 
+		alert("t");
+			$.getJSON(jsonFile, function(data) {
+				options = [];
+				$.each(data["countries"], function(key) {
+					if(selected==key){
+						options.push('<option value='+key+'>' + data["countries"][selected]["population"] +  '</option>');
+					}
+				});
+				$county.html(options.join(''));
+				/*
+				var selected_data = data[$county.val()-1];
+				for (var i=0; i<selected_data.length; i++) {
+					options.push('<option value="'+selected_data[i].optionValue+'">'+selected_data[i].community+'</option>');
+				}
+				$county.html(options.join(''));
+				*/
+			});
         } else {
-            options = [];
-            var selected_data = data[$county.val()-1];
-            for(vars in data){
-                for(var j=0; j<data[vars].length; j++){
-                   console.log(data[vars][j].optionValue); 
-                  // alert(data[vars][j]['optionValue']);
-                    options.push('<option value="'+data[vars][j].optionValue+'">'+data[vars][j].community+'</option>');
-            }
-            }
-           
-            $county.html(options.join(''));
-        }
-    }    
+		alert("f");
+		
+			$.getJSON(jsonFile, function(data) {
+				options = [];
+				$.each(data["countries"], function(key) {
+					options.push('<option value='+key+'>' + data["countries"][key]["population"] +  '</option>');
+				});
+				$county.html(options.join(''));
+				/*
+				options = [];
+				var selected_data = data[$county.val()-1];
+				for(vars in data){
+					for(var j=0; j<data[vars].length; j++){
+					   console.log(data[vars][j].optionValue); 
+					  // alert(data[vars][j]['optionValue']);
+						options.push('<option value="'+data[vars][j].optionValue+'">'+data[vars][j].community+'</option>');
+					}
+				}
+				$county.html(options.join(''));
+				*/
+				});
+			}//end of else
+		}    
     updateCounty();
-    $county.change(updateCounty);
+    $Pais.change(updateCounty);
     
 });
 
 </script>
 </head>
-<body>
+<body onload="updateCounty()">
 	<form id="page-changer" class="ny" action="" method="get">
    
 	<select size="4" class="uniform" name="Pais" id="pais" Label="Choose">
 		<option selected="selected" value="">Choose Pais</option>
-		<option id="England" value="1">England</option>
-		<option id="Wales" value="2">Wales</option>
-		<option id="Scotland" value="3">Scotland</option>
-		<option id="Ireland" value="4">Ireland</option>
+		<option id="England" value="0">England</option>
+		<option id="Wales" value="1">Wales</option>
+		<option id="Scotland" value="2">Scotland</option>
+		<option id="Ireland" value="3">Ireland</option>
 	</select>
 
 	<select size="4" class="uniform jump" name="County" id="county">
 		<option selected="selected" value="">Choose County</option>
 		<option></option>
 	</select>
+	
+	<select size="4" class="uniform jump" name="Crag" id="crag">
+		<option selected="selected" value="">Choose Crag</option>
+		<option></option>
+	</select>
   
   </form>
 </body>
+
+<!-- nested attempt 
+$.getJSON(jsonFile, function(data) {
+				options = [];
+				$.each(data["countries"], function(key) {
+					if(selected==key){
+						$.each(data["county"], function(key) {
+							
+								options.push('<option value='+key+'>' + data["county"][key]["name"] +  '</option>');
+						});
+					}
+				});
+-->
 </html>

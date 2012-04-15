@@ -2,11 +2,19 @@
   "countries": [
   {
 	  "name" : "England",
-	  "population" : "lots"
+	  "population" : "A"
 	  },
   {
 	  "name" : "Wales",
-	  "population" : "quite a lot"
+	  "population" : "B"
+  },
+  {
+	  "name" : "Scotland",
+	  "population" : "C"
+	  },
+  {
+	  "name" : "Ireland",
+	  "population" : "D"
   }
 
   ]
