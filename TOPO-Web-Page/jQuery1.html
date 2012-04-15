@@ -1,0 +1,47 @@
+<html>                                                                  
+<head>                                                                  
+<script type="text/javascript" src="jquery-1.7.min.js"></script>
+
+<script type="text/javascript">
+
+        $(document).ready(function(){
+            $("#selectionresult").hide();
+            $("#selection").change( function() {
+                $("#selectionresult").hide();
+                $("#result").html(‘Retrieving …’);
+                $.ajax({
+                    type: "POST",
+                    data: "data=" + $(this).val(),
+                    url: "demo/jquery-autopopulate-select-dropdown-box-response.php",
+                    success: function(msg){
+                        if (msg != ”){
+                            $("#selectionresult").html(msg).show();
+                            $("#result").html(”);
+                        }
+                        else{
+                            $("#result").html(‘<em>No item result</em>’);
+                        }
+                    }
+                });
+            });
+        });
+</script>
+
+</head>
+<body>
+	<p> Select Dropdown</p>
+	<p>
+            <select id="selection">
+                <option value="">– Select Item Here -</option>
+                <option value="food">List of Food</option>
+				<option value="animals">List of Animals</option>
+                <option value="flowers">List of Flowers</option>
+            </select>
+	</p>
+	<p>DropDown Result</p>
+	<p>
+            <select id="selectionresult"></select>
+	</p>
+	<p id="result">&nbsp;</p>
+</body>
+</html>

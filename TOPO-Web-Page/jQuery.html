@@ -1,0 +1,80 @@
+<html>                                                                  
+<head>                                                                  
+<script type="text/javascript" src="jquery-1.7.min.js"></script>
+
+<script type="text/javascript">
+
+// JSON data start
+var data = [
+     [
+                {optionValue: 0,url: 'Choose Town',community: 'Choose Town'},
+                {optionValue: 1,url: '/dutchess/amenia',community: 'Amenia'},
+                {optionValue: 2,url: '/dutchess/arlington',community: 'Arlington'},
+                {optionValue: 3,url: '/dutchess/barrytown',community: 'Barrytown'}
+     ],
+           
+
+            [   {optionValue: 0,url: 'Choose Town',community: 'Choose Town'},
+                {optionValue: 32,url: '/orange/Campbell-hall',community: 'Campbell Hall'},
+                {optionValue: 33,url: '/orange/central-valley',community: 'Central Valley'},
+                {optionValue: 34,url: '/orange/chester',community: 'Chester'},
+   ]
+    
+           ];
+
+// JSON data end
+
+$(function() {
+    $('#page-changer')[0].reset(); // resets form onload
+ 
+    var $Pais = $('#Pais');
+    var $county = $('#county');  
+    function updateCounty(){
+        var selected = $Pais.val();
+        if (selected) {
+            options = [];
+            var selected_data = data[$county.val()-1];
+            for (var i=0; i<selected_data.length; i++) {
+                options.push('<option value="'+selected_data[i].optionValue+'">'+selected_data[i].community+'</option>');
+            }
+            $county.html(options.join(''));
+        } else {
+            options = [];
+            var selected_data = data[$county.val()-1];
+            for(vars in data){
+                for(var j=0; j<data[vars].length; j++){
+                   console.log(data[vars][j].optionValue); 
+                  // alert(data[vars][j]['optionValue']);
+                    options.push('<option value="'+data[vars][j].optionValue+'">'+data[vars][j].community+'</option>');
+            }
+            }
+           
+            $county.html(options.join(''));
+        }
+    }    
+    updateCounty();
+    $county.change(updateCounty);
+    
+});
+
+</script>
+</head>
+<body>
+	<form id="page-changer" class="ny" action="" method="get">
+   
+	<select size="4" class="uniform" name="Pais" id="pais" Label="Choose">
+		<option selected="selected" value="">Choose Pais</option>
+		<option id="England" value="1">England</option>
+		<option id="Wales" value="2">Wales</option>
+		<option id="Scotland" value="3">Scotland</option>
+		<option id="Ireland" value="4">Ireland</option>
+	</select>
+
+	<select size="4" class="uniform jump" name="County" id="county">
+		<option selected="selected" value="">Choose County</option>
+		<option></option>
+	</select>
+  
+  </form>
+</body>
+</html>
