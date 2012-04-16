@@ -1,21 +1,34 @@
 {
-  "countries": [
-  {
-	  "name" : "England",
-	  "population" : "A"
-	  },
-  {
-	  "name" : "Wales",
-	  "population" : "B"
-  },
-  {
-	  "name" : "Scotland",
-	  "population" : "C"
-	  },
-  {
-	  "name" : "Ireland",
-	  "population" : "D"
-  }
-
-  ]
+"countries": [
+	{
+		"name" : "England",
+		"county" : [
+			{"name" : "Swansea"},
+			{"name" : "Torfaen"},
+			{"name" : "Wrexham"}
+		]
+	},
+	{
+		"name" : "Wales",
+		"county" : [
+			{"name" : "Blaenau Gwent"},
+			{"name" : "Bridgend"}
+		]
+	},
+	{
+		"name" : "Ireland",
+		"county" : [
+			{"name" : "Caerphilly"},
+			{"name" : "Cardiff"}
+		]
+	},
+	{
+		"name" : "Scotland",
+		"county" : [
+			{"name" : "Powys"},
+			{"name" : "Rhondda Cynon Taff"},
+			{"name" : "Vale of Glamorgan"}
+		]
+	}
+]
 }
