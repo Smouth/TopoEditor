@@ -39,10 +39,11 @@
 		var lon = 5;	var lat = 40;	var zoom = 0;
 		var map, vecLayer, imgLayer, controls ;
 		var img	= 'data/logo.jpg';
+		var err = 'data/default.jpg';
 		
 		//SELECT LISTS
 		$(document).ready(function() {
-			$('#page-changer')[0].reset(); // resets form onload
+			//$('#page-changer')[0].reset(); // resets form onload
 			//select boxes variables
 			var $Country = $('#country');			var $County = $('#county'); 
 			var $Crag = $('#crag');			var $Route = $('#route');
@@ -234,15 +235,6 @@
 			map.addLayer(vecLayer);
             map.zoomToMaxExtent(false);
 			
-/*
-			//external editing tool bar
-			var container = document.getElementById("panel");
-            var panel = new OpenLayers.Control.EditingToolbar(
-                vecLayer, {div: container}
-            );
-            map.addControl(panel);
-*/
-			
 			//report?
 			if (console && console.log) {
                 function report(event) {
@@ -315,6 +307,10 @@
 				deleteFeatures();
 				var curURL = imgLayer.tile.imgDiv.src;
 				var newURL = newImg.value;
+				alert(newURL);
+				if(!newURL){ //or undefined
+					newURL = err;
+				}
 				var useURL;
 
 				useURL = (newURL) ? newURL : img;
@@ -322,8 +318,6 @@
 				imgLayer.tile.imgDiv.src = useURL;
 				//(OpenLayers.Util.getElement('slideshow')).src = useURL;
 				//(OpenLayers.Util.getElement('currentImageURL')).innerHTML = useURL;
-				
-				
 				//INSERT METHOD TO LOAD IN VECTOR DATA
 			}
 		}
@@ -420,13 +414,48 @@
             </div>    
         </div>
 		
+		<div class = "container"><!-- select boxes -->
+			<div class="row">
+				<div class="span3">
+					<h2>Country</h2>
+					<select size="5"  class="span3" name="Country" id="country" >
+						<option selected="selected" value="">Choose All</option>
+						<option id="England" value="0">England</option>
+						<option id="Wales" value="1">Wales</option>
+						<option id="Scotland" value="2">Scotland</option>
+						<option id="Ireland" value="3">Ireland</option>
+					</select>
+				</div>
+				<div class="span3">
+					<h2>County</h2>
+					<select size="5" class="span3" name="County" id="county">
+						<option selected="selected" value="">Choose All</option>
+						<option></option>
+					</select>
+				</div>
+				<div class="span3">
+					<h2>Crag</h2>
+					<select size="5" class="span3" name="Crag" id="crag">
+						<option selected="selected" value="">Choose All</option>
+						<option></option>
+					</select>
+				</div>
+				<div class="span3">
+					<h2>Route</h2>
+					<select size="5" class="span3" name="Route" id="route" onchange="changeImg(this)";>
+						<option></option>
+					</select>
+				</div>
+			</div><!-- row -->
+		</div><!-- container -->
 		
-		<!--  -->
+		
+		<!--  
         <div class="container">
             <h1>Search</h1>
             <div class="row">
 				<form id="page-changer" class="ny" action="" method="get">
-   
+				
 					<select size="5"  class="span3" name="Country" id="country" >
 						<option selected="selected" value="">Choose All</option>
 						<option id="England" value="0">England</option>
@@ -444,7 +473,7 @@
 						<option selected="selected" value="">Choose All</option>
 						<option></option>
 					</select>
-					<!-- changeImg(this) -->
+					
 					<select size="5" class="span3" name="Route" id="route" onchange="changeImg(this)";>
 						<option></option>
 					</select>
@@ -452,84 +481,173 @@
 				</form>
 			</div>
 		</div>
-		<div class="container-fluid">
-			<div class="span8"> <!-- Map & controls-->
-				<div id="map" class="container" style="width:700px; height:500px; background:#e8e8e8;"></div>
-			</div>	
-			<div class="span4">
+		-->
+		
+		
+			<div class="container-fluid">
+				<div class="span8"> <!-- Map & controls-->
+					<div id="map" class="container" style="width:700px; height:500px; background:#e8e8e8;"></div>
+				</div>	
+				<div class="span4">
+					<div class="columnbox" style="height: 200px;">
+						<ul id="tab" class="nav nav-tabs">
+						  <li class="active"><a href="#tabs-1" data-toggle="tab">View</a></li>
+						  <li><a href="#tabs-2" data-toggle="tab" >Draw</a></li>
+						  <li><a href="#tabs-3" data-toggle="tab">Edit</a></li>
+						  <li><a href="#tabs-4" data-toggle="tab">Buttons</a></li>
+						</ul>
+						<div class="tab-content" id="tabs">
+							<div class="tab-pane active" id="tabs-1">
+							  <p>Some info here regarding route</p>
+							  <ul id="controlToggle"> <!-- radio and check box controls -->
+								<li><!-- navigate -->
+									<input type="radio" name="navigate" value="none" id="noneToggle" 
+									checked="checked" onclick="toggleControl(this);" />	Navigate
+								</li>
+							  </ul>
+							</div>
+							<div class="tab-pane" id="tabs-2">
+								<ul id="controlToggle"> <!-- radio and check box controls -->
+									<li><!-- point -->
+										<input type="radio" name="type" value="point" id="pointToggle" onclick="toggleControl(this);" />
+										Draw Point
+									</li>
+									<li><!-- line -->
+										<input type="radio" name="type" value="line" id="lineToggle" onclick="toggleControl(this);" />
+										Draw Line
+									</li>
+									<li><!-- polygon -->
+										<input type="radio" name="type" value="polygon" id="polygonToggle" onclick="toggleControl(this);" />
+										Draw Polygon
+									</li>
+									<li><!-- regular polygon -->
+										<input type="radio" name="type" value="regular" id="regularToggle" onclick="toggleControl(this);" />
+										Draw Regular Polygon - sides
+										<input id="sides" type="text" size="2" maxlength="2" name="sides" value="5" onchange="update()" />
+										<ul>
+											<li><!-- irregular -->
+												<input id="irregular" type="checkbox" name="irregular" onchange="update()" />
+												Irregular
+											</li>
+										</ul>
+									</li>
+								</ul>
+							</div>
+							<div class="tab-pane" id="tabs-3">
+							
+								<ul id="controlToggle"> <!-- radio and check box controls -->
+									<li><!-- modify -->
+										<input type="radio" name="type" value="modify" id="modifyToggle" onclick="toggleControl(this);" />
+										Modify Feature a
+										<ul>
+											<li><!-- rotate -->
+												<input id="rotate" type="checkbox"
+													   name="rotate" onchange="update()" />
+												Allow Rotation
+											</li>
+											<li> <!-- resize -->
+												<input id="resize" type="checkbox"
+													   name="resize" onchange="update()" />
+												Allow Resizing
+												(<input id="keepAspectRatio" type="checkbox" name="keepAspectRatio" onchange="update()" checked="checked" />
+												keep aspect ratio)
+											</li>
+											<li><!-- drag -->
+												<input id="drag" type="checkbox" name="drag" onchange="update()" />
+												Allow Dragging
+											</li>
+										</ul>
+									</li>
+								</ul>
+							</div>
+							<div class="tab-pane" id="tabs-4">
+								<div id="buttons">
+									<div class="btn-group"> <!-- Save and Cancel buttons -->
+										<a class="btn btn-primary btn-large" onclick="" >View</a>
+										<a class="btn btn-primary btn-large" onclick="colorChange()">Edit(color)</a>
+										<a class="btn btn-success btn-large" onclick="" >Save</a>
+										<a class="btn btn-danger btn-large" onclick="deleteFeatures()">Clear All</a>
+									</div>
+									<div class="btn-group"> <!-- undo redo buttons -->
+										<a class="btn btn-success btn-large" onclick="undo()">Undo</a>
+										<a class="btn btn-danger btn-large" onclick="redo()">Redo</a>
+										<a class="btn btn-danger btn-large" onclick="cancel()">Cancel Draw</a>
+									</div>
+									<p> <!-- unde redo text -->
+										Use <code>Ctrl-Z</code> or <code>?-Z</code> to undo while drawing.  
+										Use <code>Ctrl-Y</code> or <code>?-Y</code> to redo what you have 
+										undone.  Use <code>Esc</code> to cancel the current sketch.
+									<p>
+								</div> <!-- buttons -->
+							</div><!-- Tab pane -->
+						</div><!-- tab content -->
+					</div><!-- columb box -->
+				</div><!-- span4 -->
+			</div><!-- container fluid -->
+		
+<!--
 				<div id="controls">
 						<ul id="controlToggle"> <!-- radio and check box controls -->
-								<li><!-- navigate -->
-									<input type="radio" name="navigate" value="none" id="noneToggle" checked="checked" onclick="toggleControl(this);" />
+<!--							<li><!-- navigate -->
+<!--								<input type="radio" name="navigate" value="none" id="noneToggle" checked="checked" onclick="toggleControl(this);" />
 									Navigate
 								</li>
 								<li><!-- point -->
-									<input type="radio" name="type" value="point" id="pointToggle" onclick="toggleControl(this);" />
+<!--								<input type="radio" name="type" value="point" id="pointToggle" onclick="toggleControl(this);" />
 									Draw Point
 								</li>
 								<li><!-- line -->
-									<input type="radio" name="type" value="line" id="lineToggle" onclick="toggleControl(this);" />
+<!--								<input type="radio" name="type" value="line" id="lineToggle" onclick="toggleControl(this);" />
 									Draw Line
 								</li>
 								<li><!-- polygon -->
-									<input type="radio" name="type" value="polygon" id="polygonToggle" onclick="toggleControl(this);" />
+<!--								<input type="radio" name="type" value="polygon" id="polygonToggle" onclick="toggleControl(this);" />
 									Draw Polygon
 								</li>
 								<li><!-- regular polygon -->
-									<input type="radio" name="type" value="regular" id="regularToggle" onclick="toggleControl(this);" />
+<!--								<input type="radio" name="type" value="regular" id="regularToggle" onclick="toggleControl(this);" />
 									Draw Regular Polygon - sides
 									<input id="sides" type="text" size="2" maxlength="2" name="sides" value="5" onchange="update()" />
 									<ul>
 										<li><!-- irregular -->
-											<input id="irregular" type="checkbox" name="irregular" onchange="update()" />
+<!--										<input id="irregular" type="checkbox" name="irregular" onchange="update()" />
 											Irregular
 										</li>
 									</ul>
 								</li>
 								<li><!-- modify -->
-									<input type="radio" name="type" value="modify" id="modifyToggle" onclick="toggleControl(this);" />
+<!--									<input type="radio" name="type" value="modify" id="modifyToggle" onclick="toggleControl(this);" />
 									Modify Feature
 									<ul>
 										<li><!-- rotate -->
-											<input id="rotate" type="checkbox"
+<!--											<input id="rotate" type="checkbox"
 												   name="rotate" onchange="update()" />
 											Allow Rotation
 										</li>
 										<li> <!-- resize -->
-											<input id="resize" type="checkbox"
+<!--											<input id="resize" type="checkbox"
 												   name="resize" onchange="update()" />
 											Allow Resizing
 											(<input id="keepAspectRatio" type="checkbox" name="keepAspectRatio" onchange="update()" checked="checked" />
 											keep aspect ratio)
 										</li>
 										<li><!-- drag -->
-											<input id="drag" type="checkbox" name="drag" onchange="update()" />
+<!--											<input id="drag" type="checkbox" name="drag" onchange="update()" />
 											Allow Dragging
 										</li>
 									</ul>
 								</li>
-							</ul>
+<!--							</ul>
 				</div><!-- controls -->
-				<div id="buttons">
-					<div class="btn-group"> <!-- Save and Cancel buttons -->
-						<a class="btn btn-primary btn-large" onclick="" >View</a>
-						<a class="btn btn-primary btn-large" onclick="colorChange()">Edit (color change)</a>
-						<a class="btn btn-success btn-large" onclick="" >Save(change img)</a>
-						<a class="btn btn-danger btn-large" onclick="deleteFeatures()">Clear All</a>
-					</div>
-					<div class="btn-group"> <!-- undo redo buttons -->
-						<a class="btn btn-success btn-large" onclick="undo()">Undo</a>
-						<a class="btn btn-danger btn-large" onclick="redo()">Redo</a>
-						<a class="btn btn-danger btn-large" onclick="cancel()">Cancel Draw</a>
-					</div>
-					<p> <!-- unde redo text -->
-						Use <code>Ctrl-Z</code> or <code>?-Z</code> to undo while drawing.  
-						Use <code>Ctrl-Y</code> or <code>?-Y</code> to redo what you have 
-						undone.  Use <code>Esc</code> to cancel the current sketch.
-					<p>
-				</div> <!-- buttons -->
-			</div> <!-- sidebar controls -->
-		</div> <!-- fluid rows -->
+ <!--CONTROLS END -->
+				
+				
+		<hr>		
+		<footer>
+			<p>&copy; Company 2012</p>
+		</footer>
+		</div> <!-- fluid container -->
+		
 		
 			
 		
