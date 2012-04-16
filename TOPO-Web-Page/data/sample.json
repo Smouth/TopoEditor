@@ -8,19 +8,19 @@
 				{"name" : "SW1",
 				"route" : [
 					{"name" : "BlackLadders",
-					"imgURL" : "data/climb.jpg",
-					"vecURL" : "data/polygon.json"
+					"imgURL" : "climb.jpg",
+					"vecURL" : "null.json"
 					},
 					{"name" : "eg1",
-					"imgURL" : "data/climb1.jpg",
-					"vecURL" : "data/null.json"
+					"imgURL" : "climb.jpg",
+					"vecURL" : "null.json"
 					}
 				]},
 				{"name" : "SW2",
 				"route" : [
 					{"name" : "X",
-					"imgURL" : "data/default.jpg",
-					"vecURL" : "data/null.json"
+					"imgURL" : "null.jpg",
+					"vecURL" : "null.json"
 					}
 				]},
 				{"name" : "SW3",
