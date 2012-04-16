@@ -12,12 +12,7 @@
 		<!-- CSS style for External Panel -->
 		<link rel="stylesheet" href="../OpenLayers-2.11/theme/default/style.css" type="text/css">
 		<link rel="stylesheet" href="../OpenLayers-2.11/examples/style.css" type="text/css">
-		<style type="text/css">
-			.olControlEditingToolbar  {
-				float: left;
-				width: 116px;
-			}
-		</style>
+		
 		
         <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
         <!--[if lt IE 9]>
@@ -34,123 +29,121 @@
         </style>
         
         <!-- Le fav and touch icons -->
-        <link rel="shortcut icon" href="images/favicon.ico">
-        <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
-        <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
-        <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+        <link rel="shortcut icon" href="../my-bootstrap/docs/assets/ico/favicon.ico">
+        <link rel="apple-touch-icon" href="../my-bootstrap/docs/assets/ico/apple-touch-icon.png">
+        <link rel="apple-touch-icon" sizes="72x72" href="../my-bootstrap/docs/assets/ico/apple-touch-icon-72x72.png">
+        <link rel="apple-touch-icon" sizes="114x114" href="../my-bootstrap/docs/assets/ico/apple-touch-icon-114x114.png">
 				
 		<!-- LOAD IN DATA FOR DROP DOWN MENU'S-->	
-		<script src="http://code.jquery.com/jquery-latest.js"></script>  
-		<script type="text/javascript" src="jquery-1.7.min.js"></script>
+		
 		
 	
 	<script type="text/javascript">
-		var lon = 5;
-		var lat = 40;
-		var zoom = 0;
+		//Variables for map
+		var lon = 5;	var lat = 40;	var zoom = 0;
 		var map, vecLayer, imgLayer, controls ;
 		var img	= 'climb.jpg';
 		
-		//SELECT LISTS
-		$(document).ready(function() {
-    $('#page-changer')[0].reset(); // resets form onload
-	
-	var $Country = $('#country');
-    var $County = $('#county'); 
-	var $Crag = $('#crag');
-	var $Route = $('#route');
-	//var jsonFile = 'selectBoxData.json';
-	var jsonFile = 'sample.json';
-	var countrySel,countySel,cragSel,routeSel; 
-	updateCounty();
-	updateCrag();
-    $Country.change(updateCounty);
-	$County.change(updateCrag);
-	$Crag.change(updateRoute);
-	
-    function updateCounty(){
-	
-        countrySel = $Country.val(); 
-		//check if any value has been selected, Title value = null
-        if (countrySel) { 
-			$.getJSON(jsonFile, function(data) {
-			
-				options = [];
-				options.push('<option value="'+'">Choose All</option>');
-				$.each(data["countries"], function(key) {
-					if(countrySel==key){
-						$.each(data["countries"][key]["county"], function(key1) {
-							options.push('<option value='+key1+'>' + data["countries"][countrySel]["county"][key1]["name"] +  '</option>');
-						});
-					}
-				});
-				$County.html(options.join(''));
-			});
-        } else {
-			$.getJSON(jsonFile, function(data) {
-				options = [];
-				options.push('<option value="'+'">Choose All</option>');
-				$.each(data["countries"], function(key) {
-					$.each(data["countries"][key]["county"], function(key1) {
-						options.push('<option value='+key1+'>' + data["countries"][key]["county"][key1]["name"] +  '</option>');
-					});
-				});
-				$County.html(options.join(''));
-			});
-		}//end of else
+//----------------Populate Select List Methods------------
+	$(document).ready(function() {
+		$('#page-changer')[0].reset(); // resets form onload
+		//Select Box Variables
+		var $Country = $('#country');
+		var $County = $('#county'); 
+		var $Crag = $('#crag');
+		var $Route = $('#route');
+		//var jsonFile = 'selectBoxData.json';
+		var jsonFile = 'sample.json';
+		var countrySel,countySel,cragSel,routeSel; 
+		updateCounty();
 		updateCrag();
-	}    
-    
-	function updateCrag(){
+		$Country.change(updateCounty);
+		$County.change(updateCrag);
+		$Crag.change(updateRoute);
+	
+		function updateCounty(){
 		
-		countrySel = $Country.val();
-        countySel = $County.val(); 
-		//check if any value has been selected, Title value = null
-        if (countySel) { 
-			$.getJSON(jsonFile, function(data) {
-				options = [];
-				options.push('<option value="'+'">Choose All</option>');
-				$.each(data["countries"], function(key) {
-					if(countrySel==key){
+			countrySel = $Country.val(); 
+			//check if any value has been selected, Title value = null
+			if (countrySel) { 
+				$.getJSON(jsonFile, function(data) {
+				
+					options = [];
+					options.push('<option value="'+'">Choose All</option>');
+					$.each(data["countries"], function(key) {
+						if(countrySel==key){
+							$.each(data["countries"][key]["county"], function(key1) {
+								options.push('<option value='+key1+'>' + data["countries"][countrySel]["county"][key1]["name"] +  '</option>');
+							});
+						}
+					});
+					$County.html(options.join(''));
+				});
+			} else {
+				$.getJSON(jsonFile, function(data) {
+					options = [];
+					options.push('<option value="'+'">Choose All</option>');
+					$.each(data["countries"], function(key) {
 						$.each(data["countries"][key]["county"], function(key1) {
-							if(countySel==key1){
-								$.each(data["countries"][key]["county"][key1]["crag"], function(key2) {
-									options.push('<option value='+key2+'>' + data["countries"][key]["county"][countySel]["crag"][key2]["name"] +  '</option>');
+							options.push('<option value='+key1+'>' + data["countries"][key]["county"][key1]["name"] +  '</option>');
+						});
+					});
+					$County.html(options.join(''));
+				});
+			}//end of else
+			updateCrag();
+		}    
+		
+		function updateCrag(){
+			
+			countrySel = $Country.val();
+			countySel = $County.val(); 
+			//check if any value has been selected, Title value = null
+			if (countySel) { 
+				$.getJSON(jsonFile, function(data) {
+					options = [];
+					options.push('<option value="'+'">Choose All</option>');
+					$.each(data["countries"], function(key) {
+						if(countrySel==key){
+							$.each(data["countries"][key]["county"], function(key1) {
+								if(countySel==key1){
+									$.each(data["countries"][key]["county"][key1]["crag"], function(key2) {
+										options.push('<option value='+key2+'>' + data["countries"][key]["county"][countySel]["crag"][key2]["name"] +  '</option>');
+									});
+								}
+							});
+						}
+					});
+					$Crag.html(options.join(''));
+				});
+			} else {
+				$.getJSON(jsonFile, function(data) {
+					options = [];
+					options.push('<option value="'+'">Choose All</option>');
+					$.each(data["countries"], function(key) {
+						if(countrySel){
+							if(countrySel==key){
+								$.each(data["countries"][key]["county"], function(key1) {
+									$.each(data["countries"][key]["county"][key1]["crag"], function(key2) {
+										options.push('<option value='+key2+'>' + data["countries"][key]["county"][key1]["crag"][key2]["name"] +  '</option>');
+									});
 								});
 							}
-						});
-					}
-				});
-				$Crag.html(options.join(''));
-			});
-        } else {
-			$.getJSON(jsonFile, function(data) {
-				options = [];
-				options.push('<option value="'+'">Choose All</option>');
-				$.each(data["countries"], function(key) {
-					if(countrySel){
-						if(countrySel==key){
+						}else{
 							$.each(data["countries"][key]["county"], function(key1) {
 								$.each(data["countries"][key]["county"][key1]["crag"], function(key2) {
 									options.push('<option value='+key2+'>' + data["countries"][key]["county"][key1]["crag"][key2]["name"] +  '</option>');
 								});
 							});
 						}
-					}else{
-						$.each(data["countries"][key]["county"], function(key1) {
-							$.each(data["countries"][key]["county"][key1]["crag"], function(key2) {
-								options.push('<option value='+key2+'>' + data["countries"][key]["county"][key1]["crag"][key2]["name"] +  '</option>');
-							});
-						});
-					}
+					});
+					$Crag.html(options.join(''));
 				});
-				$Crag.html(options.join(''));
-			});
-		}//end of else
-		updateRoute();
-	}//end updateCrag
+			}//end of else
+			updateRoute();
+		}//end updateCrag
 
-	function updateRoute(){
+		function updateRoute(){
 		
 		countrySel = $Country.val();
         countySel = $County.val();
@@ -200,9 +193,9 @@
 	
 	}//end updateRoute
     
-});
-		//SELECT LISTS
+	});
 		
+//----------------------- Map Methods --------------------		
         function init(){
 				
 			//map options and border
@@ -299,6 +292,7 @@
 			
 		}//end of init
 		
+//--------------------- Drawing Methods ------------------
 		//Cancel Drawing
 		function cancel(element){ 
 			for(key in controls) {
@@ -322,24 +316,38 @@
 		
 		//Delete all features
 		function deleteFeatures(){
-			vecLayer.destroyFeatures();
+			var answer = confirm("Are you sure you want to delete all features?")
+			if (answer){
+				vecLayer.destroyFeatures();
+			}
 		}
 		
 		//Load new img
 		function changeImg(newImg){
-			
-			var curURL = imgLayer.tile.imgDiv.src;
-			var newURL = newImg.value;
-			var useURL;
-						
-			useURL = (newURL) ? newURL : img;
-			//change to new url
-			imgLayer.tile.imgDiv.src = useURL;
-			//(OpenLayers.Util.getElement('slideshow')).src = useURL;
-			//(OpenLayers.Util.getElement('currentImageURL')).innerHTML = useURL;
-			
+			var answer = confirm("Are you sure you want to change route?, all unsaved changes will be lost")
+			if (answer){
+				deleteFeatures();
+				var curURL = imgLayer.tile.imgDiv.src;
+				var newURL = newImg.value;
+				var useURL;
+
+				useURL = (newURL) ? newURL : img;
+				//change to new url
+				imgLayer.tile.imgDiv.src = useURL;
+				//(OpenLayers.Util.getElement('slideshow')).src = useURL;
+				//(OpenLayers.Util.getElement('currentImageURL')).innerHTML = useURL;
+				
+				
+				//INSERT METHOD TO LOAD IN VECTOR DATA
+			}
 		}
 		
+		//load new vector data
+		function changeVec(){
+		
+		}
+		
+		//change Colour
 		function colorChange(){
 			//alert("color " + styleMap.value);
 			alert(vecLayer.getURL());
@@ -393,7 +401,7 @@
             }
         }
 		
-		function toggleModify(element) {
+		function buttonSwith(element) {
             for(key in controls) {
                 var control = controls[key];
                 if(element.value == key && element.checked) {
@@ -420,6 +428,7 @@
                         <span class="icon-bar"></span>
                     </a>
                     <a class="brand">TOPO Editor</a>
+					<!--
                     <div class="nav-collapse">
                         <ul class="nav">
                             <li class="active"><a href="Search.html">Search</a></li>
@@ -429,17 +438,18 @@
 						<form class="navbar-search pull-right">
 							<input type="text" class="search-query" placeholder="Search">
 						</form>
-                    </div><!--/.nav-collapse -->
+                    </div>
+					--><!--/.nav-collapse -->
+					
                 </div>
             </div>    
         </div>
 
-		<!--  -->
+		<!-- Search and Select Boxes  -->
         <div class="container">
-            <h1>Search</h1>
+			<h1>Search</h1>
             <div class="row">
 				<form id="page-changer" class="ny" action="" method="get">
-   
 					<select size="5"  class="uniform" name="Country" id="country" Label="Choose">
 						<option selected="selected" value="">Choose All</option>
 						<option id="England" value="0">England</option>
@@ -447,56 +457,53 @@
 						<option id="Scotland" value="2">Scotland</option>
 						<option id="Ireland" value="3">Ireland</option>
 					</select>
-
 					<select size="5" class="uniform jump" name="County" id="county">
 						<option selected="selected" value="">Choose All</option>
 						<option></option>
 					</select>
-					
 					<select size="5" class="uniform jump" name="Crag" id="crag">
 						<option selected="selected" value="">Choose All</option>
 						<option></option>
 					</select>
-					<!-- changeImg(this) -->
-					<select size="5" class="uniform jump" name="Route" id="route" onchange="changeImg(this.value)";>
+					<select size="5" class="uniform jump" name="Route" id="route" onchange="changeImg(this)";>
 						<label>Route</label>
 						<option selected="selected" value="">ChooseAll</option>
 						<option></option>
 					</select>
-  
 				</form>
 			</div>
 		</div>
+		
+		<!-- Map & controls-->
 		<div class="container-fluid">
-			<div class="row-fluid"> <!-- Map & controls-->
+			<div class="row-fluid"> 
 				<div class="span7">
 					<div id="map" class="container" style="width:700px; height:500px; background:#e8e8e8;"></div>
 				</div> <!-- map -->
 				<div class="span4">
 					<div class="well">
-					
 						<div id="controls">
 							<ul id="controlToggle"> <!-- radio and check box controls -->
-								<li>
+								<li><!-- Navigate -->
 									<input type="radio" name="navigate" value="none" id="noneToggle" onclick="toggleControl(this);" />
 									Navigate
 								</li>
-								<li>
+								<li><!-- Point -->
 									<input type="radio" name="type" value="point" id="pointToggle" onclick="toggleControl(this);" />
 									Draw Point
 								</li>
-								<li>
+								<li><!-- Line -->
 									<input type="radio" name="type" value="line" id="lineToggle" onclick="toggleControl(this);" />
 									Draw Line
 								</li>
-								<li>
+								<li><!-- Polygon (Free hand)-->
 									<input type="radio" name="type" value="polygon" id="polygonToggle" onclick="toggleControl(this);" />
 									Draw Polygon
 								</li>
-								<li>
+								<li><!-- Polygon -->
 									<input type="radio" name="type" value="regular" id="regularToggle" onclick="toggleControl(this);" />
 									Draw Regular Polygon - sides
-									<input id="sides" type="text" size="2" maxlength="2"
+									<input id="sides" type="text" size="2" maxlength="1"
 										   name="sides" value="5" onchange="update()" />
 									<ul>
 										<li>
@@ -506,17 +513,16 @@
 										</li>
 									</ul>
 								</li>
-								<li>
-									<input type="radio" name="type" value="modify" id="modifyToggle"
-										   onclick="toggleControl(this);" />
+								<li><!-- Modify -->
+									<input type="radio" name="type" value="modify" id="modifyToggle"  onclick="toggleControl(this);" />
 									Modify Feature
 									<ul>
-										<li>
+										<li><!-- Rotation -->
 											<input id="rotate" type="checkbox"
 												   name="rotate" onchange="update()" />
 											Allow Rotation
 										</li>
-										<li>
+										<li><!-- Resize -->
 											<input id="resize" type="checkbox"
 												   name="resize" onchange="update()" />
 											Allow Resizing
@@ -524,7 +530,7 @@
 												   name="keepAspectRatio" onchange="update()" checked="checked" />
 											keep aspect ratio)
 										</li>
-										<li>
+										<li><!-- Drag -->
 											<input id="drag" type="checkbox"
 												   name="drag" onchange="update()" />
 											Allow Dragging
@@ -533,18 +539,18 @@
 								</li>
 							</ul>
 						</div>
-						<div class="btn-group"> <!-- Save and Cancel buttons -->
+						<div class="btn-group"> <!-- General Buttons -->
 							<a class="btn btn-primary btn-large" onclick="" >View</a>
 							<a class="btn btn-primary btn-large" onclick="colorChange()">Edit (color change)</a>
 							<a class="btn btn-success btn-large" onclick="" >Save(change img)</a>
 							<a class="btn btn-danger btn-large" onclick="deleteFeatures()">Clear All</a>
 						</div>
-						<div class="btn-group"> <!-- Save and Cancel buttons -->
+						<div class="btn-group"> <!-- Drawing Command Buttons -->
 							<a class="btn btn-success btn-large" onclick="undo()">Undo</a>
 							<a class="btn btn-danger btn-large" onclick="redo()">Redo</a>
 							<a class="btn btn-danger btn-large" onclick="cancel()">Cancel Draw</a>
 						</div>
-						<p>
+						<p> <!-- Undo Redo text -->
 							Use <code>Ctrl-Z</code> or <code>?-Z</code> to undo while drawing.  
 							Use <code>Ctrl-Y</code> or <code>?-Y</code> to redo what you have 
 							undone.  Use <code>Esc</code> to cancel the current sketch.
@@ -552,35 +558,34 @@
 					</div> <!-- well -->
 				</div> <!-- span2 controls -->
 			</div> <!-- fluid rows -->
-			<div id="panel" class="olControlEditingToolbar"></div>
-		</div>	
-		<div class="container">
+		</div>		
+		<div><!-- JavaScript SRC -->
+			<!-- Placed at the end of the document so the pages load faster -->
 			
+			<!-- Bootstrap -->
+			<script src="../my-bootstrap/docs/assets/js/jquery.js"></script>
+			<script src="../my-bootstrap/docs/assets/js/bootstrap-transition.js"></script>
+			<script src="../my-bootstrap/docs/assets/js/bootstrap-alert.js"></script>
+			<script src="../my-bootstrap/docs/assets/js/bootstrap-modal.js"></script>
+			<script src="../my-bootstrap/docs/assets/js/bootstrap-dropdown.js"></script>
+			<script src="../my-bootstrap/docs/assets/js/bootstrap-scrollspy.js"></script>
+			<script src="../my-bootstrap/docs/assets/js/bootstrap-tab.js"></script>
+			<script src="../my-bootstrap/docs/assets/js/bootstrap-tooltip.js"></script>
+			<script src="../my-bootstrap/docs/assets/js/bootstrap-popover.js"></script>
+			<script src="../my-bootstrap/docs/assets/js/bootstrap-button.js"></script>
+			<script src="../my-bootstrap/docs/assets/js/bootstrap-collapse.js"></script>
+			<script src="../my-bootstrap/docs/assets/js/bootstrap-carousel.js"></script>
+			<script src="../my-bootstrap/docs/assets/js/bootstrap-typeahead.js"></script>
+			
+			<!-- OpenLayers -->
+			<script src="../OpenLayers-2.11/lib/OpenLayers.js"></script>
+			<script src="../OpenLayers-2.11/lib/Firebug/debug.js"></script>
+			<!--<script src="../OpenLayers-2.11/lib/draw-undo-redo.js"></script>-->
+			
+			<!-- JQuery-->
+			<script src="http://code.jquery.com/jquery-latest.js"></script>  
+			<script type="text/javascript" src="jquery-1.7.min.js"></script>
 		</div>
-		  <!-- /container -->
-		 
-        <!-- Le javascript
-        ================================================== 
-        Placed at the end of the document so the pages load faster -->
-		
-		<!-- Bootstarp -->
-        <script src="../my-bootstrap/docs/assets/js/jquery.js"></script>
-        <script src="../my-bootstrap/docs/assets/js/bootstrap-transition.js"></script>
-        <script src="../my-bootstrap/docs/assets/js/bootstrap-alert.js"></script>
-        <script src="../my-bootstrap/docs/assets/js/bootstrap-modal.js"></script>
-        <script src="../my-bootstrap/docs/assets/js/bootstrap-dropdown.js"></script>
-        <script src="../my-bootstrap/docs/assets/js/bootstrap-scrollspy.js"></script>
-        <script src="../my-bootstrap/docs/assets/js/bootstrap-tab.js"></script>
-        <script src="../my-bootstrap/docs/assets/js/bootstrap-tooltip.js"></script>
-        <script src="../my-bootstrap/docs/assets/js/bootstrap-popover.js"></script>
-        <script src="../my-bootstrap/docs/assets/js/bootstrap-button.js"></script>
-        <script src="../my-bootstrap/docs/assets/js/bootstrap-collapse.js"></script>
-        <script src="../my-bootstrap/docs/assets/js/bootstrap-carousel.js"></script>
-        <script src="../my-bootstrap/docs/assets/js/bootstrap-typeahead.js"></script>
-		<!-- OpenLayers -->
-		<script src="../OpenLayers-2.11/lib/OpenLayers.js"></script>
-		<script src="../OpenLayers-2.11/lib/Firebug/debug.js"></script>
-		<!--<script src="../OpenLayers-2.11/lib/draw-undo-redo.js"></script>-->
     </body>
 	
 	<!-- Extra bits -->
