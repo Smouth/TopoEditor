@@ -27,6 +27,7 @@ $(document).ready(function() {
 		//check if any value has been selected, Title value = null
         if (countrySel) { 
 			$.getJSON(jsonFile, function(data) {
+			
 				options = [];
 				options.push('<option value="'+'">Choose All</option>');
 				$.each(data["countries"], function(key) {
@@ -103,12 +104,13 @@ $(document).ready(function() {
 	}//end updateCrag
 
 	function updateRoute(){
-		/*
+		
 		countrySel = $Country.val();
         countySel = $County.val();
 		cragSel = $Crag.val();
 		//check if any value has been selected, Title value = null
         if (cragSel) { 
+		/* Selected Option
 			$.getJSON(jsonFile, function(data) {
 				options = [];
 				options.push('<option value="'+'">Choose All</option>');
@@ -125,33 +127,27 @@ $(document).ready(function() {
 				});
 				$Route.html(options.join(''));
 			});
+		*/
         } else {
 			$.getJSON(jsonFile, function(data) {
 				options = [];
 				options.push('<option value="'+'">Choose All</option>');
 				$.each(data["countries"], function(key) {
-					if(countrySel){
-						if(countrySel==key){
-							$.each(data["countries"][key]["county"], function(key1) {
-								$.each(data["countries"][key]["county"][key1]["crag"], function(key2) {
-									options.push('<option value='+key2+'>' + data["countries"][key]["county"][key1]["crag"][key2]["name"] +  '</option>');
-								});
-							});
-						}
-					}else{
+					
 						$.each(data["countries"][key]["county"], function(key1) {
-							$.each(data["countries"][key]["county"][key1]["crag"], function(key2) {
-								$.each(data["countries"][key]["county"][key1]["crag"][key2]["route"], function(key3) {
-									options.push('<option value='+key3+'>' + data["countries"][key]["county"][key1]["crag"][key2]["route"][key3]["name"] +  '</option>');
+								$.each(data["countries"][key]["county"][key1]["crag"], function(key2) {
+									$.each(data["countries"][key]["county"][key1]["crag"][key2]["route"], function(key3) {
+										options.push('<option value='+0+'>' + data["countries"][key]["county"][key1]["crag"][key2]["route"][key3]["name"] +  '</option>');
+									});
+									
 								});
 							});
-						});
-					}
+					
 				});
 				$Route.html(options.join(''));
 			});
 		}//end of else
-		*/
+	
 	}//end updateRoute
     
 });

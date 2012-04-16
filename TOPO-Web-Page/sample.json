@@ -23,20 +23,40 @@
 					"vecURL" : "null.json"
 					}
 				]},
-				{"name" : "SW3"}
-				]
-			},
+				{"name" : "SW3",
+				"route" : [
+					{"name" : "X"},
+					{"name" : "eg1"}
+				]}
+				
+			]},
 			{"name" : "Torfaen",
 				"crag" : [
-					{"name" : "TO1"},
-					{"name" : "TO2"}
-					]
+					{"name" : "TO1",
+					"route" : [
+						{"name" : "X"},
+						{"name" : "eg1"}
+					]},
+					{"name" : "TO2",
+					"route" : [
+						{"name" : "X"},
+						{"name" : "eg1"}
+					]}
+				]
 			},
 			{"name" : "Wrexham",
 				"crag" : [
-					{"name" : "WR1"},
-					{"name" : "WR2"}
-					]
+					{"name" : "WR1",
+					"route" : [
+						{"name" : "X"},
+						{"name" : "eg1"}
+					]},
+					{"name" : "WR2",
+					"route" : [
+						{"name" : "X"},
+						{"name" : "eg1"}
+					]}
+				]
 			}
 		]
 	},
@@ -45,14 +65,30 @@
 		"county" : [
 			{"name" : "Blaenau Gwent",
 			"crag" : [
-				{"name" : "BG1"},
-				{"name" : "BG2"}
+				{"name" : "BG1",
+					"route" : [
+						{"name" : "X"},
+						{"name" : "eg1"}
+					]},
+				{"name" : "BG2",
+					"route" : [
+						{"name" : "X"},
+						{"name" : "eg1"}
+					]}
 				]
 			},
 			{"name" : "Bridgend",
 			"crag" : [
-				{"name" : "BR1"},
-				{"name" : "BR2"}
+				{"name" : "BR1",
+					"route" : [
+						{"name" : "X"},
+						{"name" : "eg1"}
+					]},
+				{"name" : "BR2",
+					"route" : [
+						{"name" : "X"},
+						{"name" : "eg1"}
+					]}
 				]
 			}
 		]
@@ -62,14 +98,30 @@
 		"county" : [
 			{"name" : "Caerphilly",
 			"crag" : [
-				{"name" : "CP1"},
-				{"name" : "CP2"}
+				{"name" : "CP1",
+					"route" : [
+						{"name" : "X"},
+						{"name" : "eg1"}
+					]},
+				{"name" : "CP2",
+					"route" : [
+						{"name" : "X"},
+						{"name" : "eg1"}
+					]}
 				]
 			},
 			{"name" : "Cardiff",
 			"crag" : [
-				{"name" : "CD1"},
-				{"name" : "CD2"}
+				{"name" : "CD1",
+					"route" : [
+						{"name" : "X"},
+						{"name" : "eg1"}
+					]},
+				{"name" : "CD2",
+					"route" : [
+						{"name" : "X"},
+						{"name" : "eg1"}
+					]}
 				]
 			}
 		]
@@ -79,20 +131,44 @@
 		"county" : [
 			{"name" : "Powys",
 			"crag" : [
-				{"name" : "PW1"},
-				{"name" : "PW2"}
+				{"name" : "PW1",
+					"route" : [
+						{"name" : "X"},
+						{"name" : "eg1"}
+					]},
+				{"name" : "PW2",
+					"route" : [
+						{"name" : "X"},
+						{"name" : "eg1"}
+					]}
 				]
 			},
 			{"name" : "Rhondda Cynon Taff",
 			"crag" : [
-				{"name" : "RCT1"},
-				{"name" : "RCT2"}
+				{"name" : "RCT1",
+					"route" : [
+						{"name" : "X"},
+						{"name" : "eg1"}
+					]},
+				{"name" : "RCT2",
+					"route" : [
+						{"name" : "X"},
+						{"name" : "eg1"}
+					]}
 				]
 			},
 			{"name" : "Vale of Glamorgan",
 			"crag" : [
-				{"name" : "VG1"},
-				{"name" : "VG2"}
+				{"name" : "VG1",
+					"route" : [
+						{"name" : "X"},
+						{"name" : "eg1"}
+					]},
+				{"name" : "VG2",
+					"route" : [
+						{"name" : "X"},
+						{"name" : "eg1"}
+					]}
 				]
 			}
 		]
