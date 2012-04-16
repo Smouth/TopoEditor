@@ -4,107 +4,165 @@
 
 <script type="text/javascript">
 
-// JSON data start
-/*
-var data = [
-     [
-                {optionValue: 0,url: 'Choose Town',community: 'Choose Town'},
-                {optionValue: 1,url: '/dutchess/amenia',community: 'Amenia'},
-                {optionValue: 2,url: '/dutchess/arlington',community: 'Arlington'},
-                {optionValue: 3,url: '/dutchess/barrytown',community: 'Barrytown'}
-     ],
-           
-
-            [   {optionValue: 0,url: 'Choose Town',community: 'Choose Town'},
-                {optionValue: 32,url: '/orange/Campbell-hall',community: 'Campbell Hall'},
-                {optionValue: 33,url: '/orange/central-valley',community: 'Central Valley'},
-                {optionValue: 34,url: '/orange/chester',community: 'Chester'},
-   ]
-    
-           ];
-*/
-// JSON data end
-	 	
+	
 $(document).ready(function() {
     $('#page-changer')[0].reset(); // resets form onload
 	
-	var $Pais = $('#pais');
-    var $county = $('#county'); 
-		 
+	var $Country = $('#country');
+    var $County = $('#county'); 
+	var $Crag = $('#crag');
+	var $Route = $('#route');
 	//var jsonFile = 'selectBoxData.json';
 	var jsonFile = 'sample.json';
-	
+	var countrySel,countySel,cragSel,routeSel; 
 	updateCounty();
-    $Pais.change(updateCounty);
-	
+	updateCrag();
+    $Country.change(updateCounty);
+	$County.change(updateCrag);
+	$Crag.change(updateRoute);
 	
     function updateCounty(){
 	
-        var selected = $Pais.val(); 
+        countrySel = $Country.val(); 
 		//check if any value has been selected, Title value = null
-        if (selected) { 
-		//alert("t" + selected);
+        if (countrySel) { 
 			$.getJSON(jsonFile, function(data) {
 				options = [];
-				options.push('<option value='+'>Choose All</option>');
+				options.push('<option value="'+'">Choose All</option>');
 				$.each(data["countries"], function(key) {
-					if(selected==key){
+					if(countrySel==key){
 						$.each(data["countries"][key]["county"], function(key1) {
-							options.push('<option value='+key+'>' + data["countries"][selected]["county"][key1]["name"] +  '</option>');
+							options.push('<option value='+key1+'>' + data["countries"][countrySel]["county"][key1]["name"] +  '</option>');
 						});
-						//options.push('<option value='+key+'>' + data["countries"][selected]["county"][0]["name"] +  '</option>');
 					}
 				});
-				$county.html(options.join(''));
-				/*
-				var selected_data = data[$county.val()-1];
-				for (var i=0; i<selected_data.length; i++) {
-					options.push('<option value="'+selected_data[i].optionValue+'">'+selected_data[i].community+'</option>');
-				}
-				$county.html(options.join(''));
-				*/
+				$County.html(options.join(''));
 			});
         } else {
-		//alert("f");
-			
 			$.getJSON(jsonFile, function(data) {
 				options = [];
-				options.push('<option value='+'>Choose All</option>');
+				options.push('<option value="'+'">Choose All</option>');
 				$.each(data["countries"], function(key) {
-					//alert(data["countries"][key]["population"][0]["name"]);
 					$.each(data["countries"][key]["county"], function(key1) {
-						options.push('<option value='+key+'>' + data["countries"][key]["county"][key1]["name"] +  '</option>');
+						options.push('<option value='+key1+'>' + data["countries"][key]["county"][key1]["name"] +  '</option>');
 					});
 				});
-				$county.html(options.join(''));
-				/*
-				options = [];
-				var selected_data = data[$county.val()-1];
-				for(vars in data){
-					for(var j=0; j<data[vars].length; j++){
-					   console.log(data[vars][j].optionValue); 
-					  // alert(data[vars][j]['optionValue']);
-						options.push('<option value="'+data[vars][j].optionValue+'">'+data[vars][j].community+'</option>');
-					}
-				}
-				$county.html(options.join(''));
-				*/
-				});//end getJSON
-			}//end of else
-	}//end of updateCounty
-		
-
+				$County.html(options.join(''));
+			});
+		}//end of else
+		updateCrag();
+	}    
     
-}); //end of document ready
+	function updateCrag(){
+		
+		countrySel = $Country.val();
+        countySel = $County.val(); 
+		//check if any value has been selected, Title value = null
+        if (countySel) { 
+			$.getJSON(jsonFile, function(data) {
+				options = [];
+				options.push('<option value="'+'">Choose All</option>');
+				$.each(data["countries"], function(key) {
+					if(countrySel==key){
+						$.each(data["countries"][key]["county"], function(key1) {
+							if(countySel==key1){
+								$.each(data["countries"][key]["county"][key1]["crag"], function(key2) {
+									options.push('<option value='+key2+'>' + data["countries"][key]["county"][countySel]["crag"][key2]["name"] +  '</option>');
+								});
+							}
+						});
+					}
+				});
+				$Crag.html(options.join(''));
+			});
+        } else {
+			$.getJSON(jsonFile, function(data) {
+				options = [];
+				options.push('<option value="'+'">Choose All</option>');
+				$.each(data["countries"], function(key) {
+					if(countrySel){
+						if(countrySel==key){
+							$.each(data["countries"][key]["county"], function(key1) {
+								$.each(data["countries"][key]["county"][key1]["crag"], function(key2) {
+									options.push('<option value='+key2+'>' + data["countries"][key]["county"][key1]["crag"][key2]["name"] +  '</option>');
+								});
+							});
+						}
+					}else{
+						$.each(data["countries"][key]["county"], function(key1) {
+							$.each(data["countries"][key]["county"][key1]["crag"], function(key2) {
+								options.push('<option value='+key2+'>' + data["countries"][key]["county"][key1]["crag"][key2]["name"] +  '</option>');
+							});
+						});
+					}
+				});
+				$Crag.html(options.join(''));
+			});
+		}//end of else
+		updateRoute();
+	}//end updateCrag
 
+	function updateRoute(){
+		/*
+		countrySel = $Country.val();
+        countySel = $County.val();
+		cragSel = $Crag.val();
+		//check if any value has been selected, Title value = null
+        if (cragSel) { 
+			$.getJSON(jsonFile, function(data) {
+				options = [];
+				options.push('<option value="'+'">Choose All</option>');
+				$.each(data["countries"], function(key) {
+					if(countrySel==key){
+						$.each(data["countries"][key]["county"], function(key1) {
+							if(countySel==key1){
+								$.each(data["countries"][key]["county"][key1]["crag"], function(key2) {
+									options.push('<option value='+key2+'>' + data["countries"][key]["county"][countySel]["crag"][key2]["name"] +  '</option>');
+								});
+							}
+						});
+					}
+				});
+				$Route.html(options.join(''));
+			});
+        } else {
+			$.getJSON(jsonFile, function(data) {
+				options = [];
+				options.push('<option value="'+'">Choose All</option>');
+				$.each(data["countries"], function(key) {
+					if(countrySel){
+						if(countrySel==key){
+							$.each(data["countries"][key]["county"], function(key1) {
+								$.each(data["countries"][key]["county"][key1]["crag"], function(key2) {
+									options.push('<option value='+key2+'>' + data["countries"][key]["county"][key1]["crag"][key2]["name"] +  '</option>');
+								});
+							});
+						}
+					}else{
+						$.each(data["countries"][key]["county"], function(key1) {
+							$.each(data["countries"][key]["county"][key1]["crag"], function(key2) {
+								$.each(data["countries"][key]["county"][key1]["crag"][key2]["route"], function(key3) {
+									options.push('<option value='+key3+'>' + data["countries"][key]["county"][key1]["crag"][key2]["route"][key3]["name"] +  '</option>');
+								});
+							});
+						});
+					}
+				});
+				$Route.html(options.join(''));
+			});
+		}//end of else
+		*/
+	}//end updateRoute
+    
+});
 
 </script>
 </head>
-<body onload="updateCounty()">
+<body onload>
 	<form id="page-changer" class="ny" action="" method="get">
    
-	<select size="4" class="uniform" name="Pais" id="pais" Label="Choose">
-		<option selected="selected" value="">Choose Pais</option>
+	<select size="4" class="uniform" name="Country" id="country" Label="Choose">
+		<option selected="selected" value="">Choose All</option>
 		<option id="England" value="0">England</option>
 		<option id="Wales" value="1">Wales</option>
 		<option id="Scotland" value="2">Scotland</option>
@@ -112,22 +170,34 @@ $(document).ready(function() {
 	</select>
 
 	<select size="4" class="uniform jump" name="County" id="county">
-		<option selected="selected" value="">Choose County</option>
+		<option selected="selected" value="">Choose All</option>
 		<option></option>
 	</select>
 	
 	<select size="4" class="uniform jump" name="Crag" id="crag">
-		<option selected="selected" value="">Choose Crag</option>
+		<option selected="selected" value="">Choose All</option>
 		<option></option>
 	</select>
 	
 	<select size="4" class="uniform jump" name="Route" id="route">
-		<option selected="selected" value="">Choose Route</option>
+		<label>Route</label>
+		<option selected="selected" value="">ChooseAll</option>
 		<option></option>
 	</select>
-	
   
   </form>
 </body>
 
+<!-- nested attempt 
+$.getJSON(jsonFile, function(data) {
+				options = [];
+				$.each(data["countries"], function(key) {
+					if(selected==key){
+						$.each(data["county"], function(key) {
+							
+								options.push('<option value='+key+'>' + data["county"][key]["name"] +  '</option>');
+						});
+					}
+				});
+-->
 </html>

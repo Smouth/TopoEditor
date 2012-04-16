@@ -3,31 +3,98 @@
 	{
 		"name" : "England",
 		"county" : [
-			{"name" : "Swansea"},
-			{"name" : "Torfaen"},
-			{"name" : "Wrexham"}
+			{"name" : "Swansea",
+			"crag" : [
+				{"name" : "SW1",
+				"route" : [
+					{"name" : "BlackLadders",
+					"imgURL" : "climb.jpg",
+					"vecURL" : "null.json"
+					},
+					{"name" : "eg1",
+					"imgURL" : "climb.jpg",
+					"vecURL" : "null.json"
+					}
+				]},
+				{"name" : "SW2",
+				"route" : [
+					{"name" : "X",
+					"imgURL" : "null.jpg",
+					"vecURL" : "null.json"
+					}
+				]},
+				{"name" : "SW3"}
+				]
+			},
+			{"name" : "Torfaen",
+				"crag" : [
+					{"name" : "TO1"},
+					{"name" : "TO2"}
+					]
+			},
+			{"name" : "Wrexham",
+				"crag" : [
+					{"name" : "WR1"},
+					{"name" : "WR2"}
+					]
+			}
 		]
 	},
 	{
 		"name" : "Wales",
 		"county" : [
-			{"name" : "Blaenau Gwent"},
-			{"name" : "Bridgend"}
+			{"name" : "Blaenau Gwent",
+			"crag" : [
+				{"name" : "BG1"},
+				{"name" : "BG2"}
+				]
+			},
+			{"name" : "Bridgend",
+			"crag" : [
+				{"name" : "BR1"},
+				{"name" : "BR2"}
+				]
+			}
 		]
 	},
 	{
 		"name" : "Ireland",
 		"county" : [
-			{"name" : "Caerphilly"},
-			{"name" : "Cardiff"}
+			{"name" : "Caerphilly",
+			"crag" : [
+				{"name" : "CP1"},
+				{"name" : "CP2"}
+				]
+			},
+			{"name" : "Cardiff",
+			"crag" : [
+				{"name" : "CD1"},
+				{"name" : "CD2"}
+				]
+			}
 		]
 	},
 	{
 		"name" : "Scotland",
 		"county" : [
-			{"name" : "Powys"},
-			{"name" : "Rhondda Cynon Taff"},
-			{"name" : "Vale of Glamorgan"}
+			{"name" : "Powys",
+			"crag" : [
+				{"name" : "PW1"},
+				{"name" : "PW2"}
+				]
+			},
+			{"name" : "Rhondda Cynon Taff",
+			"crag" : [
+				{"name" : "RCT1"},
+				{"name" : "RCT2"}
+				]
+			},
+			{"name" : "Vale of Glamorgan",
+			"crag" : [
+				{"name" : "VG1"},
+				{"name" : "VG2"}
+				]
+			}
 		]
 	}
 ]
