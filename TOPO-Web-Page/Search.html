@@ -419,14 +419,15 @@
                 </div>
             </div>    
         </div>
-
+		
+		
 		<!--  -->
         <div class="container">
             <h1>Search</h1>
             <div class="row">
 				<form id="page-changer" class="ny" action="" method="get">
    
-					<select size="5"  class="uniform" name="Country" id="country" >
+					<select size="5"  class="span3" name="Country" id="country" >
 						<option selected="selected" value="">Choose All</option>
 						<option id="England" value="0">England</option>
 						<option id="Wales" value="1">Wales</option>
@@ -434,18 +435,17 @@
 						<option id="Ireland" value="3">Ireland</option>
 					</select>
 
-					<select size="5" class="uniform jump" name="County" id="county">
+					<select size="5" class="span3" name="County" id="county">
 						<option selected="selected" value="">Choose All</option>
 						<option></option>
 					</select>
 					
-					<select size="5" class="uniform jump" name="Crag" id="crag">
+					<select size="5" class="span3" name="Crag" id="crag">
 						<option selected="selected" value="">Choose All</option>
 						<option></option>
 					</select>
 					<!-- changeImg(this) -->
-					<select size="5" class="uniform jump" name="Route" id="route" onchange="changeImg(this)";>
-						<label>Route</label>
+					<select size="5" class="span3" name="Route" id="route" onchange="changeImg(this)";>
 						<option></option>
 					</select>
   
@@ -453,14 +453,12 @@
 			</div>
 		</div>
 		<div class="container-fluid">
-			<div class="row-fluid"> <!-- Map & controls-->
-				<div class="span7">
-					<div id="map" class="container" style="width:700px; height:500px; background:#e8e8e8;"></div>
-				</div> <!-- map -->
-				<div class="span4">
-					<div class="well">
-						<div id="controls">
-							<ul id="controlToggle"> <!-- radio and check box controls -->
+			<div class="span8"> <!-- Map & controls-->
+				<div id="map" class="container" style="width:700px; height:500px; background:#e8e8e8;"></div>
+			</div>	
+			<div class="span4">
+				<div id="controls">
+						<ul id="controlToggle"> <!-- radio and check box controls -->
 								<li><!-- navigate -->
 									<input type="radio" name="navigate" value="none" id="noneToggle" checked="checked" onclick="toggleControl(this);" />
 									Navigate
@@ -511,28 +509,29 @@
 									</ul>
 								</li>
 							</ul>
-						</div>
-						<div class="btn-group"> <!-- Save and Cancel buttons -->
-							<a class="btn btn-primary btn-large" onclick="" >View</a>
-							<a class="btn btn-primary btn-large" onclick="colorChange()">Edit (color change)</a>
-							<a class="btn btn-success btn-large" onclick="" >Save(change img)</a>
-							<a class="btn btn-danger btn-large" onclick="deleteFeatures()">Clear All</a>
-						</div>
-						<div class="btn-group"> <!-- undo redo buttons -->
-							<a class="btn btn-success btn-large" onclick="undo()">Undo</a>
-							<a class="btn btn-danger btn-large" onclick="redo()">Redo</a>
-							<a class="btn btn-danger btn-large" onclick="cancel()">Cancel Draw</a>
-						</div>
-						<p> <!-- unde redo text -->
-							Use <code>Ctrl-Z</code> or <code>?-Z</code> to undo while drawing.  
-							Use <code>Ctrl-Y</code> or <code>?-Y</code> to redo what you have 
-							undone.  Use <code>Esc</code> to cancel the current sketch.
-						<p>
-					</div> <!-- well -->
-				</div> <!-- span2 controls -->
-			</div> <!-- fluid rows -->
+				</div><!-- controls -->
+				<div id="buttons">
+					<div class="btn-group"> <!-- Save and Cancel buttons -->
+						<a class="btn btn-primary btn-large" onclick="" >View</a>
+						<a class="btn btn-primary btn-large" onclick="colorChange()">Edit (color change)</a>
+						<a class="btn btn-success btn-large" onclick="" >Save(change img)</a>
+						<a class="btn btn-danger btn-large" onclick="deleteFeatures()">Clear All</a>
+					</div>
+					<div class="btn-group"> <!-- undo redo buttons -->
+						<a class="btn btn-success btn-large" onclick="undo()">Undo</a>
+						<a class="btn btn-danger btn-large" onclick="redo()">Redo</a>
+						<a class="btn btn-danger btn-large" onclick="cancel()">Cancel Draw</a>
+					</div>
+					<p> <!-- unde redo text -->
+						Use <code>Ctrl-Z</code> or <code>?-Z</code> to undo while drawing.  
+						Use <code>Ctrl-Y</code> or <code>?-Y</code> to redo what you have 
+						undone.  Use <code>Esc</code> to cancel the current sketch.
+					<p>
+				</div> <!-- buttons -->
+			</div> <!-- sidebar controls -->
+		</div> <!-- fluid rows -->
 		
-		</div>	
+			
 		
 		 
         <!-- Le javascript
