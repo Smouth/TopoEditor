@@ -20,6 +20,9 @@
             body {
                 padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
             }
+			nav {
+				background-colour: "blue";
+			}
         </style>
         
         <!-- Le fav and touch icons -->
@@ -572,13 +575,13 @@
 					<div class="columnbox" style="height: 500px;">
 						<ul id="tab" class="nav nav-tabs">
 						  <li class="active" ><a href="#tabs-1" onClick="deactivateAll();" data-toggle="tab"><i class="icon-move"></i> View</a></li>
-						  <li><a href="#tabs-2" data-toggle="tab" ><i class="icon-edit"></i> Draw</a></li>
-						  <li><a href="#tabs-3" data-toggle="tab"><i class="icon-reload"></i> Edit</a></li>
-						  <li><a href="#tabs-4" data-toggle="tab"><i class="icon-iinfo"></i> Save/Cancel</a></li>
+						  <li><a href="#tabs-2" data-toggle="tab" ><i class="icon-pencil"></i> Draw</a></li>
+						  <li><a href="#tabs-3" data-toggle="tab"><i class="icon-edit"></i> Edit</a></li>
+						  <li><a href="#tabs-4" data-toggle="tab"><i class="icon-lock"></i> Save/Cancel</a></li>
 						</ul>
 						<div class="tab-content" id="tabs">
 							<div class="tab-pane active" id="tabs-1">
-							  <p>Some info here regarding route</p>
+							  <p>instead of button add a quick guide on how to use the app</p>
 							 	<a id="navigate" class="btn btn-primary btn-large"
 									onclick="deactivateAll();controls['navigate'].activate();">
 									Navigate
@@ -635,12 +638,12 @@
 									</br>									
 									<a id="resize" class="btn btn-primary radio"
 										value="resize" onclick=""><!-- Add the update feature-->
-										<i class="icon-fullscreen"></i> Allow Resize
+										<i class="icon-search"></i> Allow Resize
 									</a>
 									</br>
 									<a id="drag" class="btn btn-primary radio"
 										value="drag" onclick=""><!-- Add the update feature-->
-										<i class="icon-transfer"></i> Allow Dragging
+										<i class="icon-share"></i> Allow Dragging
 									</a>
 									<li><!-- rotate -->
 												<input id="rotate" type="checkbox"
