@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Zuntechi Topo Web Editor</title>
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le styles -->
+    <link href="../bootstrap-xtra/bootstrap.css" rel="stylesheet">
+	
+    <style type="text/css">
+      /* Override some defaults */
+      html, body {
+        background-color: #eee;
+      }
+      body {
+        padding-top: 40px; /* 40px to make the container go all the way to the bottom of the topbar */
+      }
+      .container > footer p {
+        text-align: center; /* center align it with the container */
+      }
+      .container {
+        width: 920px; /* downsize our container to make the content feel a bit tighter and more cohesive. NOTE: this removes two full columns from the grid, meaning you only go to 14 columns and not 16. */
+      }
+
+      /* The white background content wrapper */
+      .container > .content {
+        background-color: #fff;
+        padding: 20px;
+        margin: 0 -20px; /* negative indent the amount of the padding to maintain the grid system */
+        -webkit-border-radius: 0 0 6px 6px;
+           -moz-border-radius: 0 0 6px 6px;
+                border-radius: 0 0 6px 6px;
+        -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.15);
+           -moz-box-shadow: 0 1px 2px rgba(0,0,0,.15);
+                box-shadow: 0 1px 2px rgba(0,0,0,.15);
+      }
+
+      /* Page header tweaks */
+      .page-header {
+        background-color: #f5f5f5;
+        padding: 20px 20px 10px;
+        margin: -20px -20px 20px;
+		height: 180px;
+      }
+
+      /* Styles you shouldn't keep as they are for displaying this base example only */
+      .content .span10,
+      .content .span4 {
+        min-height: 500px;
+      }
+      /* Give a quick and non-cross-browser friendly divider */
+      .content .span4 {
+        margin-left: 0;
+        padding-left: 19px;
+        border-left: 1px solid #eee;
+      }
+
+      .topbar .btn {
+        border: 0;
+      }
+	  select{
+		height: 100px;
+	  }
+
+    </style>
+
+    <!-- Le fav and touch icons -->
+    <link rel="shortcut icon" href="../bootstrap-xtra/images/favicon.ico">
+    <link rel="apple-touch-icon" href="../bootstrap-xtra/images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="../bootstrap-xtra/images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="../bootstrap-xtra/images/apple-touch-icon-114x114.png">
+	
+	<script type="text/javascript">
+		//map variables
+		var lon = 5;	var lat = 40;	var zoom = 0;
+		var map, vecLayer, imgLayer, controls, formats ;
+		var img	= 'data/logo.jpg';
+		var err = 'data/default.jpg';
+		
+		//SELECT LISTS
+		$(document).ready(function() {
+			//$('#page-changer')[0].reset(); // resets form onload
+			//select boxes variables
+			var $Country = $('#country');	var $County = $('#county'); 
+			var $Crag = $('#crag');			var $Route = $('#route');
+			var jsonFile = 'sample.json'; //select data
+			var countrySel,countySel,cragSel,routeSel; 
+			
+			//$Country.selectedIndex = 2; //sets the selection to select all
+			updateCounty();
+			
+			$Country.change(updateCounty);
+			$County.change(updateCrag);
+			$Crag.change(updateRoute);
+			
+			function updateCounty(){
+			
+				countrySel = $Country.val(); 
+				//check if any value has been selected, Title value = null
+				if (countrySel) { 
+					$.getJSON(jsonFile, function(data) {
+					
+						options = [];
+						options.push('<option value="'+'">Choose All</option>');
+						$.each(data["countries"], function(key) {
+							if(countrySel==key){
+								$.each(data["countries"][key]["county"], function(key1) {
+									options.push('<option value='+key1+'>' + data["countries"][countrySel]["county"][key1]["name"] +  '</option>');
+								});
+							}
+						});
+						$County.html(options.join(''));
+					});
+				} else {
+					$.getJSON(jsonFile, function(data) {
+						options = [];
+						options.push('<option value="'+'">Choose All</option>');
+						$.each(data["countries"], function(key) {
+							$.each(data["countries"][key]["county"], function(key1) {
+								options.push('<option value='+key1+'>' + data["countries"][key]["county"][key1]["name"] +  '</option>');
+							});
+						});
+						$County.html(options.join(''));
+					});
+				}//end of else
+				updateCrag();
+			}    
+			
+			function updateCrag(){
+				
+				countrySel = $Country.val();
+				countySel = $County.val(); 
+				//check if any value has been selected, Title value = null
+				if (countySel) { 
+					$.getJSON(jsonFile, function(data) {
+						options = [];
+						options.push('<option value="'+'">Choose All</option>');
+						$.each(data["countries"], function(key) {
+							if(countrySel==key){
+								$.each(data["countries"][key]["county"], function(key1) {
+									if(countySel==key1){
+										$.each(data["countries"][key]["county"][key1]["crag"], function(key2) {
+											options.push('<option value='+key2+'>' + data["countries"][key]["county"][countySel]["crag"][key2]["name"] +  '</option>');
+										});
+									}
+								});
+							}
+						});
+						$Crag.html(options.join(''));
+					});
+				} else {
+					$.getJSON(jsonFile, function(data) {
+						options = [];
+						options.push('<option value="'+'">Choose All</option>');
+						$.each(data["countries"], function(key) {
+							if(countrySel){
+								if(countrySel==key){
+									$.each(data["countries"][key]["county"], function(key1) {
+										$.each(data["countries"][key]["county"][key1]["crag"], function(key2) {
+											options.push('<option value='+key2+'>' + data["countries"][key]["county"][key1]["crag"][key2]["name"] +  '</option>');
+										});
+									});
+								}
+							}else{
+								$.each(data["countries"][key]["county"], function(key1) {
+									$.each(data["countries"][key]["county"][key1]["crag"], function(key2) {
+										options.push('<option value='+key2+'>' + data["countries"][key]["county"][key1]["crag"][key2]["name"] +  '</option>');
+									});
+								});
+							}
+						});
+						$Crag.html(options.join(''));
+					});
+				}//end of else
+				updateRoute();
+			}//end updateCrag
+
+			function updateRoute(){
+				countrySel = $Country.val();
+				countySel = $County.val();
+				cragSel = $Crag.val();
+				var value;
+				//check if any value has been selected, Title value = null
+				if (cragSel) { 
+				 $.getJSON(jsonFile, function(data) {
+				  options = [];
+				  //options.push('<option value="'+'">Choose All</option>');
+				  $.each(data["countries"], function(key) {
+				   if(countrySel==key){
+					$.each(data["countries"][key]["county"], function(key1) {
+					 if(countySel==key1){
+					  $.each(data["countries"][key]["county"][key1]["crag"], function(key2) {
+					   if(cragSel==key2){
+					   //alert("key:"+key+" key1:"+key1+" key2:"+key2+" cragSel:"+cragSel);
+						$.each(data["countries"][key]["county"][key1]["crag"][key2]["route"], function(key3) {
+						 value = (data["countries"][key]["county"][key1]["crag"][cragSel]["route"][key3]["imgURL"]);
+						 options.push('<option value='+key3+'>' + data["countries"][key]["county"][key1]["crag"][cragSel]["route"][key3]["name"] +  '</option>');
+						});
+					   }
+					  });
+					 }
+					});
+				   }
+				  });
+				  $Route.html(options.join(''));
+				 });
+				
+				} else {
+				 $.getJSON(jsonFile, function(data) {
+				  options = [];
+				  //options.push('<option value="'+'">Choose All</option>');
+				  $.each(data["countries"], function(key) {
+				   if(countrySel){
+					if(countrySel==key){
+					 $.each(data["countries"][key]["county"], function(key1) {
+					  if(countySel){
+					   if(countySel==key1){
+						$.each(data["countries"][key]["county"][key1]["crag"], function(key2) {
+						 if(cragSel){
+						  if(cragSel==key2){
+						   $.each(data["countries"][key]["county"][key1]["crag"][key2]["route"], function(key3) {
+							value = (data["countries"][key]["county"][key1]["crag"][key2]["route"][key3]["imgURL"]);
+							options.push('<option value='+value+'>' + data["countries"][key]["county"][key1]["crag"][key2]["route"][key3]["name"] +  '</option>');
+						   });         
+						  } 
+						 }else{
+						  $.each(data["countries"][key]["county"][key1]["crag"][key2]["route"], function(key3) {
+						   value = (data["countries"][key]["county"][key1]["crag"][key2]["route"][key3]["imgURL"]);
+						   options.push('<option value='+value+'>' + data["countries"][key]["county"][key1]["crag"][key2]["route"][key3]["name"] +  '</option>');
+						  });         
+						 }
+						});
+					   }
+					  }else{
+					   $.each(data["countries"][key]["county"][key1]["crag"], function(key2) {
+						$.each(data["countries"][key]["county"][key1]["crag"][key2]["route"], function(key3) {
+						 value = (data["countries"][key]["county"][key1]["crag"][key2]["route"][key3]["imgURL"]);
+						 options.push('<option value='+value+'>' + data["countries"][key]["county"][key1]["crag"][key2]["route"][key3]["name"] +  '</option>');
+						});         
+					   });
+					  }
+					 });
+					}
+				   }else{
+					$.each(data["countries"][key]["county"], function(key1) {
+					  $.each(data["countries"][key]["county"][key1]["crag"], function(key2) {
+					   $.each(data["countries"][key]["county"][key1]["crag"][key2]["route"], function(key3) {
+						value = (data["countries"][key]["county"][key1]["crag"][key2]["route"][key3]["imgURL"]);
+						options.push('<option value='+value+'>' + data["countries"][key]["county"][key1]["crag"][key2]["route"][key3]["name"] +  '</option>');
+					   });         
+					  });
+					 });
+				   }
+				  });
+				  $Route.html(options.join(''));
+				 });
+				}//end of else
+			   }//end updateRoute
+				
+			});
+		//SELECT LISTS
+		
+        function init(){
+				
+			//map options and border
+			var options = { numZoomLevels: 2 }; //allow only 2 zoom levels; current, 1+
+            var olbound = new OpenLayers.Bounds(-180,-90,180,90); //bounds(left,buttom,right,top)
+			
+			// allow testing of specific renderers via "?renderer=Canvas", etc
+            var renderer = OpenLayers.Util.getParameters(window.location.href).renderer;
+            renderer = (renderer) ? [renderer] : OpenLayers.Layer.Vector.prototype.renderers;
+			
+			//create vector layer
+			vecLayer = new OpenLayers.Layer.Vector(
+				"Route Layer",  //layer name
+				{styleMap: new OpenLayers.StyleMap({
+					pointRadius: "6", //based on feature.attributes.type
+					fillColor: "#666666" //"red" "green" "blue"
+				}),
+				renderers:renderer}
+			);
+						
+			//create image layer
+			imgLayer = new OpenLayers.Layer.Image(
+				'Image Layer', 	//name of layer
+                img,
+				//'climb.jpg', 	//url of image
+                olbound, //input boundaries
+                new OpenLayers.Size(700, 500), //size in pixel of the map
+                options //input zoom options
+			);
+		
+			//set map controls
+			map_controls = [
+				new OpenLayers.Control.Navigation(), //mouse and keyboard actions
+				new OpenLayers.Control.PanZoom(), //arrows, +, -, world
+				//new OpenLayers.Control.EditingToolbar(vecLayer), //integrated in map
+				new OpenLayers.Control.MousePosition(), //display position of mouse- bottom right
+				new OpenLayers.Control.LayerSwitcher(), //allow to swap from 1 layer to another
+				new OpenLayers.Control.Attribution() //copyrights tag 
+			]
+		  
+			//create map 
+            map = new OpenLayers.Map('map', {controls: map_controls}, {theme: null}); //create map with controls
+            
+            //add layer
+            map.addLayer(imgLayer);
+			map.addLayer(vecLayer);
+            map.zoomToMaxExtent(false);
+			
+			//report?
+			if (console && console.log) {
+                function report(event) {
+                    console.log(event.type, event.feature ? event.feature.id : event.components);
+                }
+                vecLayer.events.on({
+                    "beforefeaturemodified": report,
+                    "featuremodified": report,
+                    "afterfeaturemodified": report,
+                    "vertexmodified": report,
+                    "sketchmodified": report,
+                    "sketchstarted": report,
+                    "sketchcomplete": report
+                });
+            }
+			
+			//Vector controls
+            controls = {
+				navigation: new OpenLayers.Control.Navigation(imgLayer,
+							OpenLayers.Handler.Drag),
+                point: new OpenLayers.Control.DrawFeature(vecLayer,
+                            OpenLayers.Handler.Point),
+                line: new OpenLayers.Control.DrawFeature(vecLayer,
+                            OpenLayers.Handler.Path),
+                polygon: new OpenLayers.Control.DrawFeature(vecLayer,
+                            OpenLayers.Handler.Polygon),
+                regular: new OpenLayers.Control.DrawFeature(vecLayer,
+                            OpenLayers.Handler.RegularPolygon,
+                            {handlerOptions: {sides: 5}}),
+                modify: new OpenLayers.Control.ModifyFeature(vecLayer),
+				select: new OpenLayers.Control.SelectFeature(vecLayer,{toggle: true, onSelect: serialize})
+            };
+            
+			//Add controls to map
+            for(var key in controls) {
+                map.addControl(controls[key]);
+            }
+            //document.getElementById('noneToggle').checked = true;
+			
+			geojson = new OpenLayers.Format.GeoJSON();
+			
+		}//end of init
+		
+		function deactivateAll(){
+			for(var key in controls){
+				controls[key].deactivate();
+			}
+		}
+		
+		//Cancel Drawing
+		function cancel(element){ 
+			for(key in controls) {
+                controls[key].cancel();
+            }
+		}
+		
+		//Redo Step
+		function redo(element){
+			for(key in controls) {
+                controls[key].redo();
+            }
+		}
+		
+		//Undo Step
+		function undo(element){
+			for(key in controls) {
+                controls[key].undo();
+            }
+		}
+		
+		//Delete all features
+		function deleteFeatures(){
+			vecLayer.destroyFeatures();
+		}
+		
+		//Load new img
+		function changeImg(newImg){
+		
+			var answer = confirm("Are you sure you want to change route?, all unsaved changes will be lost")
+			if (answer){
+				deleteFeatures();
+				var curURL = imgLayer.tile.imgDiv.src;
+				var newURL = newImg.value;
+				alert(newURL);
+				if(!newURL){ //or undefined
+					newURL = err;
+				}
+				var useURL;
+
+				useURL = (newURL) ? newURL : img;
+				//change to new url
+				imgLayer.tile.imgDiv.src = useURL;
+				//(OpenLayers.Util.getElement('slideshow')).src = useURL;
+				//(OpenLayers.Util.getElement('currentImageURL')).innerHTML = useURL;
+				//INSERT METHOD TO LOAD IN VECTOR DATA
+			}
+		}
+		
+		function colorChange(){
+			//alert("color " + styleMap.value);
+			alert(vecLayer.getURL());
+			//OpenLayers.Util.getElement('fillColor').value);
+			/*
+			var newColor = (parseFloat(OpenLayers.Util.getElement('fillColor').value) + increase).toFixed(1);
+            newOpacity = Math.min(maxOpacity,
+                                  Math.max(minOpacity, newOpacity));
+            OpenLayers.Util.getElement('fillColor').value = newColor;
+            vecLayer.setfillColor(newColor);
+			*/
+		}
+		
+		function update() {
+            // reset modification mode
+            controls.modify.mode = OpenLayers.Control.ModifyFeature.RESHAPE;
+            var rotate = document.getElementById("rotate").checked;
+            if(rotate) {
+                controls.modify.mode |= OpenLayers.Control.ModifyFeature.ROTATE;
+            }
+            var resize = document.getElementById("resize").checked;
+            if(resize) {
+                controls.modify.mode |= OpenLayers.Control.ModifyFeature.RESIZE;
+                var keepAspectRatio = document.getElementById("keepAspectRatio").checked;
+                if (keepAspectRatio) {
+                    controls.modify.mode &= ~OpenLayers.Control.ModifyFeature.RESHAPE;
+                }
+            }
+            var drag = document.getElementById("drag").checked;
+            if(drag) {
+                controls.modify.mode |= OpenLayers.Control.ModifyFeature.DRAG;
+            }
+            if (rotate || drag) {
+                controls.modify.mode &= ~OpenLayers.Control.ModifyFeature.RESHAPE;
+            }
+            var sides = parseInt(document.getElementById("sides").value);
+            sides = Math.max(3, isNaN(sides) ? 0 : sides);
+            controls.regular.handler.sides = sides;
+            var irregular =  document.getElementById("irregular").checked;
+            controls.regular.handler.irregular = irregular;
+        }
+		
+		function toggleControl(element) {
+            for(key in controls) {
+                var control = controls[key];
+                if(element.value == key && element.checked) {
+                    control.activate();
+                } else {
+                    control.deactivate();
+                }
+            }
+        }
+		
+		
+		//INPUTING GEOJSON FOR VECTORS METHODS
+				 
+		function serialize(feature) {
+			//var str = geojson.write(feature, true);
+			//str = str.replace(/,/g, ', ');
+			//document.getElementById('output').value = str; 
+			
+			feature.destroy();
+		}
+
+		function serializeAll() {
+			var str = geojson.write(vecLayer.features, true);
+			str = str.replace(/,/g, ', ');
+			document.getElementById('output').value = str;
+		}
+		  
+		function deserialize() {
+			var element = document.getElementById('text');
+			var features = geojson.read(element.value);
+			var bounds;
+			if(features) {
+				if(features.constructor != Array) {
+					features = [features];
+				}
+				for(var i=0; i<features.length; ++i) {
+					if (!bounds) {
+						bounds = features[i].geometry.getBounds();
+					} else {
+						bounds.extend(features[i].geometry.getBounds());
+					}
+
+				}
+				vecLayer.addFeatures(features);
+//                map.zoomToExtent(bounds);
+				var plural = (features.length > 1) ? 's' : '';
+				element.value = features.length + ' feature' + plural + ' added';
+			} else {
+				element.value = 'Bad input ' + geojson;
+			}
+		}
+	
+	
+    </script>
+	
+  </head>
+
+  <body>
+
+    <div class="topbar">
+		<div class="fill">
+			<div class="container">
+				<a class="brand" href="#">Zuntechi App</a>
+				<ul class="nav">
+					<li class="active"><a href="#">Home</a></li>
+				</ul>
+				<form action="" class="pull-right">
+					<input class="input-small" type="text" placeholder="Username">
+					<input class="input-small" type="password" placeholder="Password">
+					<button class="btn" type="submit">Sign in</button>
+				</form>
+			</div>
+		</div>
+    </div>
+
+    <div class="container">
+		<div class="content">
+			<div class="page-header">
+				<h1>Topo Editor<small>Supporting text or tagline</small></h1>
+				<div class = "container"><!-- select boxes -->
+					<div class="row">
+						<div class="span3.5">
+							<h2>Country</h2>
+							<select size="5"  name="Country" id="country" >
+								<option selected="selected" value="">Choose All</option>
+								<option id="England" value="0">England</option>
+								<option id="Wales" value="1">Wales</option>
+								<option id="Scotland" value="2">Scotland</option>
+								<option id="Ireland" value="3">Ireland</option>
+							</select>
+						</div>
+						<div class="span3.5">
+							<h2>County</h2>
+							<select size="5" name="County" id="county">
+								<option selected="selected" value="">Choose All</option>
+								<option></option>
+							</select>
+						</div>
+						<div class="span3.5">
+							<h2>Crag</h2>
+							<select size="5" name="Crag" id="crag">
+								<option selected="selected" value="">Choose All</option>
+								<option></option>
+							</select>
+						</div>
+						<div class="span3.5">
+							<h2>Route</h2>
+							<select size="5" name="Route" id="route" onchange="changeImg(this)";>
+								<option></option>
+							</select>
+						</div>
+					</div><!-- row -->
+				</div><!-- container -->
+			</div>
+			<div class="row">
+				<div class="span10"><!-- map -->
+					<div id="map" class="container" style="width:600px; height:500px; background:#e8e8e8;"></div>
+				</div>
+				<div class="span5"><!-- controls-->
+					<div class="columnbox" style="height: 500px;">
+						<ul id="tab" class="nav nav-tabs">
+							<li class="active" ><a href="#tabs-1" onClick="deactivateAll();" data-toggle="tab"><i class="icon-move"></i> View</a></li>
+							<li><a href="#tabs-2" data-toggle="tab" ><i class="icon-pencil"></i> Draw</a></li>
+							<li><a href="#tabs-3" data-toggle="tab"><i class="icon-edit"></i> Edit</a></li>
+							<li><a href="#tabs-4" data-toggle="tab"><i class="icon-lock"></i> Save/Cancel</a></li>
+						</ul>
+						<div class="tab-content" id="tabs">
+							<div class="tab-pane active" id="tabs-1">
+								<p>instead of button add a quick guide on how to use the app</p>
+								<a id="navigate" class="btn btn-primary btn-large"
+									onclick="deactivateAll();controls['navigate'].activate();">
+									Navigate
+								</a>
+							</div>
+							<div class="tab-pane" id="tabs-2">
+								<a id="point" class="btn btn-primary btn-large"
+									onclick="deactivateAll();controls['point'].activate();">
+									Point
+								</a><p>Click on the image to place a point.</p>
+								</br>
+								<a id="line" class="btn btn-primary btn-large"
+									onclick="deactivateAll();controls['line'].activate();">
+									Line
+								</a><p>Click on the image to plot points along a line, double click to finish.</p>
+								</br>
+								<a id="polygon" class="btn btn-primary btn-large"
+									onclick="deactivateAll();controls['polygon'].activate();">
+									Polygon
+								</a><p>poly.</p>
+								</br>		
+								<a id="regular" class="btn btn-primary btn-large"
+									onclick="deactivateAll();controls['regular'].activate();">
+									Regular Polygon
+								</a><p>Regular poly</p>
+								
+							</div>
+							<div class="tab-pane" id="tabs-3">
+								<a id="select" class="btn btn-primary btn-large danger"
+									value="select" onclick="deactivateAll();controls['select'].activate();">
+									<i class="icon-trash"></i> Delete Feature
+								</a>
+								</br></br>
+								<a id="modify" class="btn btn-primary btn-large danger"
+									value="modify" onclick="deactivateAll();controls['modify'].activate();">
+									<i class="icon-cog"></i> Modify Feature
+								</a>
+								<ul>
+									<a id="rotate" class="btn btn-primary radio"
+										value="rotate" onclick=""><!-- Add the update feature-->
+										<i class="icon-refresh"></i> Allow Rotation
+									</a>
+									</br>									
+									<a id="resize" class="btn btn-primary radio"
+										value="resize" onclick=""><!-- Add the update feature-->
+										<i class="icon-search"></i> Allow Resize
+									</a>
+									</br>
+									<a id="drag" class="btn btn-primary radio"
+										value="drag" onclick=""><!-- Add the update feature-->
+										<i class="icon-share"></i> Allow Dragging
+									</a>
+									<li><!-- rotate -->
+										<input id="rotate" type="checkbox"
+											   name="rotate" onchange="update()" />
+										Allow Rotation
+									</li>
+									<li> <!-- resize -->
+										<input id="resize" type="checkbox"
+											   name="resize" onchange="update()" />
+										Allow Resizing
+										(<input id="keepAspectRatio" type="checkbox" name="keepAspectRatio" onchange="update()" checked="checked" />
+										keep aspect ratio)
+									</li>
+									<li><!-- drag -->
+										<input id="drag" type="checkbox" name="drag" onchange="update()" />
+										Allow Dragging
+									</li>
+								</ul>
+							</div>
+							<div class="tab-pane" id="tabs-4">
+								<div id="buttons">
+									<a class="btn btn-success btn-large" onclick="" >Save</a>
+									</br></br>
+									<a class="btn btn-danger btn-large" onclick="deleteFeatures()">Delete All</a>
+									<a class="btn btn-success btn-large" onclick="undo()">Undo</a>
+									<a class="btn btn-danger btn-large" onclick="redo()">Redo</a>
+									<a class="btn btn-danger btn-large" onclick="cancel()">Cancel Draw</a>
+									<p> <!-- undo redo text -->
+										Use <code>Ctrl-Z</code> or <code>?-Z</code> to undo while drawing.  
+										Use <code>Ctrl-Y</code> or <code>?-Y</code> to redo what you have 
+										undone.  Use <code>Esc</code> to cancel the current sketch.
+									</p>
+								</div> <!-- buttons -->
+							</div><!-- Tab pane -->
+						</div><!-- tab content -->
+					</div><!-- columb box -->
+				</div>
+			</div>
+		</div>
+
+      <footer>
+        <p>&copy; Zuntechi 2012</p>
+      </footer>
+
+    </div> <!-- /container -->
+
+  </body>
+  
+   <!-- Le javascript
+        ================================================== 
+        Placed at the end of the document so the pages load faster -->
+		
+		<!-- Bootstarp Xtra-->
+        <script src="../bootstrap-xtra/js/bootstrap-alerts.js"></script>
+		<script src="../bootstrap-xtra/js/bootstrap-buttons.js"></script>
+		<script src="../bootstrap-xtra/js/bootstrap-dropdown.js"></script>
+		<script src="../bootstrap-xtra/js/bootstrap-modal.js"></script>
+		<script src="../bootstrap-xtra/js/bootstrap-popover.js"></script>
+		<script src="../bootstrap-xtra/js/bootstrap-scrollspy.js"></script>
+		<script src="../bootstrap-xtra/js/bootstrap-tabs.js"></script>
+		<script src="../bootstrap-xtra/js/bootstrap-twipsy.js"></script>
+		
+		<!-- Bootstarp Xtra-->
+        <script src="../bootstrap-v2.2/js/bootstrap-alert.js"></script>
+		<script src="../bootstrap-v2.2/js/bootstrap-button.js"></script>
+		<script src="../bootstrap-v2.2/js/bootstrap-carousel.js"></script>
+		<script src="../bootstrap-v2.2/js/bootstrap-collapse.js"></script>
+		<script src="../bootstrap-v2.2/js/bootstrap-dropdown.js"></script>
+		<script src="../bootstrap-v2.2/js/bootstrap-modal.js"></script>
+		<script src="../bootstrap-v2.2/js/bootstrap-popover.js"></script>
+		<script src="../bootstrap-v2.2/js/bootstrap-scrollspy.js"></script>
+		<script src="../bootstrap-v2.2/js/bootstrap-tab.js"></script>
+		<script src="../bootstrap-v2.2/js/bootstrap-tooltip.js"></script>
+		<script src="../bootstrap-v2.2/js/bootstrap-transition.js"></script>
+		<script src="../bootstrap-v2.2/js/bootstrap-typehead.js"></script>
+		
+		<!-- JQuery-->	
+		<script src="http://code.jquery.com/jquery-latest.js"></script>  
+		<script type="text/javascript" src="jquery-1.7.min.js"></script>
+		
+		<!-- OpenLayers -->
+		<script src="../OpenLayers-2.11/lib/OpenLayers.js"></script>
+		<script src="../OpenLayers-2.11/lib/Firebug/debug.js"></script>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
