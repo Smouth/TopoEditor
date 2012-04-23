@@ -37,7 +37,7 @@
 	<script type="text/javascript">
 		//map variables
 		var lon = 5;	var lat = 40;	var zoom = 0;
-		var map, vecLayer, imgLayer, controls ;
+		var map, vecLayer, imgLayer, controls, formats ;
 		var img	= 'data/logo.jpg';
 		var err = 'data/default.jpg';
 		
@@ -45,11 +45,12 @@
 		$(document).ready(function() {
 			//$('#page-changer')[0].reset(); // resets form onload
 			//select boxes variables
-			var $Country = $('#country');			var $County = $('#county'); 
+			var $Country = $('#country');	var $County = $('#county'); 
 			var $Crag = $('#crag');			var $Route = $('#route');
 			var jsonFile = 'sample.json'; //select data
 			var countrySel,countySel,cragSel,routeSel; 
 			
+			//$Country.selectedIndex = 2; //sets the selection to select all
 			updateCounty();
 			
 			$Country.change(updateCounty);
@@ -139,52 +140,88 @@
 			}//end updateCrag
 
 			function updateRoute(){
-		
-		countrySel = $Country.val();
-        countySel = $County.val();
-		cragSel = $Crag.val();
-		var value;
-		//check if any value has been selected, Title value = null
-        if (cragSel) { 
-		/* Selected Option
-			$.getJSON(jsonFile, function(data) {
-				options = [];
-				options.push('<option value="'+'">Choose All</option>');
-				$.each(data["countries"], function(key) {
-					if(countrySel==key){
-						$.each(data["countries"][key]["county"], function(key1) {
-							if(countySel==key1){
-								$.each(data["countries"][key]["county"][key1]["crag"], function(key2) {
-									options.push('<option value='+key2+'>' + data["countries"][key]["county"][countySel]["crag"][key2]["name"] +  '</option>');
-								});
-							}
-						});
-					}
-				});
-				$Route.html(options.join(''));
-			});
-		*/
-        } else {
-			$.getJSON(jsonFile, function(data) {
-				options = [];
-				//options.push('<option value="'+'">Choose All</option>');
-				$.each(data["countries"], function(key) {
+				countrySel = $Country.val();
+				countySel = $County.val();
+				cragSel = $Crag.val();
+				var value;
+				//check if any value has been selected, Title value = null
+				if (cragSel) { 
+				 $.getJSON(jsonFile, function(data) {
+				  options = [];
+				  //options.push('<option value="'+'">Choose All</option>');
+				  $.each(data["countries"], function(key) {
+				   if(countrySel==key){
 					$.each(data["countries"][key]["county"], function(key1) {
-								$.each(data["countries"][key]["county"][key1]["crag"], function(key2) {
-									$.each(data["countries"][key]["county"][key1]["crag"][key2]["route"], function(key3) {
-										value = (data["countries"][key]["county"][key1]["crag"][key2]["route"][key3]["imgURL"]);
-										options.push('<option value='+value+'>' + data["countries"][key]["county"][key1]["crag"][key2]["route"][key3]["name"] +  '</option>');
-									});
-									
-								});
-							});
-				});
-				$Route.html(options.join(''));
+					 if(countySel==key1){
+					  $.each(data["countries"][key]["county"][key1]["crag"], function(key2) {
+					   if(cragSel==key2){
+					   //alert("key:"+key+" key1:"+key1+" key2:"+key2+" cragSel:"+cragSel);
+						$.each(data["countries"][key]["county"][key1]["crag"][key2]["route"], function(key3) {
+						 value = (data["countries"][key]["county"][key1]["crag"][cragSel]["route"][key3]["imgURL"]);
+						 options.push('<option value='+key3+'>' + data["countries"][key]["county"][key1]["crag"][cragSel]["route"][key3]["name"] +  '</option>');
+						});
+					   }
+					  });
+					 }
+					});
+				   }
+				  });
+				  $Route.html(options.join(''));
+				 });
+				
+				} else {
+				 $.getJSON(jsonFile, function(data) {
+				  options = [];
+				  //options.push('<option value="'+'">Choose All</option>');
+				  $.each(data["countries"], function(key) {
+				   if(countrySel){
+					if(countrySel==key){
+					 $.each(data["countries"][key]["county"], function(key1) {
+					  if(countySel){
+					   if(countySel==key1){
+						$.each(data["countries"][key]["county"][key1]["crag"], function(key2) {
+						 if(cragSel){
+						  if(cragSel==key2){
+						   $.each(data["countries"][key]["county"][key1]["crag"][key2]["route"], function(key3) {
+							value = (data["countries"][key]["county"][key1]["crag"][key2]["route"][key3]["imgURL"]);
+							options.push('<option value='+value+'>' + data["countries"][key]["county"][key1]["crag"][key2]["route"][key3]["name"] +  '</option>');
+						   });         
+						  } 
+						 }else{
+						  $.each(data["countries"][key]["county"][key1]["crag"][key2]["route"], function(key3) {
+						   value = (data["countries"][key]["county"][key1]["crag"][key2]["route"][key3]["imgURL"]);
+						   options.push('<option value='+value+'>' + data["countries"][key]["county"][key1]["crag"][key2]["route"][key3]["name"] +  '</option>');
+						  });         
+						 }
+						});
+					   }
+					  }else{
+					   $.each(data["countries"][key]["county"][key1]["crag"], function(key2) {
+						$.each(data["countries"][key]["county"][key1]["crag"][key2]["route"], function(key3) {
+						 value = (data["countries"][key]["county"][key1]["crag"][key2]["route"][key3]["imgURL"]);
+						 options.push('<option value='+value+'>' + data["countries"][key]["county"][key1]["crag"][key2]["route"][key3]["name"] +  '</option>');
+						});         
+					   });
+					  }
+					 });
+					}
+				   }else{
+					$.each(data["countries"][key]["county"], function(key1) {
+					  $.each(data["countries"][key]["county"][key1]["crag"], function(key2) {
+					   $.each(data["countries"][key]["county"][key1]["crag"][key2]["route"], function(key3) {
+						value = (data["countries"][key]["county"][key1]["crag"][key2]["route"][key3]["imgURL"]);
+						options.push('<option value='+value+'>' + data["countries"][key]["county"][key1]["crag"][key2]["route"][key3]["name"] +  '</option>');
+					   });         
+					  });
+					 });
+				   }
+				  });
+				  $Route.html(options.join(''));
+				 });
+				}//end of else
+			   }//end updateRoute
+				
 			});
-		}//end of else
-	}//end updateRoute
-    
-});
 		//SELECT LISTS
 		
         function init(){
@@ -253,6 +290,8 @@
 			
 			//Vector controls
             controls = {
+				navigation: new OpenLayers.Control.Navigation(imgLayer,
+							OpenLayers.Handler.Drag),
                 point: new OpenLayers.Control.DrawFeature(vecLayer,
                             OpenLayers.Handler.Point),
                 line: new OpenLayers.Control.DrawFeature(vecLayer,
@@ -262,16 +301,25 @@
                 regular: new OpenLayers.Control.DrawFeature(vecLayer,
                             OpenLayers.Handler.RegularPolygon,
                             {handlerOptions: {sides: 5}}),
-                modify: new OpenLayers.Control.ModifyFeature(vecLayer)
+                modify: new OpenLayers.Control.ModifyFeature(vecLayer),
+				select: new OpenLayers.Control.SelectFeature(vecLayer,{toggle: true, onSelect: serialize})
             };
             
 			//Add controls to map
             for(var key in controls) {
                 map.addControl(controls[key]);
             }
-            document.getElementById('noneToggle').checked = true;
+            //document.getElementById('noneToggle').checked = true;
+			
+			geojson = new OpenLayers.Format.GeoJSON();
 			
 		}//end of init
+		
+		function deactivateAll(){
+			for(var key in controls){
+				controls[key].deactivate();
+			}
+		}
 		
 		//Cancel Drawing
 		function cancel(element){ 
@@ -375,16 +423,48 @@
             }
         }
 		
-		function toggleModify(element) {
-            for(key in controls) {
-                var control = controls[key];
-                if(element.value == key && element.checked) {
-                    control.activate();
-                } else {
-                    control.deactivate();
-                }
-            }
-        }
+		
+		//INPUTING GEOJSON FOR VECTORS METHODS
+				 
+		function serialize(feature) {
+			//var str = geojson.write(feature, true);
+			//str = str.replace(/,/g, ', ');
+			//document.getElementById('output').value = str; 
+			
+			feature.destroy();
+		}
+
+		function serializeAll() {
+			var str = geojson.write(vecLayer.features, true);
+			str = str.replace(/,/g, ', ');
+			document.getElementById('output').value = str;
+		}
+		  
+		function deserialize() {
+			var element = document.getElementById('text');
+			var features = geojson.read(element.value);
+			var bounds;
+			if(features) {
+				if(features.constructor != Array) {
+					features = [features];
+				}
+				for(var i=0; i<features.length; ++i) {
+					if (!bounds) {
+						bounds = features[i].geometry.getBounds();
+					} else {
+						bounds.extend(features[i].geometry.getBounds());
+					}
+
+				}
+				vecLayer.addFeatures(features);
+//                map.zoomToExtent(bounds);
+				var plural = (features.length > 1) ? 's' : '';
+				element.value = features.length + ' feature' + plural + ' added';
+			} else {
+				element.value = 'Bad input ' + geojson;
+			}
+		}
+	
 	
     </script>
 	
@@ -489,58 +569,80 @@
 					<div id="map" class="container" style="width:700px; height:500px; background:#e8e8e8;"></div>
 				</div>	
 				<div class="span4">
-					<div class="columnbox" style="height: 200px;">
+					<div class="columnbox" style="height: 500px;">
 						<ul id="tab" class="nav nav-tabs">
-						  <li class="active"><a href="#tabs-1" data-toggle="tab">View</a></li>
-						  <li><a href="#tabs-2" data-toggle="tab" >Draw</a></li>
-						  <li><a href="#tabs-3" data-toggle="tab">Edit</a></li>
-						  <li><a href="#tabs-4" data-toggle="tab">Buttons</a></li>
+						  <li class="active" ><a href="#tabs-1" onClick="deactivateAll();" data-toggle="tab"><i class="icon-move"></i> View</a></li>
+						  <li><a href="#tabs-2" data-toggle="tab" ><i class="icon-edit"></i> Draw</a></li>
+						  <li><a href="#tabs-3" data-toggle="tab"><i class="icon-reload"></i> Edit</a></li>
+						  <li><a href="#tabs-4" data-toggle="tab"><i class="icon-iinfo"></i> Save/Cancel</a></li>
 						</ul>
 						<div class="tab-content" id="tabs">
 							<div class="tab-pane active" id="tabs-1">
 							  <p>Some info here regarding route</p>
-							  <ul id="controlToggle"> <!-- radio and check box controls -->
-								<li><!-- navigate -->
-									<input type="radio" name="navigate" value="none" id="noneToggle" 
-									checked="checked" onclick="toggleControl(this);" />	Navigate
-								</li>
-							  </ul>
+							 	<a id="navigate" class="btn btn-primary btn-large"
+									onclick="deactivateAll();controls['navigate'].activate();">
+									Navigate
+								</a>
 							</div>
 							<div class="tab-pane" id="tabs-2">
-								<ul id="controlToggle"> <!-- radio and check box controls -->
-									<li><!-- point -->
-										<input type="radio" name="type" value="point" id="pointToggle" onclick="toggleControl(this);" />
-										Draw Point
-									</li>
-									<li><!-- line -->
-										<input type="radio" name="type" value="line" id="lineToggle" onclick="toggleControl(this);" />
-										Draw Line
-									</li>
-									<li><!-- polygon -->
-										<input type="radio" name="type" value="polygon" id="polygonToggle" onclick="toggleControl(this);" />
-										Draw Polygon
-									</li>
-									<li><!-- regular polygon -->
-										<input type="radio" name="type" value="regular" id="regularToggle" onclick="toggleControl(this);" />
+							<a id="point" class="btn btn-primary btn-large"
+									onclick="deactivateAll();controls['point'].activate();">
+									Point
+							</a><p>Click on the image to place a point.</p>
+							</br>
+							<a id="line" class="btn btn-primary btn-large"
+									onclick="deactivateAll();controls['line'].activate();">
+									Line
+							</a><p>Click on the image to plot points along a line, double click to finish.</p>
+							</br>
+							<a id="polygon" class="btn btn-primary btn-large"
+									onclick="deactivateAll();controls['polygon'].activate();">
+									Polygon
+							</a><p>poly.</p>
+							</br>		
+							<a id="regular" class="btn btn-primary btn-large"
+									onclick="deactivateAll();controls['regular'].activate();">
+									Regular Polygon
+							</a><p>Regular poly</p>
+							
+										<!-- <input type="radio" name="type" value="regular" id="regularToggle" onclick="toggleControl(this);" />
 										Draw Regular Polygon - sides
 										<input id="sides" type="text" size="2" maxlength="2" name="sides" value="5" onchange="update()" />
 										<ul>
-											<li><!-- irregular -->
+											<li><!-- irregular 
 												<input id="irregular" type="checkbox" name="irregular" onchange="update()" />
 												Irregular
 											</li>
-										</ul>
-									</li>
-								</ul>
+										</ul> -->
+								
 							</div>
 							<div class="tab-pane" id="tabs-3">
 							
-								<ul id="controlToggle"> <!-- radio and check box controls -->
-									<li><!-- modify -->
-										<input type="radio" name="type" value="modify" id="modifyToggle" onclick="toggleControl(this);" />
-										Modify Feature a
-										<ul>
-											<li><!-- rotate -->
+								<a id="select" class="btn btn-primary btn-large danger"
+									value="select" onclick="deactivateAll();controls['select'].activate();">
+									<i class="icon-trash"></i> Delete Feature
+								</a>
+								</br></br>
+								<a id="modify" class="btn btn-primary btn-large danger"
+									value="modify" onclick="deactivateAll();controls['modify'].activate();">
+									<i class="icon-cog"></i> Modify Feature
+								</a>
+								<ul>
+									<a id="rotate" class="btn btn-primary radio"
+										value="rotate" onclick=""><!-- Add the update feature-->
+										<i class="icon-refresh"></i> Allow Rotation
+									</a>
+									</br>									
+									<a id="resize" class="btn btn-primary radio"
+										value="resize" onclick=""><!-- Add the update feature-->
+										<i class="icon-fullscreen"></i> Allow Resize
+									</a>
+									</br>
+									<a id="drag" class="btn btn-primary radio"
+										value="drag" onclick=""><!-- Add the update feature-->
+										<i class="icon-transfer"></i> Allow Dragging
+									</a>
+									<li><!-- rotate -->
 												<input id="rotate" type="checkbox"
 													   name="rotate" onchange="update()" />
 												Allow Rotation
@@ -556,23 +658,23 @@
 												<input id="drag" type="checkbox" name="drag" onchange="update()" />
 												Allow Dragging
 											</li>
-										</ul>
-									</li>
 								</ul>
+									
+								
 							</div>
 							<div class="tab-pane" id="tabs-4">
 								<div id="buttons">
-									<div class="btn-group"> <!-- Save and Cancel buttons -->
-										<a class="btn btn-primary btn-large" onclick="" >View</a>
-										<a class="btn btn-primary btn-large" onclick="colorChange()">Edit(color)</a>
+									
+										<!-- <a class="btn btn-primary btn-large" onclick="colorChange()">Edit(color)</a> -->
 										<a class="btn btn-success btn-large" onclick="" >Save</a>
-										<a class="btn btn-danger btn-large" onclick="deleteFeatures()">Clear All</a>
-									</div>
-									<div class="btn-group"> <!-- undo redo buttons -->
+										</br></br>
+										<a class="btn btn-danger btn-large" onclick="deleteFeatures()">Delete All</a>
+									
+									
 										<a class="btn btn-success btn-large" onclick="undo()">Undo</a>
 										<a class="btn btn-danger btn-large" onclick="redo()">Redo</a>
 										<a class="btn btn-danger btn-large" onclick="cancel()">Cancel Draw</a>
-									</div>
+									
 									<p> <!-- unde redo text -->
 										Use <code>Ctrl-Z</code> or <code>?-Z</code> to undo while drawing.  
 										Use <code>Ctrl-Y</code> or <code>?-Y</code> to redo what you have 
@@ -583,6 +685,25 @@
 						</div><!-- tab content -->
 					</div><!-- columb box -->
 				</div><!-- span4 -->
+			<!-- SECTION BELOW ADDed TO SHOW GEO JSON FOR VECTORS -->
+				<br> 
+				<div id="info">
+					<p>Output</p>
+					<textarea id="output"></textarea>
+				</div>
+				<br>  
+				<textarea id="text">paste text here...</textarea> 
+				<input type="button" value="add feature" onclick="deserialize();" />
+				<hr>  
+				<footer>
+				<p>&copy; Zuntechi Company 2012</p>
+			   </footer>
+			   
+					<a id="point" class="btn btn-primary btn-large"onclick="deactivateAll();controls['point'].activate();" >Point</a>
+					<a id="btn2"class="btn btn-primary btn-large" onclick="">2</a>
+					<a id="btn3"class="btn btn-success btn-large" onclick="" >3</a>
+					<a id="btn4"class="btn btn-danger btn-large" onclick="">4</a>
+				
 			</div><!-- container fluid -->
 		
 <!--
@@ -641,12 +762,6 @@
 				</div><!-- controls -->
  <!--CONTROLS END -->
 				
-				
-		<hr>		
-		<footer>
-			<p>&copy; Company 2012</p>
-		</footer>
-		</div> <!-- fluid container -->
 		
 		
 			
