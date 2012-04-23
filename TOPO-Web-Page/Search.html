@@ -16,13 +16,15 @@
         <!-- BootStrap Styles -->
         <link href="../my-bootstrap/docs/assets/css/bootstrap.css" rel="stylesheet">
 		<link href="../my-bootstrap/docs/assets/css/bootstrap-responsive.css" rel="stylesheet">
-        <style>
-            body {
-                padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
-            }
-			nav {
-				background-colour: "blue";
-			}
+         <style type="text/css">
+      /* Override some defaults */
+      html, body {
+        background-color: #eee;
+      }
+      body {
+        padding-top: 40px; /* 40px to make the container go all the way to the bottom of the topbar */
+      }
+      
         </style>
         
         <!-- Le fav and touch icons -->
@@ -474,7 +476,7 @@
     </head>
 
     <body onload="init()">
-
+	
 		<!-- Navigation bar -->
         <div class="navbar navbar-fixed-top">
             <div class="navbar-inner">
@@ -532,46 +534,12 @@
 			</div><!-- row -->
 		</div><!-- container -->
 		
-		
-		<!--  
-        <div class="container">
-            <h1>Search</h1>
-            <div class="row">
-				<form id="page-changer" class="ny" action="" method="get">
-				
-					<select size="5"  class="span3" name="Country" id="country" >
-						<option selected="selected" value="">Choose All</option>
-						<option id="England" value="0">England</option>
-						<option id="Wales" value="1">Wales</option>
-						<option id="Scotland" value="2">Scotland</option>
-						<option id="Ireland" value="3">Ireland</option>
-					</select>
-
-					<select size="5" class="span3" name="County" id="county">
-						<option selected="selected" value="">Choose All</option>
-						<option></option>
-					</select>
-					
-					<select size="5" class="span3" name="Crag" id="crag">
-						<option selected="selected" value="">Choose All</option>
-						<option></option>
-					</select>
-					
-					<select size="5" class="span3" name="Route" id="route" onchange="changeImg(this)";>
-						<option></option>
-					</select>
-  
-				</form>
-			</div>
-		</div>
-		-->
-		
-		
+		<div class="container">
 			<div class="container-fluid">
-				<div class="span8"> <!-- Map & controls-->
-					<div id="map" class="container" style="width:700px; height:500px; background:#e8e8e8;"></div>
+				<div class="span7"> <!-- Map & controls-->
+					<div id="map" class="container" style="width:600px; height:500px; background:#e8e8e8;"></div>
 				</div>	
-				<div class="span4">
+				<div class="span5">
 					<div class="columnbox" style="height: 500px;">
 						<ul id="tab" class="nav nav-tabs">
 						  <li class="active" ><a href="#tabs-1" onClick="deactivateAll();" data-toggle="tab"><i class="icon-move"></i> View</a></li>
@@ -689,83 +657,21 @@
 					</div><!-- columb box -->
 				</div><!-- span4 -->
 			<!-- SECTION BELOW ADDed TO SHOW GEO JSON FOR VECTORS -->
-				<br> 
-				<div id="info">
-					<p>Output</p>
-					<textarea id="output"></textarea>
-				</div>
-				<br>  
-				<textarea id="text">paste text here...</textarea> 
-				<input type="button" value="add feature" onclick="deserialize();" />
-				<hr>  
-				<footer>
-				<p>&copy; Zuntechi Company 2012</p>
-			   </footer>
-			   
-					<a id="point" class="btn btn-primary btn-large"onclick="deactivateAll();controls['point'].activate();" >Point</a>
-					<a id="btn2"class="btn btn-primary btn-large" onclick="">2</a>
-					<a id="btn3"class="btn btn-success btn-large" onclick="" >3</a>
-					<a id="btn4"class="btn btn-danger btn-large" onclick="">4</a>
-				
+							
 			</div><!-- container fluid -->
-		
-<!--
-				<div id="controls">
-						<ul id="controlToggle"> <!-- radio and check box controls -->
-<!--							<li><!-- navigate -->
-<!--								<input type="radio" name="navigate" value="none" id="noneToggle" checked="checked" onclick="toggleControl(this);" />
-									Navigate
-								</li>
-								<li><!-- point -->
-<!--								<input type="radio" name="type" value="point" id="pointToggle" onclick="toggleControl(this);" />
-									Draw Point
-								</li>
-								<li><!-- line -->
-<!--								<input type="radio" name="type" value="line" id="lineToggle" onclick="toggleControl(this);" />
-									Draw Line
-								</li>
-								<li><!-- polygon -->
-<!--								<input type="radio" name="type" value="polygon" id="polygonToggle" onclick="toggleControl(this);" />
-									Draw Polygon
-								</li>
-								<li><!-- regular polygon -->
-<!--								<input type="radio" name="type" value="regular" id="regularToggle" onclick="toggleControl(this);" />
-									Draw Regular Polygon - sides
-									<input id="sides" type="text" size="2" maxlength="2" name="sides" value="5" onchange="update()" />
-									<ul>
-										<li><!-- irregular -->
-<!--										<input id="irregular" type="checkbox" name="irregular" onchange="update()" />
-											Irregular
-										</li>
-									</ul>
-								</li>
-								<li><!-- modify -->
-<!--									<input type="radio" name="type" value="modify" id="modifyToggle" onclick="toggleControl(this);" />
-									Modify Feature
-									<ul>
-										<li><!-- rotate -->
-<!--											<input id="rotate" type="checkbox"
-												   name="rotate" onchange="update()" />
-											Allow Rotation
-										</li>
-										<li> <!-- resize -->
-<!--											<input id="resize" type="checkbox"
-												   name="resize" onchange="update()" />
-											Allow Resizing
-											(<input id="keepAspectRatio" type="checkbox" name="keepAspectRatio" onchange="update()" checked="checked" />
-											keep aspect ratio)
-										</li>
-										<li><!-- drag -->
-<!--											<input id="drag" type="checkbox" name="drag" onchange="update()" />
-											Allow Dragging
-										</li>
-									</ul>
-								</li>
-<!--							</ul>
-				</div><!-- controls -->
- <!--CONTROLS END -->
-				
-		
+			<br> 
+			<div id="info">
+				<p>Output</p>
+				<textarea id="output"></textarea>
+			</div>
+			<br>  
+			<textarea id="text">paste text here...</textarea> 
+			<input type="button" value="add feature" onclick="deserialize();" />
+			<hr>  
+			<footer>
+			<p>&copy; Zuntechi Company 2012</p>
+		   </footer>
+		</div>	<!-- Container-->
 		
 			
 		
