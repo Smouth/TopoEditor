@@ -614,11 +614,9 @@
 						</ul>
 						<div class="tab-content" id="tabs">
 							<div class="tab-pane active" id="tabs-1" title="Simply navigate" > <!--Nav-->
-							  <p>instead of button add a quick guide on how to use the app</p>
-							 	<a id="navigate" class="btn btn-primary btn-large"
-									onclick="deactivateAll();controls['navigate'].activate();">
-									Navigate
-								</a>
+							  <p>Welcome to Topo Editor! </br> In this tab(view) you can navigate the image freely. </br>
+							  Why dont you try the other tabs?</br>
+							  </p>
 							</div>
 							<div class="tab-pane" id="tabs-2"> <!--Draw-->
 								<a id="point" class="btn btn-primary btn-large"
@@ -643,7 +641,16 @@
 										onclick="deactivateAll();controls['regular'].activate();">
 										Draw Rectangle
 								</a>
-								
+								</br></br>
+								<a class="btn btn-success btn-large" onclick="undo()"
+										title="Undo last added joint.Only usable with; Line & Polygon">
+									Undo</a>
+									<a class="btn btn-danger btn-large" onclick="redo()"
+										title="Redo last added joint.Only usable with; Line & Polygon">
+									Redo</a>
+									<a class="btn btn-danger btn-large" onclick="cancel()"
+										title="Cancel Drawing.Only usable with; Line & Polygon">
+									Cancel Draw</a>
 											<!-- <input type="radio" name="type" value="regular" id="regularToggle" onclick="toggleControl(this);" />
 											Draw Regular Polygon - sides
 											<input id="sides" type="text" size="2" maxlength="2" name="sides" value="5" onchange="update()" />
@@ -669,36 +676,38 @@
 								
 								<ul>
 								</br>
+									
 									<a id="rotate" class="btn btn-primary radio"
-										value="rotate" onclick=""><!-- Add the update feature-->
+										value="rotate" onclick="update();"><!-- Add the update feature-->
 										<i class="icon-refresh"></i> Allow Rotation
 									</a>
 									</br></br>									
 									<a id="resize" class="btn btn-primary radio"
-										value="resize" onclick=""><!-- Add the update feature-->
+										value="resize" onclick="update();"><!-- Add the update feature-->
 										<i class="icon-search"></i> Allow Resize
 									</a>
 									</br></br>
 									<a id="drag" class="btn btn-primary radio"
-										value="drag" onclick=""><!-- Add the update feature-->
+										value="drag" onclick="update();"><!-- Add the update feature-->
 										<i class="icon-share"></i> Allow Dragging
 									</a>
-									<li><!-- rotate -->
+									
+									<!-- <li>
 										<input id="rotate" type="checkbox"
 											   name="rotate" onchange="update()" />
 										Allow Rotation
 									</li>
-									<li> <!-- resize -->
+									<li> 
 										<input id="resize" type="checkbox"
 											   name="resize" onchange="update()" />
 										Allow Resizing
 										(<input id="keepAspectRatio" type="checkbox" name="keepAspectRatio" onchange="update()" checked="checked" />
 										keep aspect ratio)
 									</li>
-									<li><!-- drag -->
+									<li>
 										<input id="drag" type="checkbox" name="drag" onchange="update()" />
 										Allow Dragging
-									</li>
+									</li> -->
 								</ul>
 									
 								
@@ -706,19 +715,12 @@
 							<div class="tab-pane" id="tabs-4"> <!--Save/Cancel-->
 								<div id="buttons">
 									<!-- <a class="btn btn-primary btn-large" onclick="colorChange()">Edit(color)</a> -->
+									<!-- <a class="btn btn-success btn-large" onclick="serializeAll()" >Upload new image</a>
+									</br></br> -->
 									<a class="btn btn-success btn-large" onclick="serializeAll()" >Save</a>
 									</br></br>
-									<a class="btn btn-danger btn-large" onclick="deleteFeatures(1)">Delete All</a>
-															
-									<a class="btn btn-success btn-large" onclick="undo()">Undo</a>
-									<a class="btn btn-danger btn-large" onclick="redo()">Redo</a>
-									<a class="btn btn-danger btn-large" onclick="cancel()">Cancel Draw</a>
-									
-									<p> <!-- unde redo text -->
-										Use <code>Ctrl-Z</code> or <code>?-Z</code> to undo while drawing.  
-										Use <code>Ctrl-Y</code> or <code>?-Y</code> to redo what you have 
-										undone.  Use <code>Esc</code> to cancel the current sketch.
-									<p>
+									<a class="btn btn-danger btn-large" onclick="deleteFeatures(1)"
+									title="This will delete all features on the image">Clear Image</a>
 								</div> <!-- buttons -->
 							</div> <!-- Tab pane -->
 						</div> <!-- tab content -->
