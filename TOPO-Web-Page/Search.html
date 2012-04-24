@@ -16,16 +16,58 @@
         <!-- BootStrap Styles -->
         <link href="../my-bootstrap/docs/assets/css/bootstrap.css" rel="stylesheet">
 		<link href="../my-bootstrap/docs/assets/css/bootstrap-responsive.css" rel="stylesheet">
-         <style type="text/css">
-      /* Override some defaults */
-      html, body {
-        background-color: #eee;
-      }
-      body {
-        padding-top: 40px; /* 40px to make the container go all the way to the bottom of the topbar */
-      }
-      
-        </style>
+        
+		<style type="text/css">
+			/* Override some defaults */
+			html, body {
+				background-color: #3366CC;
+			}
+
+			body {
+				padding-top: 20px; /* 40px to make the container go all the way to the bottom of the topbar */
+			}
+			div.well {
+				margin-left: auto;
+				margin-right: auto;
+				width: 80%;
+				background-color: #A8A8A8 ;
+				border: 1px solid black;
+			}
+			div.row{
+				margin-left: auto;
+				margin-right: auto;
+				width: 95%;
+			}
+			div.container-fluid {
+				margin-left: auto;
+				margin-right: auto;
+				width: 90%;
+				border: 0px ;
+				padding-left: 0px;
+				padding-right: 0px	
+			}
+			div.span7{
+				border: 2px solid black;	
+				padding-right: 20px	
+			}
+			div.span5{
+				
+				background-color: white;
+			}
+			div.tab-content{
+				background-color: white;<!--  #D8D8D8; -->
+				height: 400px;
+				padding-left: 20px;
+				padding-right: 20px;
+				padding-top: 20px
+			}
+			div.nav-tabs{
+				background-color: transparent;
+				margin-bottom: 0px;
+			}
+			
+			
+		</style>
         
         <!-- Le fav and touch icons -->
          <link rel="shortcut icon" href="../my-bootstrap/docs/assets/ico/favicon.ico"> 
@@ -232,8 +274,8 @@
         function init(){
 				
 			//map options and border
-			var options = { numZoomLevels: 2 }; //allow only 2 zoom levels; current, 1+
-            var olbound = new OpenLayers.Bounds(-180,-90,180,90); //bounds(left,buttom,right,top)
+			var options = { numZoomLevels: 1 }; //allow only 2 zoom levels; current, 1+
+            var olbound = new OpenLayers.Bounds(-300,-300,300,300); //bounds(left,buttom,right,top)
 			
 			// allow testing of specific renderers via "?renderer=Canvas", etc
             var renderer = OpenLayers.Util.getParameters(window.location.href).renderer;
@@ -243,8 +285,8 @@
 			vecLayer = new OpenLayers.Layer.Vector(
 				"Route Layer",  //layer name
 				{styleMap: new OpenLayers.StyleMap({
-					pointRadius: "6", //based on feature.attributes.type
-					fillColor: "#666666" //"red" "green" "blue"
+					pointRadius: "8", //based on feature.attributes.type
+					fillColor: "#666666" //"grey"
 				}),
 				renderers:renderer}
 			);
@@ -265,7 +307,7 @@
 				new OpenLayers.Control.PanZoom(), //arrows, +, -, world
 				//new OpenLayers.Control.EditingToolbar(vecLayer), //integrated in map
 				new OpenLayers.Control.MousePosition(), //display position of mouse- bottom right
-				new OpenLayers.Control.LayerSwitcher(), //allow to swap from 1 layer to another
+				//new OpenLayers.Control.LayerSwitcher(), //allow to swap from 1 layer to another
 				new OpenLayers.Control.Attribution() //copyrights tag 
 			]
 		  
@@ -307,7 +349,9 @@
                             OpenLayers.Handler.RegularPolygon,
                             {handlerOptions: {sides: 5}}),
                 modify: new OpenLayers.Control.ModifyFeature(vecLayer),
+				destroy: new OpenLayers.Control.SelectFeature(vecLayer,{toggle: true, onSelect: destroy}),
 				select: new OpenLayers.Control.SelectFeature(vecLayer,{toggle: true, onSelect: serialize})
+								
             };
             
 			//Add controls to map
@@ -317,7 +361,8 @@
             //document.getElementById('noneToggle').checked = true;
 			
 			geojson = new OpenLayers.Format.GeoJSON();
-			
+		
+					
 		}//end of init
 		
 		function deactivateAll(){
@@ -348,8 +393,16 @@
 		}
 		
 		//Delete all features
-		function deleteFeatures(){
-			vecLayer.destroyFeatures();
+		function deleteFeatures(i){
+			if (i==1){
+				var answer = confirm("Are you sure you want to delete all features?")
+				if (answer){
+					vecLayer.destroyFeatures();
+				}
+				vecLayer.destroyFeatures();
+			}else{
+				vecLayer.destroyFeatures();
+			}
 		}
 		
 		//Load new img
@@ -357,10 +410,10 @@
 		
 			var answer = confirm("Are you sure you want to change route?, all unsaved changes will be lost")
 			if (answer){
-				deleteFeatures();
+				deleteFeatures(0);
 				var curURL = imgLayer.tile.imgDiv.src;
 				var newURL = newImg.value;
-				alert(newURL);
+				//alert(newURL);
 				if(!newURL){ //or undefined
 					newURL = err;
 				}
@@ -390,7 +443,7 @@
 		
 		function update() {
             // reset modification mode
-            controls.modify.mode = OpenLayers.Control.ModifyFeature.RESHAPE;
+			controls.modify.mode = OpenLayers.Control.ModifyFeature.RESHAPE;
             var rotate = document.getElementById("rotate").checked;
             if(rotate) {
                 controls.modify.mode |= OpenLayers.Control.ModifyFeature.ROTATE;
@@ -410,11 +463,10 @@
             if (rotate || drag) {
                 controls.modify.mode &= ~OpenLayers.Control.ModifyFeature.RESHAPE;
             }
-            var sides = parseInt(document.getElementById("sides").value);
+            var sides = 4;
             sides = Math.max(3, isNaN(sides) ? 0 : sides);
             controls.regular.handler.sides = sides;
-            var irregular =  document.getElementById("irregular").checked;
-            controls.regular.handler.irregular = irregular;
+            
         }
 		
 		function toggleControl(element) {
@@ -432,13 +484,15 @@
 		//INPUTING GEOJSON FOR VECTORS METHODS
 				 
 		function serialize(feature) {
-			//var str = geojson.write(feature, true);
-			//str = str.replace(/,/g, ', ');
-			//document.getElementById('output').value = str; 
-			
-			feature.destroy();
+			var str = geojson.write(feature, true);
+			str = str.replace(/,/g, ', ');
+			document.getElementById('output').value = str; 
 		}
 
+		function destroy(feature) {
+			feature.destroy();
+		}
+		
 		function serializeAll() {
 			var str = geojson.write(vecLayer.features, true);
 			str = str.replace(/,/g, ', ');
@@ -470,6 +524,8 @@
 			}
 		}
 	
+
+			
 	
     </script>
 	
@@ -486,11 +542,11 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </a>
-                    <a class="brand">TOPO Editor</a>
+                    <a class="brand">Zuntechi TOPO Editor</a>
                     <div class="nav-collapse">
-                        <ul class="nav">
+                        <!-- <ul class="nav">
                             <li class="active"><a href="Search.html">Search</a></li>
-						</ul>
+						</ul> -->
 						<form class="navbar-search pull-right">
 							<input type="text" class="search-query" placeholder="Search">
 						</form>
@@ -499,7 +555,7 @@
             </div>    
         </div>
 		
-		<div class = "container"><!-- select boxes -->
+		<div class = "well"><!-- select boxes -->
 			<div class="row">
 				<div class="span3">
 					<h2>Country</h2>
@@ -534,60 +590,72 @@
 			</div><!-- row -->
 		</div><!-- container -->
 		
-		<div class="container">
-			<div class="container-fluid">
-				<div class="span7"> <!-- Map & controls-->
-					<div id="map" class="container" style="width:600px; height:500px; background:#e8e8e8;"></div>
-				</div>	
-				<div class="span5">
-					<div class="columnbox" style="height: 500px;">
+		<div class="well">
+			<div class="container-fluid"> <!-- Map & controls-->
+				<!-- <div id="RouteTitle"> Dynamic route name here</div> -->
+					<div id="map" class="span7" style="width:600px; height:500px; background:#e8e8e8;"></div>
+				
+					<div class="columnbox span5" style="width:500px; height:500px;"> <!-- tabs -->
 						<ul id="tab" class="nav nav-tabs">
-						  <li class="active" ><a href="#tabs-1" onClick="deactivateAll();" data-toggle="tab"><i class="icon-move"></i> View</a></li>
-						  <li><a href="#tabs-2" data-toggle="tab" ><i class="icon-pencil"></i> Draw</a></li>
-						  <li><a href="#tabs-3" data-toggle="tab"><i class="icon-edit"></i> Edit</a></li>
-						  <li><a href="#tabs-4" data-toggle="tab"><i class="icon-lock"></i> Save/Cancel</a></li>
+						  <li class="active" ><a href="#tabs-1" 
+							  onClick="deactivateAll();" data-toggle="tab">
+							  <i class="icon-move"></i> View</a>
+						  </li>
+						  <li><a href="#tabs-2" data-toggle="tab" 
+							onclick="deactivateAll();controls['select'].activate();" >
+							<i class="icon-pencil"></i> Draw</a></li>
+						  <li><a href="#tabs-3" data-toggle="tab" 
+							onclick="deactivateAll();controls['modify'].activate();">
+							<i class="icon-edit"></i> Edit</a></li>
+						  <li><a href="#tabs-4" data-toggle="tab"
+							onclick="deactivateAll();">
+							<i class="icon-lock"></i> Save/Cancel</a>
+						  </li>
 						</ul>
 						<div class="tab-content" id="tabs">
-							<div class="tab-pane active" id="tabs-1">
+							<div class="tab-pane active" id="tabs-1" title="Simply navigate" > <!--Nav-->
 							  <p>instead of button add a quick guide on how to use the app</p>
 							 	<a id="navigate" class="btn btn-primary btn-large"
 									onclick="deactivateAll();controls['navigate'].activate();">
 									Navigate
 								</a>
 							</div>
-							<div class="tab-pane" id="tabs-2">
-							<a id="point" class="btn btn-primary btn-large"
-									onclick="deactivateAll();controls['point'].activate();">
-									Point
-							</a><p>Click on the image to place a point.</p>
-							</br>
-							<a id="line" class="btn btn-primary btn-large"
-									onclick="deactivateAll();controls['line'].activate();">
-									Line
-							</a><p>Click on the image to plot points along a line, double click to finish.</p>
-							</br>
-							<a id="polygon" class="btn btn-primary btn-large"
-									onclick="deactivateAll();controls['polygon'].activate();">
-									Polygon
-							</a><p>poly.</p>
-							</br>		
-							<a id="regular" class="btn btn-primary btn-large"
-									onclick="deactivateAll();controls['regular'].activate();">
-									Regular Polygon
-							</a><p>Regular poly</p>
-							
-										<!-- <input type="radio" name="type" value="regular" id="regularToggle" onclick="toggleControl(this);" />
-										Draw Regular Polygon - sides
-										<input id="sides" type="text" size="2" maxlength="2" name="sides" value="5" onchange="update()" />
-										<ul>
-											<li><!-- irregular 
-												<input id="irregular" type="checkbox" name="irregular" onchange="update()" />
-												Irregular
-											</li>
-										</ul> -->
+							<div class="tab-pane" id="tabs-2"> <!--Draw-->
+								<a id="point" class="btn btn-primary btn-large"
+										title="Click to place a point."
+										onclick="deactivateAll();controls['point'].activate();">
+										Point
+								</a>
+								</br></br>
+								<a id="line" class="btn btn-primary btn-large"
+										title="Click to add connected ____, double click to end"
+										onclick="deactivateAll();controls['line'].activate();">
+										Line
+								</a>
+								</br></br>
+								<a id="polygon" class="btn btn-primary btn-large"
+										title="Click to add ,double click to close shape"
+										onclick="deactivateAll();controls['polygon'].activate();">
+										Polygon
+								</a>
+								</br></br>		
+								<a id="regular" class="btn btn-primary btn-large"
+										onclick="deactivateAll();controls['regular'].activate();">
+										Draw Rectangle
+								</a>
 								
+											<!-- <input type="radio" name="type" value="regular" id="regularToggle" onclick="toggleControl(this);" />
+											Draw Regular Polygon - sides
+											<input id="sides" type="text" size="2" maxlength="2" name="sides" value="5" onchange="update()" />
+											<ul>
+												<li><!-- irregular 
+													<input id="irregular" type="checkbox" name="irregular" onchange="update()" />
+													Irregular
+												</li>
+											</ul> -->
+									
 							</div>
-							<div class="tab-pane" id="tabs-3">
+							<div class="tab-pane" id="tabs-3"> <!--Edit-->
 							
 								<a id="select" class="btn btn-primary btn-large danger"
 									value="select" onclick="deactivateAll();controls['select'].activate();">
@@ -598,53 +666,53 @@
 									value="modify" onclick="deactivateAll();controls['modify'].activate();">
 									<i class="icon-cog"></i> Modify Feature
 								</a>
+								
 								<ul>
+								</br>
 									<a id="rotate" class="btn btn-primary radio"
 										value="rotate" onclick=""><!-- Add the update feature-->
 										<i class="icon-refresh"></i> Allow Rotation
 									</a>
-									</br>									
+									</br></br>									
 									<a id="resize" class="btn btn-primary radio"
 										value="resize" onclick=""><!-- Add the update feature-->
 										<i class="icon-search"></i> Allow Resize
 									</a>
-									</br>
+									</br></br>
 									<a id="drag" class="btn btn-primary radio"
 										value="drag" onclick=""><!-- Add the update feature-->
 										<i class="icon-share"></i> Allow Dragging
 									</a>
 									<li><!-- rotate -->
-												<input id="rotate" type="checkbox"
-													   name="rotate" onchange="update()" />
-												Allow Rotation
-											</li>
-											<li> <!-- resize -->
-												<input id="resize" type="checkbox"
-													   name="resize" onchange="update()" />
-												Allow Resizing
-												(<input id="keepAspectRatio" type="checkbox" name="keepAspectRatio" onchange="update()" checked="checked" />
-												keep aspect ratio)
-											</li>
-											<li><!-- drag -->
-												<input id="drag" type="checkbox" name="drag" onchange="update()" />
-												Allow Dragging
-											</li>
+										<input id="rotate" type="checkbox"
+											   name="rotate" onchange="update()" />
+										Allow Rotation
+									</li>
+									<li> <!-- resize -->
+										<input id="resize" type="checkbox"
+											   name="resize" onchange="update()" />
+										Allow Resizing
+										(<input id="keepAspectRatio" type="checkbox" name="keepAspectRatio" onchange="update()" checked="checked" />
+										keep aspect ratio)
+									</li>
+									<li><!-- drag -->
+										<input id="drag" type="checkbox" name="drag" onchange="update()" />
+										Allow Dragging
+									</li>
 								</ul>
 									
 								
 							</div>
-							<div class="tab-pane" id="tabs-4">
+							<div class="tab-pane" id="tabs-4"> <!--Save/Cancel-->
 								<div id="buttons">
-									
-										<!-- <a class="btn btn-primary btn-large" onclick="colorChange()">Edit(color)</a> -->
-										<a class="btn btn-success btn-large" onclick="" >Save</a>
-										</br></br>
-										<a class="btn btn-danger btn-large" onclick="deleteFeatures()">Delete All</a>
-									
-									
-										<a class="btn btn-success btn-large" onclick="undo()">Undo</a>
-										<a class="btn btn-danger btn-large" onclick="redo()">Redo</a>
-										<a class="btn btn-danger btn-large" onclick="cancel()">Cancel Draw</a>
+									<!-- <a class="btn btn-primary btn-large" onclick="colorChange()">Edit(color)</a> -->
+									<a class="btn btn-success btn-large" onclick="serializeAll()" >Save</a>
+									</br></br>
+									<a class="btn btn-danger btn-large" onclick="deleteFeatures(1)">Delete All</a>
+															
+									<a class="btn btn-success btn-large" onclick="undo()">Undo</a>
+									<a class="btn btn-danger btn-large" onclick="redo()">Redo</a>
+									<a class="btn btn-danger btn-large" onclick="cancel()">Cancel Draw</a>
 									
 									<p> <!-- unde redo text -->
 										Use <code>Ctrl-Z</code> or <code>?-Z</code> to undo while drawing.  
@@ -652,26 +720,43 @@
 										undone.  Use <code>Esc</code> to cancel the current sketch.
 									<p>
 								</div> <!-- buttons -->
-							</div><!-- Tab pane -->
-						</div><!-- tab content -->
-					</div><!-- columb box -->
-				</div><!-- span4 -->
-			<!-- SECTION BELOW ADDed TO SHOW GEO JSON FOR VECTORS -->
-							
-			</div><!-- container fluid -->
-			<br> 
-			<div id="info">
-				<p>Output</p>
-				<textarea id="output"></textarea>
-			</div>
-			<br>  
-			<textarea id="text">paste text here...</textarea> 
-			<input type="button" value="add feature" onclick="deserialize();" />
+							</div> <!-- Tab pane -->
+						</div> <!-- tab content -->
+					</div> <!-- column box -->
+			</div> <!--fluid-->
+				<!-- <div id="myCarousel" class="carousel">
+					<div class="carousel-inner">
+					<div class="active item">…</div>
+					<div class="item">…</div>
+					<div class="item">…</div>
+				  </div>
+				  <a class="carousel-control left" href="#myCarousel" data-slide="prev">&lsaquo;</a>
+				  <a class="carousel-control right" href="#myCarousel" data-slide="next">&rsaquo;</a>
+				</div> -->
+			
+			
 			<hr>  
-			<footer>
-			<p>&copy; Zuntechi Company 2012</p>
+			<footer style="text-align: center; color:white;">
+				<p>&copy; Zuntechi Company 2012</p>
 		   </footer>
-		</div>	<!-- Container-->
+		</div> <!--well-->
+		
+			<!-- SECTION BELOW ADDed TO SHOW GEO JSON FOR VECTORS -->
+						
+		<div class="well " style="text-align:center; height:300px">
+			<div class="span6">
+				<div id="info">
+					<p>Output</p>
+					<textarea id="output" style="min-height: 250px;width:400px"></textarea>
+				</div>
+			</div>
+			<div class="span6">
+				<div id="input">
+					<input type="button" value="add feature" onclick="deserialize();"/></br>
+					<textarea id="text" style="min-height: 250px;width:400px">paste text here...</textarea>
+				</div>
+			</div>
+		</div>
 		
 			
 		
@@ -698,6 +783,7 @@
 		<script src="../OpenLayers-2.11/lib/OpenLayers.js"></script>
 		<script src="../OpenLayers-2.11/lib/Firebug/debug.js"></script>
 		<!--<script src="../OpenLayers-2.11/lib/draw-undo-redo.js"></script>-->
+		
     </body>
 	
 	<!-- Extra bits -->
