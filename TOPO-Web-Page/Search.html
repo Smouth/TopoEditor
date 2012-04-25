@@ -347,7 +347,7 @@
                             OpenLayers.Handler.Polygon),
                 regular: new OpenLayers.Control.DrawFeature(vecLayer,
                             OpenLayers.Handler.RegularPolygon,
-                            {handlerOptions: {sides: 5}}),
+                            {handlerOptions: {sides: 4}}),
                 modify: new OpenLayers.Control.ModifyFeature(vecLayer),
 				destroy: new OpenLayers.Control.SelectFeature(vecLayer,{toggle: true, onSelect: destroy}),
 				select: new OpenLayers.Control.SelectFeature(vecLayer,{toggle: true, onSelect: serialize})
@@ -609,13 +609,16 @@
 							<i class="icon-edit"></i> Edit</a></li>
 						  <li><a href="#tabs-4" data-toggle="tab"
 							onclick="deactivateAll();">
-							<i class="icon-lock"></i> Save/Cancel</a>
+							<i class="icon-lock"></i> Menu</a>
 						  </li>
 						</ul>
 						<div class="tab-content" id="tabs">
 							<div class="tab-pane active" id="tabs-1" title="Simply navigate" > <!--Nav-->
-							  <p>Welcome to Topo Editor! </br> In this tab(view) you can navigate the image freely. </br>
-							  Why dont you try the other tabs?</br>
+							  <p style="font-size: 12pt; margin: 5px">Welcome to Topo Editor! </br></br> In this tab(view) you can navigate the image freely. </br>
+							  Why dont you try the other tabs?</br></br>
+							  - Draw: add; Points, Lines and other shaped to the image</br></br>
+							  - Edit: Modify; size, rotation and shape of added features or delete them from the image</br></br>
+							  - Menu: Save the changes made, wipe all features<!-- , undo all changes, upload a new picture  --></bt>
 							  </p>
 							</div>
 							<div class="tab-pane" id="tabs-2"> <!--Draw-->
@@ -642,15 +645,15 @@
 										Draw Rectangle
 								</a>
 								</br></br>
-								<a class="btn btn-success btn-large" onclick="undo()"
+									<!-- <a class="btn btn-success btn-large" onclick="undo();"
 										title="Undo last added joint.Only usable with; Line & Polygon">
 									Undo</a>
-									<a class="btn btn-danger btn-large" onclick="redo()"
+									<a class="btn btn-danger btn-large" onclick="redo();"
 										title="Redo last added joint.Only usable with; Line & Polygon">
 									Redo</a>
-									<a class="btn btn-danger btn-large" onclick="cancel()"
+									<a class="btn btn-danger btn-large" onclick="cancel();"
 										title="Cancel Drawing.Only usable with; Line & Polygon">
-									Cancel Draw</a>
+									Cancel Draw</a> -->
 											<!-- <input type="radio" name="type" value="regular" id="regularToggle" onclick="toggleControl(this);" />
 											Draw Regular Polygon - sides
 											<input id="sides" type="text" size="2" maxlength="2" name="sides" value="5" onchange="update()" />
@@ -712,7 +715,7 @@
 									
 								
 							</div>
-							<div class="tab-pane" id="tabs-4"> <!--Save/Cancel-->
+							<div class="tab-pane" id="tabs-4"> <!--Menu-->
 								<div id="buttons">
 									<!-- <a class="btn btn-primary btn-large" onclick="colorChange()">Edit(color)</a> -->
 									<!-- <a class="btn btn-success btn-large" onclick="serializeAll()" >Upload new image</a>
